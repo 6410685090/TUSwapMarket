@@ -25,8 +25,7 @@ SECRET_KEY = 'django-insecure-%^9na(5+7xhu%$xz5n%cl5v=qpo6ceoz3yk#cu@hi5eu!^*#t6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -37,7 +36,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'swapmarket',
+    'user',
 ]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://127.0.0.1:8000"
+]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -105,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Bangkok'
 
 USE_I18N = True
 
