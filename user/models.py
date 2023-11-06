@@ -11,7 +11,7 @@ class CustomUser(AbstractUser):
     firstname = models.CharField(max_length=64)
     lastname = models.CharField(max_length=64)
     userdescription = models.CharField(max_length=300, blank=True, null=True, default='')
-    userpicture = models.ImageField()
+    userpicture = models.ImageField(upload_to='user_pictures/')
     coins_balance = models.PositiveIntegerField(default=0)
 
     groups = models.ManyToManyField(

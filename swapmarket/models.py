@@ -17,7 +17,7 @@ class Item(models.Model):
     price =  models.PositiveIntegerField(validators=[MaxValueValidator(999999)])
     categories = models.ManyToManyField(Category, blank=True)
     itemdescription = models.CharField(max_length=500, blank=True, null=True, default='')
-    itempicture = models.ImageField()
+    itempicture = models.ImageField(upload_to='item_pictures/')
 
     def __str__(self):
         return self.itemname
