@@ -8,3 +8,6 @@ def about(request):
 
 def home(request):
     return render(request,"swapmarket/homepage.html")
+
+def signin(request):
+    return render(request,"user/signin.html")
