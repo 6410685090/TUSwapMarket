@@ -3,5 +3,27 @@
 {% block title %}Sign in{% endblock %}
 
 {% block body %}
-<h1>This is signin page</h1>
+<div>
+    <div>
+        Log in
+    </div>
+    <form action="{% url 'signin' %}" method="post">
+        {% csrf_token %}
+        <div>
+            <input type="text" name="username" required>
+            <label>Username</label>
+        </div>
+        <div>
+            <input type="password" name="password" required>
+            <label>Password</label>
+            {% if message %}
+            <p>{{ message }}</p>
+            {% endif %}
+        </div>
+        <br>
+        <div>
+            <input type="submit" value="Sign in">
+        </div>
+    </form>
+</div>
 {% endblock %}
