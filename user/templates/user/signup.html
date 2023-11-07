@@ -3,5 +3,43 @@
 {% block title %}Sign up{% endblock %}
 
 {% block body %}
-<h1>This is signup page</h1>
+<div>
+    <div>
+        Sign up
+    </div>
+    <form action="{% url 'signin' %}" method="post">
+        {% csrf_token %}
+        <div>
+            <input type="text" name="username" required>
+            <label>Username</label>
+        </div>
+        <div>
+            <input type="password" name="password" required>
+            <label>Password</label>
+        </div>
+        <div>
+            <input type="password" name="cpassword" required>
+            <label>Confirm Password</label>
+        </div>
+        <div>
+            <input type="email" name="email" required>
+            <label>Email</label>
+        </div>
+        <div>
+            <input type="text" name="firstname" required>
+            <label>First name</label>
+        </div>
+        <div>
+            <input type="text" name="lastname" required>
+            <label>Last name</label>
+        </div>
+        <br>
+        {% if message %}
+        <p>{{ message }}</p>
+        {% endif %}
+        <div>
+            <input type="submit" value="Sign up">
+        </div>
+    </form>
+</div>
 {% endblock %}
