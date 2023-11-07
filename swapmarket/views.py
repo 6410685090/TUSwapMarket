@@ -14,3 +14,6 @@ def signin(request):
 
 def signup(request):
     return render(request,"user/signup.html")
+
+def changepass(request):
+    return render(request,"user/chpass.html")
