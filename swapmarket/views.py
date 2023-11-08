@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from user.models import CustomUser 
 from django.core.files.storage import FileSystemStorage
-
+from django.urls import reverse
 # Create your views here.
 
 
@@ -11,10 +11,7 @@ def about(request):
     return render(request,"swapmarket/about.html")
 
 def home(request):
-    if request.user.is_staff:
-        return redirect('/admin/')
-    else:
-        return render(request, 'swapmarket/homepage.html')
+    return render(request, 'swapmarket/homepage.html')
 
 def signin(request):
     if request.method == 'POST':
@@ -23,7 +20,7 @@ def signin(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('home')
+            return redirect(reverse('user:userhome'))
         else:
             message = "Invalid username or password. Please try again."
     else:
@@ -88,7 +85,7 @@ def registered(request):
         del request.session['signup_password']
 
         login(request, user)
-        return redirect('home')
+        return redirect(reverse('users:userhome'))
 
     return render(request, 'swapmarket/registered.html')
 
