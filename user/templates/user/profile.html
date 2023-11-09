@@ -1,0 +1,18 @@
+{% extends 'user/layout.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-6">
+        <img src="{{ user.userpicture.url }}" alt="User Picture" height="100px">
+        {% if user.displayname %}
+            <p>Nickname: {{ user.displayname }} </p>
+        {% endif %}
+        <p>Name: {{ user.firstname }} {{ user.lastname }} </p>
+        <p>Student ID: {{ user.username }}</p>
+        <p>Email: {{ user.email }}</p>
+        <p>Phone: {{ user.phone }}</p>
+    </div>
+</div>
+{% endblock %}

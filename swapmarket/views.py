@@ -6,13 +6,6 @@ from django.core.files.storage import FileSystemStorage
 from django.urls import reverse
 # Create your views here.
 
-
-def about(request):
-    return render(request,"swapmarket/about.html")
-
-def home(request):
-    return render(request, 'swapmarket/homepage.html')
-
 def signin(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -20,7 +13,7 @@ def signin(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect(reverse('user:userhome'))
+            return redirect(reverse('user:home'))
         else:
             message = "Invalid username or password. Please try again."
     else:
@@ -85,7 +78,7 @@ def registered(request):
         del request.session['signup_password']
 
         login(request, user)
-        return redirect(reverse('users:userhome'))
+        return redirect(reverse('user:home'))
 
     return render(request, 'swapmarket/registered.html')
 
