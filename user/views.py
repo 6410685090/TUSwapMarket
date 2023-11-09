@@ -96,6 +96,15 @@ def edit_profile(request):
         form = CustomUserEditForm(instance=request.user)
     return render(request, 'user/editprofile.html', {'form': form})
 
-def changepass(request):
-    
-    return render(request,"user/chpass.html")
+def changepassword(request):
+    if request.method == "POST":
+        if request.POST["newpass"] == request.POST["cnewpass"]:
+            user = CustomUser.objects.get(username = request.user)
+            user.set_password(request.POST["newpass"])
+            user.save()
+            return redirect('/logout')
+        else:
+            return render(request, 'user/chpass.html',{
+                'message' : 'Password not match.'
+            })
+    return render(request, 'user/chpass.html')
