@@ -1,7 +1,35 @@
-{% extends 'swapmarket/layout.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{% static 'swapmarket/css/home.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+</head>
 
-{% block title %}Homepage{% endblock %}
+<body>
+    <div class="main">
+        <header class="header">
+            <a href="/"><img src="{% static 'swapmarket/pic/logo.png' %}" alt="logo" style="height: 50px; padding-left: 15px;"></a>
+            <div class="header-left">
+                <a href="/" class="button-headerleft" style="font-size: 30px; font-weight: bold;">TUSwapMarket</a>
+                <a href="/about" class="button-headerleft" style="padding-left: 15px;">About us</a>
+            </div>
+            <div class="header-right">
+                <a href="/signin" class="button-headerright">Sign in</a>
+                <a href="/signup" class="button-headerright">Sign up</a>
+            </div>
+        </header>
+        <div class="wh"></div>
+        <div class="side">
+            <div class="inside fitem">a</div>
+            <div class="inside">a</div>
+        </div>
+        <div class="content">
+            <div class="sellitem">a</div>
+        </div>
+    </div>
+</body>
 
-{% block body %}
-
-{% endblock %}
+</html>
