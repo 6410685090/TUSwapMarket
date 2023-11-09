@@ -4,6 +4,7 @@ from django.contrib import messages
 from user.models import CustomUser 
 from django.core.files.storage import FileSystemStorage
 from django.urls import reverse
+from .forms import CustomUserEditForm
 
 def profile(request):
     return render(request,"user/profile.html")
@@ -84,6 +85,16 @@ def registered(request):
         return redirect(reverse('home'))
 
     return render(request, 'user/registered.html')
+
+def edit_profile(request):
+    if request.method == 'POST':
+        form = CustomUserEditForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('/profile') 
+    else:
+        form = CustomUserEditForm(instance=request.user)
+    return render(request, 'user/editprofile.html', {'form': form})
 
 def changepass(request):
     
