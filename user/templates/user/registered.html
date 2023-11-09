@@ -1,0 +1,35 @@
+{% extends 'swapmarket/layout.html' %}
+
+{% block title %}Registered{% endblock %}
+
+{% block body %}
+<div>
+    <h1>Registered</h1>
+    <form method="post" enctype="multipart/form-data" action="{% url 'user:registered' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="phone">Phone:</label>
+            <input type="text" name="phone" id="phone" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="firstname">First Name:</label>
+            <input type="text" name="firstname" id="firstname" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="lastname">Last Name:</label>
+            <input type="text" name="lastname" id="lastname" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="userdescription">User Description:</label>
+            <textarea name="userdescription" id="userdescription" class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="userpicture">User Picture:</label>
+            <input type="file" name="userpicture" id="userpicture" class="form-control-file" accept="image/*">
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Complete Registration" class="btn btn-primary">
+        </div>
+    </form>
+</div>
+{% endblock %}
