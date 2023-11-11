@@ -15,7 +15,7 @@ class ProfileTest(TestCase):
         self.profile_url = reverse('user:profile')
     def test_url_profile(self):
         response = self.client.get(self.profile_url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'user/profile.html')
     def test_templates_profile(self):
         self.assertEquals(resolve(self.profile_url).func, profile)
@@ -40,7 +40,7 @@ class signinTest(TestCase):
     def test_url_sigin(self):
         self.client.login(username="testuser", password="testpass")
         response = self.client.get(self.signin)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'user/signin.html')
         self.assertEquals(resolve(self.signin).func, signin)
     def test_after_post(self):
@@ -59,7 +59,7 @@ class signinTest(TestCase):
     def test_Redirect(self):
         self.client.login(username="testuser", password="testpass")
         response = self.client.post(self.signin, {"username": "testuser", "password": "testpass"})
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
     def test_user_is_none(self):
         response = self.client.post(self.signin, {"username": "6410000200", "password": "007008ZA"})
         self.assertEqual(response.status_code, 200)
@@ -75,7 +75,7 @@ class SigupTest(TestCase):
         self.signup = reverse('user:signup')
     def test_url_sigup(self):
         response = self.client.get(self.signup)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'user/signup.html')
         self.assertEquals(resolve(self.signup).func, signup)
 
@@ -137,7 +137,7 @@ class RegisteredTest(TestCase):
         self.registered = reverse('user:registered')
     def test_url_registered(self):
         response = self.client.get(self.registered)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'user/registered.html')
         self.assertEquals(resolve(self.registered).func, registered)
     def test_registered_successful(self):
@@ -217,7 +217,7 @@ class EditProfileViewTests(TestCase):
         self.edit_profile = reverse('user:edit_profile')
     def test_url_edit_profile(self):
         response = self.client.get(self.edit_profile)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'user/editprofile.html')
         self.assertEquals(resolve(self.edit_profile).func, edit_profile)
     def test_edit_profile_successful(self):
@@ -235,7 +235,7 @@ class EditProfileViewTests(TestCase):
         self.assertEqual(self.user.firstname, 'UpdatedFirstName')
         self.assertEqual(self.user.lastname, 'UpdatedLastName')
         self.assertEqual(self.user.userdescription, 'Updated user description')
-        
+
 class ChangePasswordViewTests(TestCase):
     def setUp(self):
         self.client = Client()
@@ -255,7 +255,7 @@ class ChangePasswordViewTests(TestCase):
 
     def test_url_changepassword(self):
         response = self.client.get(self.chpass)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'user/chpass.html')
         self.assertEquals(resolve(self.chpass).func, changepassword)
     def test_change_password_successful(self):

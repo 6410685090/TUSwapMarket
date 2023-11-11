@@ -56,7 +56,7 @@ class Testing(TestCase):
     def test_url_profile_notAuthenticate(self):
         home_url = reverse('home')
         response = self.client.get(home_url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'swapmarket/homepage.html')
         self.assertEquals(resolve(home_url).func, home)
     
@@ -64,7 +64,7 @@ class Testing(TestCase):
     def test_url_about_notAuthenticate(self):
         about_url = reverse('about')
         response = self.client.get(about_url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'swapmarket/about.html')
         self.assertEquals(resolve(about_url).func, about)
     
@@ -73,7 +73,7 @@ class Testing(TestCase):
         home_url = reverse('home')
         self.client.login(username='TEST1', password='Student331')
         response = self.client.get(home_url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'user/homepage.html')
         self.assertEquals(resolve(home_url).func, home)
     
@@ -82,7 +82,7 @@ class Testing(TestCase):
         about_url = reverse('about')
         self.client.login(username='TEST1', password='Student331')
         response = self.client.get(about_url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'user/about.html')
         self.assertEquals(resolve(about_url).func, about)
     
@@ -91,5 +91,5 @@ class Testing(TestCase):
         home_url = reverse('home')
         self.client.login(username='STAFF', password='Student331')
         response = self.client.get(home_url)
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
         self.assertEquals(resolve(home_url).func, home)
