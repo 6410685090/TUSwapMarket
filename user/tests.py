@@ -18,7 +18,7 @@ class ProfileTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'user/profile.html')
     def test_templates_profile(self):
-        self.assertEquals(resolve(self.profile_url).func, profile)
+        self.assertEqual(resolve(self.profile_url).func, profile)
 
 class signinTest(TestCase):
     def setUp(self) -> None:
@@ -42,7 +42,7 @@ class signinTest(TestCase):
         response = self.client.get(self.signin)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'user/signin.html')
-        self.assertEquals(resolve(self.signin).func, signin)
+        self.assertEqual(resolve(self.signin).func, signin)
     def test_after_post(self):
         self.client.login(username="testuser", password= "testpass")
     def test_custom_user_fields(self):
@@ -77,7 +77,7 @@ class SigupTest(TestCase):
         response = self.client.get(self.signup)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'user/signup.html')
-        self.assertEquals(resolve(self.signup).func, signup)
+        self.assertEqual(resolve(self.signup).func, signup)
 
     def test_sigup_sucessful(self):
         response = self.client.post(self.signup,
@@ -139,7 +139,7 @@ class RegisteredTest(TestCase):
         response = self.client.get(self.registered)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'user/registered.html')
-        self.assertEquals(resolve(self.registered).func, registered)
+        self.assertEqual(resolve(self.registered).func, registered)
     def test_registered_successful(self):
         image_content = b'This is a test image.'
         image_file = SimpleUploadedFile('test_image.jpg', image_content, content_type='image/jpeg')
@@ -219,7 +219,7 @@ class EditProfileViewTests(TestCase):
         response = self.client.get(self.edit_profile)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'user/editprofile.html')
-        self.assertEquals(resolve(self.edit_profile).func, edit_profile)
+        self.assertEqual(resolve(self.edit_profile).func, edit_profile)
     def test_edit_profile_successful(self):
         response = self.client.post(self.edit_profile,
             {
@@ -257,7 +257,7 @@ class ChangePasswordViewTests(TestCase):
         response = self.client.get(self.chpass)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'user/chpass.html')
-        self.assertEquals(resolve(self.chpass).func, changepassword)
+        self.assertEqual(resolve(self.chpass).func, changepassword)
     def test_change_password_successful(self):
         response = self.client.post(self.chpass,
             {

@@ -58,7 +58,7 @@ class Testing(TestCase):
         response = self.client.get(home_url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'swapmarket/homepage.html')
-        self.assertEquals(resolve(home_url).func, home)
+        self.assertEqual(resolve(home_url).func, home)
     
     # Check that non-authenticated user will go to swapmarket/about.html.
     def test_url_about_notAuthenticate(self):
@@ -66,7 +66,7 @@ class Testing(TestCase):
         response = self.client.get(about_url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'swapmarket/about.html')
-        self.assertEquals(resolve(about_url).func, about)
+        self.assertEqual(resolve(about_url).func, about)
     
     # Check that authenticated user will go to user/homepage.html.
     def test_url_profile_Authenticate(self):
@@ -75,7 +75,7 @@ class Testing(TestCase):
         response = self.client.get(home_url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'user/homepage.html')
-        self.assertEquals(resolve(home_url).func, home)
+        self.assertEqual(resolve(home_url).func, home)
     
     # Check that authenticated user will go to user/about.html.
     def test_url_about_Authenticate(self):
@@ -84,7 +84,7 @@ class Testing(TestCase):
         response = self.client.get(about_url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'user/about.html')
-        self.assertEquals(resolve(about_url).func, about)
+        self.assertEqual(resolve(about_url).func, about)
     
     # Check that staff user will go to admin site.
     def test_url_profile_Staff(self):
@@ -92,4 +92,4 @@ class Testing(TestCase):
         self.client.login(username='STAFF', password='Student331')
         response = self.client.get(home_url)
         self.assertEqual(response.status_code, 302)
-        self.assertEquals(resolve(home_url).func, home)
+        self.assertEqual(resolve(home_url).func, home)
