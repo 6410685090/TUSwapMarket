@@ -1,15 +1,26 @@
 name: Testing
-on: push
+
+on:
+  push:
+    branches: [ "testing" ]
+  pull_request:
+    branches: [ "testing" ]
 
 jobs:
-  test_project:
+  build:
+
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v2
-    - name: Run Django unit tests
+    - uses: actions/checkout@v3
+    - name: Run Django unit test
+      uses: actions/setup-python@v3
+    - name: Install Dependencies
       run: |
-        pip install --user -r requirements.txt
+        pip install --user -r requirement.txt
         python manage.py makemigrations
         python manage.py migrate
+    - name: Run Tests
+      run: |
         coverage run --source='.' manage.py test
         coverage report
