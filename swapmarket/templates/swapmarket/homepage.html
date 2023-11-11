@@ -9,25 +9,45 @@
 </head>
 
 <body>
-    <div class="main">
-        <header class="header">
-            <a href="/"><img src="{% static 'swapmarket/pic/logo.png' %}" alt="logo" style="height: 50px; padding-left: 15px;"></a>
-            <div class="header-left">
-                <a href="/" class="button-headerleft" style="font-size: 30px; font-weight: bold;">TUSwapMarket</a>
-                <a href="/about" class="button-headerleft" style="padding-left: 15px;">About us</a>
-            </div>
-            <div class="header-right">
-                <a href="/signin" class="button-headerright">Sign in</a>
-                <a href="/signup" class="button-headerright">Sign up</a>
-            </div>
-        </header>
-        <div class="wh"></div>
-        <div class="side">
-            <div class="inside fitem">a</div>
-            <div class="inside">a</div>
+    <header class="header" style="z-index: 5;">
+        <a href="/"><img src="{% static 'swapmarket/pic/logo.png' %}" alt="logo" style="height: 50px; padding-left: 15px;"></a>
+        <div class="header-left">
+            <a href="/" class="button-headerleft" style="font-size: 30px; font-weight: bold;">TUSwapMarket</a>
+            <a href="/about" class="button-headerleft" style="padding-left: 15px;">About us</a>
         </div>
+        <div class="header-right">
+            <a href="/signin" class="button-headerright">Sign in</a>
+            <a href="/signup" class="button-headerright">Sign up</a>
+        </div>
+    </header>
+
+    <div class="main">
+        <div class="side">
+            <div class="inside tag" >Tag</div>
+            <a class="inside item " style="margin-top: 20px;" href="#">Food</a>
+            <a class="inside item" href="#">Dessert</a>
+            <a class="inside item" href="#">Ticket</a>
+            <a class="inside item" style="margin-bottom: 20px;" href="#">Electronic</a>
+        </div>
+        </div>
+        <div class="fbitem"></div>
         <div class="content">
-            <div class="sellitem">a</div>
+            {% for i in item %}
+                <a class="boxitem" href="#">
+                    <div class="bcpic">
+                        <img src="{{ i.itempicture.url }}" alt="" class="pic">
+                    </div>
+                    <div class="price">
+                        ฿{{ i.price }}
+                    </div>
+                    <div class="name">{{ i.itemname }}</div>
+                </a>
+                
+                {% empty %}
+                <p>GG</p>
+                
+            {% endfor %}
+            
         </div>
     </div>
 </body>
