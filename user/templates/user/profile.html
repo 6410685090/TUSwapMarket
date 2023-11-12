@@ -12,6 +12,8 @@
             <div class="text">
                 {% if user.displayname != None %}
                 <p>Nickname: {{ user.displayname }} </p>
+                {% else %}
+                <p>Nickname: {{ user.username }} </p>
                 {% endif %}
                 <p>Name: {{ user.firstname }} {{ user.lastname }} </p>
                 <p>Username: {{ user.username }}</p>
