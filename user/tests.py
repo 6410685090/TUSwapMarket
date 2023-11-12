@@ -37,7 +37,7 @@ class signinTest(TestCase):
             coins_balance=100,
         )
         self.signin = reverse('user:signin')
-    def test_url_sigin(self):
+    def test_url_signup(self):
         self.client.login(username="testuser", password="testpass")
         response = self.client.get(self.signin)
         self.assertEqual(response.status_code, 200)
@@ -68,17 +68,17 @@ class signinTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIsNone(response.context.get('message'))
 
-class SigupTest(TestCase):
+class SignupTest(TestCase):
     def setUp(self) -> None:
         self.client = Client()
         self.signup = reverse('user:signup')
-    def test_url_sigup(self):
+    def test_url_signup(self):
         response = self.client.get(self.signup)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'user/signup.html')
-    def test_templates_sigup(self):
+    def test_templates_signup(self):
         self.assertEqual(resolve(self.signup).func, signup)
-    def test_sigup_sucessful(self):
+    def test_signup_sucessful(self):
         response = self.client.post(self.signup,
             {
                 'username': 'testuser',
