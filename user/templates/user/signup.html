@@ -7,7 +7,7 @@
 
 {% block body %}
     <div class="main">
-        <div class="box" style="height: 52vh; min-height: 400px;">
+        <div class="box" style="height: 57vh; min-height: 400px;">
             <div class="top">
                 Sign up
             </div>
@@ -19,7 +19,9 @@
                     <input type="password" name="password" class="inputbox" required placeholder="Password">
                     <input type="password" name="cpassword" class="inputbox" required placeholder="Confirm Password">
                 </div>
-                
+                {% if message %}
+                <p style="color: red;">{{ message }}</p>
+                {% endif %}
                 <br>
                 <div>
                     <input type="submit" value="Sign up" class="submit">

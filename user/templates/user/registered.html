@@ -6,7 +6,7 @@
 {% endblock %}
 {% block body %}
 <div class="main">
-<div class="box" style="height: 55vh; min-width: 300px;">
+<div class="box" style="height: 58vh; min-width: 300px;">
     <div class="top" style="padding-bottom: 3vh;">Registered</div>
     <form method="post" enctype="multipart/form-data" action="{% url 'user:registered' %}">
         {% csrf_token %}
@@ -17,7 +17,10 @@
         <br>
         <label for="userpicture" style="color: rgb(109, 109, 109);">User Picture:</label>
         <input type="file" name="userpicture" id="userpicture" class="inputbox-file" accept="image/*" placeholder="User Picture">
-        <input type="submit" value="Complete Registration" class="submit" style="min-width: 160px; margin-top: 3vh;">
+        {% if message %}
+            <p style="color: red; margin-top: 1.5vh;">{{ message }}</p>
+        {% endif %}
+        <input type="submit" value="Create Account" class="submit" style="min-width: 160px;">
     </form>
 </div>
 </div>

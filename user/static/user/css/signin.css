@@ -21,7 +21,7 @@ body{
     margin-top: 250px;
     background-color: #ffffff;
     width: 30vw;
-    height: 43vh;
+    height: 50vh;
     border-radius: 20px;
     border: none;
     text-align: center;
@@ -62,9 +62,9 @@ body{
 
 .signup{
     text-decoration: none;
-    color: red;
+    color: rgb(53, 216, 3);
 }
 
 .signup:hover{
-    color: rgb(255, 145, 145);
+    color: rgb(166, 255, 139);
 }

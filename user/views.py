@@ -32,11 +32,17 @@ def signup(request):
         cpassword = request.POST['cpassword']
 
         if CustomUser.objects.filter(username=username).exists():
-            messages.error(request, 'Username already exists')
+            return render(request, 'user/signup.html',{
+                'message' : 'Username already exists.'
+            })
         elif CustomUser.objects.filter(email=email).exists():
-            messages.error(request, 'Email already exists')
+            return render(request, 'user/signup.html',{
+                'message' : 'Email already exists'
+            })
         elif password != cpassword:
-            messages.error(request, 'Passwords do not match')
+            return render(request, 'user/signup.html',{
+                'message' : 'Passwords do not match'
+            })
         else:
             request.session['signup_username'] = username
             request.session['signup_email'] = email
@@ -52,7 +58,8 @@ def registered(request):
         firstname = request.POST['firstname']
         lastname = request.POST['lastname']
         userdescription = request.POST['userdescription']
-        userpicture = request.FILES['userpicture']  
+        
+        
 
         username = request.session.get('signup_username')
         email = request.session.get('signup_email')
@@ -62,11 +69,12 @@ def registered(request):
             messages.error(request, 'Email already exists')
             return redirect('/registered')
 
-            
-        fs = FileSystemStorage()
-        filename = fs.save('user_pictures/' + userpicture.name, userpicture)
-
-        user = CustomUser.objects.create_user(
+       
+        try :
+            userpicture = request.FILES['userpicture']   
+            fs = FileSystemStorage()
+            filename = fs.save('user_pictures/' + userpicture.name, userpicture)
+            user = CustomUser.objects.create_user(
             username=username,
             email=email,
             password=password,
@@ -75,8 +83,12 @@ def registered(request):
             lastname=lastname,
             userdescription=userdescription,
             userpicture=filename  
-        )
-
+            )
+        except:
+            return render(request, 'user/registered.html',{
+                        'message' : "Please upload you picture"
+                    })
+        
         del request.session['signup_username']
         del request.session['signup_email']
         del request.session['signup_password']
