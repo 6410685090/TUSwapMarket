@@ -24,7 +24,7 @@ class ProfileTest(TestCase):
 class signinTest(TestCase):
     def setUp(self) -> None:
         self.client = Client()
-        self.user = CustomUser.objects.create(
+        self.user = CustomUser.objects.create_user(
             username='testuser',
             password='testpass',
             email='test@example.com',
@@ -56,9 +56,9 @@ class signinTest(TestCase):
         self.assertEqual(user.userpicture, 'path/to/user/picture.jpg')
         self.assertEqual(user.coins_balance, 100)
     def test_Redirect(self):
-        self.client.login(username="testuser", password="testpass")
         response = self.client.post(self.signin, {"username": "testuser", "password": "testpass"})
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, '/')
     def test_user_is_none(self):
         response = self.client.post(self.signin, {"username": "6410000200", "password": "007008ZA"})
         self.assertEqual(response.status_code, 200)

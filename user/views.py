@@ -16,7 +16,7 @@ def signin(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect(reverse('home'))
+            return redirect('home')
         else:
             message = "Invalid username or password. Please try again."
     else:
