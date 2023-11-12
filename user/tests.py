@@ -43,8 +43,6 @@ class signinTest(TestCase):
         self.assertTemplateUsed(response, 'user/signin.html')
     def test_templates_signin(self):
         self.assertEqual(resolve(self.signin).func, signin)
-    def test_after_post(self):
-        self.client.login(username="testuser", password= "testpass")
     def test_custom_user_fields(self):
         user = CustomUser.objects.get(id=1)
         self.assertEqual(user.username, 'testuser')
@@ -163,6 +161,58 @@ class RegisteredTest(TestCase):
         )
         self.assertRedirects(response, reverse('home'))
         self.assertTrue(self.client.session['_auth_user_id'])
+    def test_registered_del_session(self):
+        image_content = b'This is a test image.'
+        image_file = SimpleUploadedFile('test_image.jpg', image_content, content_type='image/jpeg')
+        s = self.client.session
+        s.update({
+            "signup_username": 'testuser',
+            "signup_email": 'test@example.com',
+            "signup_password": 'testpass',
+        })
+        s.save()
+        signup_username = self.client.session.get('signup_username')
+        signup_email = self.client.session.get('signup_email')
+        signup_password = self.client.session.get('signup_password')
+        response = self.client.post(self.registered, 
+            { 
+                'phone': '1234567890',
+                'firstname': 'John',
+                'lastname': 'Doe',
+                'userdescription': 'Test user description',
+                'userpicture': image_file,
+                'username': signup_username,
+                'email': signup_email,
+                'password': signup_password,
+
+            }
+        )
+        self.assertNotIn('signup_username', self.client.session)
+        self.assertNotIn('signup_email', self.client.session)
+        self.assertNotIn('signup_password', self.client.session)
+    def test_registered_upload_profile(self):
+        s = self.client.session
+        s.update({
+            "signup_username": 'testuser',
+            "signup_email": 'test@example.com',
+            "signup_password": 'testpass',
+        })
+        s.save()
+        signup_username = self.client.session.get('signup_username')
+        signup_email = self.client.session.get('signup_email')
+        signup_password = self.client.session.get('signup_password')
+        response = self.client.post(self.registered, 
+            { 
+                'phone': '1234567890',
+                'firstname': 'John',
+                'lastname': 'Doe',
+                'userdescription': 'Test user description',
+                'username': signup_username,
+                'email': signup_email,
+                'password': signup_password,
+            }
+        )
+        self.assertEqual(response.context['message'], "Please upload you picture")
     def test_registered_email_exists(self):
         image_content = b'This is a test image.'
         image_file = SimpleUploadedFile('test_image.jpg', image_content, content_type='image/jpeg')
@@ -187,13 +237,11 @@ class RegisteredTest(TestCase):
                 'username': signup_username,
                 'email': signup_email,
                 'password': signup_password,
-
             }
         )
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(len(messages), 1)
         self.assertEqual(str(messages[0]), "Email already exists")
-
 class EditProfileViewTests(TestCase):
     def setUp(self):
         self.client = Client()
