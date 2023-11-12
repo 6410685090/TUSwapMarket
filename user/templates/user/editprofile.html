@@ -3,12 +3,12 @@
 <div class="card-header">
     <h3 class="login">Edit Your Profile</h3> 
 </div>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="card-body">
             <div class="form-group">
                 <label for="userpicture'" class="mt-2">Profile:</label>
-                <!-- <input type="userpicture" class="form-control" id="userpicture" name="userpicture" value="{{ form.userpicture.value }}"> -->
+                <input type="file" class="form-control" id="userpicture" name="userpicture" value="{{ form.userpicture.value }}">
             </div>
             <div class="form-group">
                 <label for="displayname'" class="mt-2">Nickname:</label>
