@@ -6,6 +6,7 @@ from django.urls import reverse, resolve
 from .views import signin, signup, profile, registered, edit_profile, changepassword
 from django.contrib.messages import get_messages
 from django.core.files.uploadedfile import SimpleUploadedFile
+from .forms import CustomUserEditForm 
 
 # Create your tests here. 
 
@@ -264,6 +265,10 @@ class EditProfileViewTests(TestCase):
         self.assertTemplateUsed(response, 'user/editprofile.html')
     def test_templates_edit_profile(self):
         self.assertEqual(resolve(self.edit_profile).func, edit_profile)
+    def test_edit_profile_get_request(self):
+        response = self.client.get(self.edit_profile)
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response.context['form'], CustomUserEditForm)
     def test_edit_profile_successful(self):
         response = self.client.post(self.edit_profile,
             {
