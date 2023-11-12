@@ -36,12 +36,12 @@ class signinTest(TestCase):
             coins_balance=100,
         )
         self.signin = reverse('user:signin')
-        
     def test_url_sigin(self):
         self.client.login(username="testuser", password="testpass")
         response = self.client.get(self.signin)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'user/signin.html')
+    def test_templates_signin(self):
         self.assertEqual(resolve(self.signin).func, signin)
     def test_after_post(self):
         self.client.login(username="testuser", password= "testpass")
@@ -77,8 +77,8 @@ class SigupTest(TestCase):
         response = self.client.get(self.signup)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'user/signup.html')
+    def test_templates_sigup(self):
         self.assertEqual(resolve(self.signup).func, signup)
-
     def test_sigup_sucessful(self):
         response = self.client.post(self.signup,
             {
@@ -102,9 +102,7 @@ class SigupTest(TestCase):
                 'cpassword': 'testpass',
             }
         )
-        messages = list(get_messages(response.wsgi_request))
-        self.assertEqual(len(messages), 1)
-        self.assertEqual(str(messages[0]), "Username already exists") 
+        self.assertEqual(response.context['message'], "Username already exists.")
     def test_signup_email_exists(self):
         CustomUser.objects.create(username='testuser1', email='test@example.com', password='testpass')
         response = self.client.post(self.signup,
@@ -115,9 +113,7 @@ class SigupTest(TestCase):
                 'cpassword': 'testpass',
             }
         )
-        messages = list(get_messages(response.wsgi_request))
-        self.assertEqual(len(messages), 1)
-        self.assertEqual(str(messages[0]), "Email already exists") 
+        self.assertEqual(response.context['message'], "Email already exists")
     def test_signup_password_not_match(self):    
         response = self.client.post(self.signup,
             {
@@ -127,9 +123,7 @@ class SigupTest(TestCase):
                 'cpassword': 'testpass2',
             }
         )
-        messages = list(get_messages(response.wsgi_request))
-        self.assertEqual(len(messages), 1)
-        self.assertEqual(str(messages[0]), "Passwords do not match")
+        self.assertEqual(response.context['message'], "Passwords do not match")
 
 class RegisteredTest(TestCase):
     def setUp(self) -> None:
@@ -139,6 +133,7 @@ class RegisteredTest(TestCase):
         response = self.client.get(self.registered)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'user/registered.html')
+    def test_templates_registered(self):
         self.assertEqual(resolve(self.registered).func, registered)
     def test_registered_successful(self):
         image_content = b'This is a test image.'
@@ -219,6 +214,7 @@ class EditProfileViewTests(TestCase):
         response = self.client.get(self.edit_profile)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'user/editprofile.html')
+    def test_templates_edit_profile(self):
         self.assertEqual(resolve(self.edit_profile).func, edit_profile)
     def test_edit_profile_successful(self):
         response = self.client.post(self.edit_profile,
@@ -257,6 +253,7 @@ class ChangePasswordViewTests(TestCase):
         response = self.client.get(self.chpass)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'user/chpass.html')
+    def test_templates_chpass(self):
         self.assertEqual(resolve(self.chpass).func, changepassword)
     def test_change_password_successful(self):
         response = self.client.post(self.chpass,
