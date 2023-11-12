@@ -1,37 +1,30 @@
 {% extends 'swapmarket/layout.html' %}
-
+{% load static %}
 {% block title %}Sign up{% endblock %}
+{% block link %}
+    <link rel="stylesheet" href="{% static 'user/css/signin.css' %}">
+{% endblock %}
 
 {% block body %}
-<div>
-    <div>
-        Sign up
+    <div class="main">
+        <div class="box" style="height: 52vh;">
+            <div class="top">
+                Sign up
+            </div>
+            <form action="{% url 'user:signup' %}" method="post" class="form1">
+                {% csrf_token %}
+                <div>
+                    <input type="email" name="email" class="inputbox" required placeholder="Email">
+                    <input type="text" name="username" class="inputbox" required placeholder="Username">
+                    <input type="password" name="password" class="inputbox" required placeholder="Password">
+                    <input type="password" name="cpassword" class="inputbox" required placeholder="Confirm Password">
+                </div>
+                
+                <br>
+                <div>
+                    <input type="submit" value="Sign up" class="submit">
+                </div>
+            </form>
+        </div>  
     </div>
-    <form action="{% url 'user:signup' %}" method="post">
-        {% csrf_token %}
-        <div>
-            <input type="text" name="username" required>
-            <label>Username</label>
-        </div>
-        <div>
-            <input type="email" name="email" required>
-            <label>Email</label>
-        </div>        
-        <div>
-            <input type="password" name="password" required>
-            <label>Password</label>
-        </div>
-        <div>
-            <input type="password" name="cpassword" required>
-            <label>Confirm Password</label>
-        </div>
-        <br>
-        {% if message %}
-        <p>{{ message }}</p>
-        {% endif %}
-        <div>
-            <input type="submit" value="Continue">
-        </div>
-    </form>
-</div>
 {% endblock %}

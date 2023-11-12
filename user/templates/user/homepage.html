@@ -1,7 +1,55 @@
-{% extends 'user/layout.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{% static 'swapmarket/css/head.css' %}">
+    <link rel="stylesheet" href="{% static 'swapmarket/css/home.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+</head>
 
-{% block title %}Homepage{% endblock %}
+<body>
+    <header class="header">
+        <a href="/"><img src="{% static 'swapmarket/pic/logo.png' %}" alt="logo" style="height: 50px; padding-left: 15px;"></a>
+        <div class="header-left">
+            <a href="/" class="button-headerleft" style="font-size: 30px; font-weight: bold;">TUSwapMarket</a>
+            <a href="/about" class="button-headerleft" style="padding-left: 15px;">About us</a>
+        </div>
+        <div class="header-right">
+            <a href="/profile" class="button-headerright">Profile</a>
+            <a href="/edit_profile" class="button-headerright">Edit Profile</a>
+            <a href="/changepassword" class="button-headerright">Changepassword</a>
+            <a href="{% url 'user:logout' %}" class="button-headerright">Logout</a>
+        </div>
+    </header>
 
-{% block body %}
+    <div class="main">
+        <div class="side">
+            <div class="inside tag" >Tag</div>
+            <a class="inside item " style="margin-top: 20px;" href="#">Food</a>
+            <a class="inside item" href="#">Dessert</a>
+            <a class="inside item" href="#">Ticket</a>
+            <a class="inside item" style="margin-bottom: 20px;" href="#">Electronic</a>
+        </div>
+        </div>
+        <div class="fbitem"></div>
+        <div class="content">
+            {% for i in item %}
+                <a class="boxitem" href="#">
+                    <div class="bcpic">
+                        <img src="{{ i.itempicture.url }}" alt="" class="pic">
+                    </div>
+                    <div class="price">
+                        ฿{{ i.price }}
+                    </div>
+                    <div class="name">{{ i.itemname }}</div>
+                </a>              
+                {% empty %}
+                <p>no item</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
 
-{% endblock %}
+</html>

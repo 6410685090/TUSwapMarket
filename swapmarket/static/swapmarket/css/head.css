@@ -1,14 +1,16 @@
-body {
-    margin: 0;
-    padding: 0;
+body{
+    margin: 0px;
+    padding: 0px;
+    background-color: rgb(255, 250, 244);
 }
 
-
 .header {
+    z-index: 5;
     width: 100%;
     height: 70px;
     background-color: black;
     display: flex;
+    position: fixed;
     align-items: center;
     font-size: 24px;
 }
@@ -42,5 +44,3 @@ body {
 .button-headerright:hover {
     text-decoration: underline;
 }
-
-

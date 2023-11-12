@@ -1,29 +1,29 @@
 {% extends 'user/layout.html' %}
-
+{% load static %}
 {% block title %}Change password{% endblock %}
-
+{% block link %}
+    <link rel="stylesheet" href="{% static 'user/css/signin.css' %}">
+{% endblock %}
 {% block body %}
-<div>
-    <div>
-        Change Password
-    </div>
-    <form action="{% url 'user:chpass' %}" method="post">
-        {% csrf_token %}
-        <div class="field">
-            <input type="password" name="newpass" required>
-            <label>New Password</label>
+<div class="main">
+    <div class="box" style="height: 38vh;">
+        <div class="top">
+            Change Password
         </div>
-        <div class="field">
-            <input type="password" name="cnewpass" required>
-            <label>Confirm New Password</label>
-            {% if message %}
-            <p>{{ message }}</p>
-            {% endif %}
-        </div>
-        <br>
-        <div class="field">
-            <input type="submit" value="Confirm">
-        </div>
-    </form>
+        <form action="{% url 'user:chpass' %}" method="post" class="form1">
+            {% csrf_token %}
+            <div>
+                <input type="password" name="newpass" class="inputbox" required placeholder="Password">
+                <input type="password" name="cnewpass" class="inputbox" required placeholder="Confirm Password">
+                {% if message %}
+                <p>{{ message }}</p>
+                {% endif %}
+            </div>
+            <br>
+            <div>
+                <input type="submit" value="Changepassword" class="submit">
+            </div>
+        </form>
+    </div>  
 </div>
 {% endblock %}

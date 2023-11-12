@@ -1,35 +1,24 @@
 {% extends 'swapmarket/layout.html' %}
-
+{% load static %}
 {% block title %}Registered{% endblock %}
-
+{% block link %}
+    <link rel="stylesheet" href="{% static 'user/css/signin.css' %}">
+{% endblock %}
 {% block body %}
-<div>
-    <h1>Registered</h1>
+<div class="main">
+<div class="box" style="height: 55vh; min-width: 300px;">
+    <div class="top" style="padding-bottom: 3vh;">Registered</div>
     <form method="post" enctype="multipart/form-data" action="{% url 'user:registered' %}">
         {% csrf_token %}
-        <div class="form-group">
-            <label for="phone">Phone:</label>
-            <input type="text" name="phone" id="phone" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="firstname">First Name:</label>
-            <input type="text" name="firstname" id="firstname" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="lastname">Last Name:</label>
-            <input type="text" name="lastname" id="lastname" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="userdescription">User Description:</label>
-            <textarea name="userdescription" id="userdescription" class="form-control"></textarea>
-        </div>
-        <div class="form-group">
-            <label for="userpicture">User Picture:</label>
-            <input type="file" name="userpicture" id="userpicture" class="form-control-file" accept="image/*">
-        </div>
-        <div class="form-group">
-            <input type="submit" value="Complete Registration" class="btn btn-primary">
-        </div>
+        <input type="text" name="phone" id="phone" class="inputbox" required placeholder="Phone" maxlength="10" minlength="10">
+        <input type="text" name="firstname" id="firstname" class="inputbox" required placeholder="First Name">
+        <input type="text" name="lastname" id="lastname" class="inputbox" required placeholder="Last Name">
+        <textarea name="userdescription" id="userdescription" class="inputbox" placeholder="User Description (Not required)"></textarea>
+        <br>
+        <label for="userpicture" style="color: rgb(109, 109, 109);">User Picture:</label>
+        <input type="file" name="userpicture" id="userpicture" class="inputbox-file" accept="image/*" placeholder="User Picture">
+        <input type="submit" value="Complete Registration" class="submit" style="min-width: 160px; margin-top: 3vh;">
     </form>
+</div>
 </div>
 {% endblock %}

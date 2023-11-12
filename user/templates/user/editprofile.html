@@ -1,37 +1,40 @@
 {% extends "user/layout.html" %}
+{% load static %}
+{% block title %}Edit Profile{% endblock %}
+{% block link %}
+    <link rel="stylesheet" href="{% static 'user/css/signin.css' %}">
+{% endblock %}
 {% block body %}
-<div class="card-header">
-    <h3 class="login">Edit Your Profile</h3> 
-</div>
-    <form method="post">
-        {% csrf_token %}
-        <div class="card-body">
-            <div class="form-group">
-                <label for="userpicture'" class="mt-2">Profile:</label>
-                <!-- <input type="userpicture" class="form-control" id="userpicture" name="userpicture" value="{{ form.userpicture.value }}"> -->
-            </div>
-            <div class="form-group">
-                <label for="displayname'" class="mt-2">Nickname:</label>
-                <input type="displayname" class="form-control" id="displayname" name="displayname" value="{{ form.displayname.value }}">
-            </div>
-            <div class="form-group">
-                <label for="firstname'" class="mt-2">First Name:</label>
-                <input type="firstname" class="form-control" id="firstname" name="firstname" value="{{ form.firstname.value }}">
-            </div>
-            <div class="form-group">
-                <label for="lastname'" class="mt-2">Last Name:</label>
-                <input type="lastname" class="form-control" id="lastname" name="lastname" value="{{ form.lastname.value }}">
-            </div>
-            <div class="form-group">
-                <label for="phone" class="mt-2">Phone:</label>
-                <input type="phone" class="form-control mb-3" id="phone" name="phone" value="{{ form.phone.value }}">
-            </div>
-            <div class="form-group">
-                <label for="userdescription" class="mt-2">Description:</label>
-                <input type="userdescription" class="form-control" id="userdescription" name="userdescription" value="{{ form.userdescription.value }}">
-            </div>
-            <button type="submit" class="submit">Save</button>
-        </div> 
-    </form>
+<div class="main">
+    <div class="box" style="height: 60vh; margin-top: 160px;">
+    <div class="top">Edit Your Profile</div>
+        <form method="post"  class="form1">
+            {% csrf_token %}
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="displayname" >Nickname:</label>
+                    <input type="displayname" class="inputbox" id="displayname" name="displayname" value="{{ form.displayname.value }}">
+                </div>
+                <div class="form-group">
+                    <label for="firstname" >First Name:</label>
+                    <input type="firstname" class="inputbox" id="firstname" name="firstname" value="{{ form.firstname.value }}">
+                </div>
+                <div class="form-group">
+                    <label for="lastname" >Last Name:</label>
+                    <input type="lastname" class="inputbox" id="lastname" name="lastname" value="{{ form.lastname.value }}">
+                </div>
+                <div class="form-group">
+                    <label for="phone" >Phone:</label>
+                    <input type="phone" class="inputbox" id="phone" name="phone" value="{{ form.phone.value }}" maxlength="10" minlength="10">
+                </div>
+                <div class="form-group">
+                    <label for="userdescription" >Description:</label>
+                    <input type="userdescription" class="inputbox" id="userdescription" name="userdescription" value="{{ form.userdescription.value }}">
+                </div>
+                <button type="submit" class="submit">Save</button>
+            </div> 
+        </form>
+    </div>
+    </div>
 </div>
 {% endblock body %}
