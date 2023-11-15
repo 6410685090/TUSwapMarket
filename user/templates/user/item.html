@@ -1,0 +1,30 @@
+{% extends 'user/layout.html' %}
+{% load static %}
+{% block title %}Item Detail{% endblock %}
+{% block link %}
+    <link rel="stylesheet" href="{% static 'user/css/item.css' %}">
+{% endblock %}
+{% block body %}
+<div class="main">
+    <div class="side">
+        <div class="picbg"><img src="{{ user_item.itempicture.url }}" alt="Item Picture" class="pic"></div>
+        <div class="inside">
+            <div class="text">
+                <p>Item Name: {{ user_item.itemname }}</p>
+                <p>Seller: {{ user_item.seller.username }}</p>
+                <p>Price: {{ user_item.price }}</p>
+                <p>Number of Items: {{ user_item.nItem }}</p>
+                <p>Categories: 
+                    {% for category in user_item.categories.all %}
+                        {{ category.tag }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+                {% if user_item.itemdescription %}
+                    <p>Description :</p>
+                    <textarea rows="10" cols="40" readonly style="resize: none; outline: none;">{{ user_item.itemdescription }}</textarea>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

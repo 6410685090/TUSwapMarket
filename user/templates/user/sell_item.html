@@ -1,0 +1,39 @@
+{% extends "user/layout.html" %}
+{% load static %}
+{% block title %}Sell Item{% endblock %}
+{% block link %}
+    <link rel="stylesheet" href="{% static 'user/css/signin.css' %}">
+{% endblock %}
+{% block body %}
+<div class="main">
+    <div class="box" style="height: 65vh; margin-top: 160px; min-width: 800px;">
+        <div class="top">Sell Your Item</div>
+        <form method="post" class="form1" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="itemname">Item Name:</label>
+                    <input type="text" class="inputbox" id="itemname" name="itemname" value="{{ form.itemname.value }}">
+                </div>
+                <div class="form-group">
+                    <label for="nItem">Number of Items:</label>
+                    <input type="number" class="inputbox" id="nItem" name="nItem" value="{{ form.nItem.value }}">
+                </div>
+                <div class="form-group">
+                    <label for="price">Price:</label>
+                    <input type="number" class="inputbox" id="price" name="price" value="{{ form.price.value }}">
+                </div>
+                <div class="form-group">
+                    <label for="itemdescription">Description:</label>
+                    <input type="text" class="inputbox" id="itemdescription" name="itemdescription" value="{{ form.itemdescription.value }}">
+                </div>
+                <div class="form-group">
+                    <label for="itempicture" class="mt-2">Item Picture:</label>
+                    <input type="file" class="form-control" id="itempicture" name="itempicture" value="{{ form.itempicture.value }}">
+                </div>
+                <button type="submit" class="submit" style="margin-top: 20px;">Sell</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock body %}

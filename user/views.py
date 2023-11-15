@@ -1,7 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect 
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from user.models import CustomUser 
+from swapmarket.models import  Item, Category
 from django.core.files.storage import FileSystemStorage
 from django.urls import reverse
 from .forms import CustomUserEditForm
@@ -120,3 +121,39 @@ def changepassword(request):
                 'message' : 'Password not match.'
             })
     return render(request, 'user/chpass.html')
+
+    
+def sell_item(request):
+    if request.method == 'POST':
+        item_data = {
+            'itemname': request.POST['itemname'],
+            'nItem': int(request.POST['nItem']),
+            'price': int(request.POST['price']),
+            'itemdescription': request.POST.get('itemdescription', ''),
+            'itempicture': request.FILES['itempicture'],
+            'categories': request.POST.getlist('categories'),
+        }
+
+        user = request.user
+
+        categories = [Category.objects.get_or_create(tag=category)[0] for category in item_data['categories']]
+
+        item = Item.objects.create(
+            seller=user,
+            itemname=item_data['itemname'],
+            nItem=item_data['nItem'],
+            price=item_data['price'],
+            itemdescription=item_data.get('itemdescription', ''),
+            itempicture=item_data['itempicture']
+        )
+        item.categories.set(categories)
+        return redirect('/profile')
+    
+    return render(request, 'user/sell_item.html')
+
+def item_detail(request, username, itemname):
+    items = Item.objects.filter(seller__username=username, itemname=itemname)
+    if items.exists():
+        return render(request, 'user/item.html')
+    else:
+        return redirect('home')
