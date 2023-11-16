@@ -58,7 +58,7 @@
     height: auto;
     min-height: 500px;
     margin-top: calc(10vh + 10px);
-    margin-left: 460px;
+    margin-left: 430px;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: flex-start;
@@ -82,4 +82,103 @@
     box-sizing: border-box;
     border: 1px solid rgb(255, 227, 216);
     border-radius: 10px;  
+}
+
+
+
+.ipic {
+    max-height: 270px; 
+    max-width: 480px; 
+    width: 100%;
+    height: auto;
+    vertical-align: top;
+    object-fit: contain;
+}
+
+.ibcpic {
+    justify-content: center;
+    text-align: center;
+    margin-top: 10px;
+    background-color: white;
+    width: 80%; 
+    max-width: 480px;
+    height: auto;
+    top: 30px;
+    left: 25%; 
+}
+
+.name{
+    top: 300px;
+    position: absolute;
+    overflow:hidden;
+    font-size: 2.5vw;
+    text-align: center;
+    color: black;
+}
+
+.price{
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+    font-size: 2.5vw;
+    text-align: start;
+    color: black;
+}
+
+@media only screen and (max-width: 1300px) {
+    .boxitem{
+        background-color: white;
+        display: flex;
+        position: relative;
+        justify-content: center;
+        text-align: center;
+        padding-top: 15px;
+        height: 450px;
+        width: 30%;
+        margin-bottom: 10px;
+        margin-right: 10px;
+        box-sizing: border-box;
+        border: 1px solid rgb(255, 227, 216);
+        border-radius: 10px;  
+    }
+}
+
+@media only screen and (max-width: 1000px) {
+    .boxitem{
+        background-color: white;
+        display: flex;
+        position: relative;
+        justify-content: center;
+        text-align: center;
+        padding-top: 15px;
+        height: 450px;
+        width: 40%;
+        margin-bottom: 10px;
+        margin-right: 10px;
+        box-sizing: border-box;
+        border: 1px solid rgb(255, 227, 216);
+        border-radius: 10px;  
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .boxitem{
+        background-color: white;
+        display: flex;
+        position: relative;
+        justify-content: center;
+        text-align: center;
+        padding-top: 15px;
+        height: 450px;
+        width: 75%;
+        margin-bottom: 10px;
+        margin-right: 10px;
+        box-sizing: border-box;
+        border: 1px solid rgb(255, 227, 216);
+        border-radius: 10px;  
+    }
+}
+
+@media only screen and (max-width: 700px) {
+    /* TODO : hide sidebar */
 }

@@ -34,7 +34,7 @@
         <div class="fbitem"></div>
         <div class="content">
             {% for i in item %}
-                <a class="boxitem" href="#">
+                <a class="boxitem" href="{% url 'item_detail' username=i.seller.username itemname=i.itemname %}">
                     <div class="bcpic">
                         <img src="{{ i.itempicture.url }}" alt="" class="pic">
                     </div>

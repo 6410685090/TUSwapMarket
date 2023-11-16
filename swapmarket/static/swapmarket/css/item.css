@@ -1,0 +1,45 @@
+.picbg{
+    position: absolute;
+    left: 5%;
+    top: 25%;
+    width: 50%;
+    height: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pic{
+    height: 100%;
+    object-fit: contain;
+}
+
+.box{
+    position: absolute;
+    top:25%;
+    right: 5%;
+    display: flex;
+    align-self: start;
+    justify-content: start;
+    width: 40%;
+    height: 60%;
+}
+
+.text{
+    font-size: 20px;
+}
+
+.namebox{
+    position: absolute;
+    left: 5%;
+    top: 15%;
+    width: 50%;
+    height: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.name{
+    font-size: 40px;
+}

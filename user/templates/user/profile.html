@@ -27,8 +27,21 @@
         </div>
     </div>
     <div class="content">
-        <a href="{% url 'user:sell_item' %}" class="boxitem">Sell Item</a>
-        <a href="#" class="boxitem">Comming soon</a>
+        {% for i in myitem %}
+                <a class="boxitem" href="{% url 'item_detail' username=i.seller.username itemname=i.itemname %}">
+                    <div class="ibcpic">
+                        <img src="{{ i.itempicture.url }}" alt="" class="ipic">
+                    </div>
+                    <div class="price">
+                        ฿{{ i.price }}
+                    </div>
+                    <div class="name">{{ i.itemname }}</div>
+                </a>              
+            {% endfor %}
+        <a href="{% url 'sell_item' %}" class="boxitem">
+            <img src="https://png.pngtree.com/png-vector/20191028/ourmid/pngtree-plus-icon-for-your-project-png-image_1904900.jpg" \ 
+            alt="add item" style="width: 100%; height: 35vh; margin-top: 7vh;">
+        </a>
     </div>
 </div>
 {% endblock %}

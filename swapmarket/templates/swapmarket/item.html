@@ -1,0 +1,33 @@
+{% extends 'user/layout.html' %}
+{% load static %}
+{% block title %}Item Detail{% endblock %}
+{% block link %}
+    <link rel="stylesheet" href="{% static 'swapmarket/css/item.css' %}">
+{% endblock %}
+{% block body %}
+<div class="main">
+    <div>
+        <div class="picbg"><img src="{{ item.itempicture.url }}" alt="Item Picture" class="pic"></div>
+        <div class="namebox">
+            <div class="name">Item Name: {{ item.itemname }}</div>
+        </div>
+        <div class="box">
+            
+            <div class="text">
+                <p>Item Name: {{ item.itemname }}</p>
+                <p>Seller: {{ item.seller.username }}</p>
+                <p>Price: {{ item.price }}</p>
+                <p>Number of Items: {{ item.nItem }}</p>
+                <p>Categories: 
+                    {% for category in item.categories.all %}
+                        {{ category.tag }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+                {% if item.itemdescription %}
+                    <p>Description : {{ item.itemdescription }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
