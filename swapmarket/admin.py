@@ -13,17 +13,13 @@ class CoinsAdmin(admin.ModelAdmin):
     list_display = ['sender', 'receiver', 'amount', 'is_confirmed']
 
 class ItemAdmin(admin.ModelAdmin):
-    list_display = ['itemname', 'seller', 'nItem', 'price', 'display_categories']
-    list_filter = ('categories',)
+    list_display = ['itemname', 'seller', 'nItem', 'price']
+    list_filter = ('itemtag',)
     search_fields = ('itemname', 'seller__username')
-    filter_horizontal = ('categories',)
+    filter_horizontal = ('itemtag',)
 
-    def display_categories(self, obj):
-        return ", ".join([category.tag for category in obj.categories.all()])
-    display_categories.short_description = 'Categories'
 
 
 admin.site.register(Coins, CoinsAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Item, ItemAdmin)
-

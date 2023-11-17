@@ -18,6 +18,7 @@ class Item(models.Model):
     categories = models.ManyToManyField(Category, blank=True)
     itemdescription = models.CharField(max_length=500, blank=True, null=True, default='')
     itempicture = models.ImageField(upload_to='item_pictures/')
+    itemtag = models.ManyToManyField(Category, related_name='item_tags', blank=True)
 
     def __str__(self):
         return self.itemname

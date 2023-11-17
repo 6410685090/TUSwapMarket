@@ -19,8 +19,8 @@
                 <p>Price: {{ item.price }}</p>
                 <p>Number of Items: {{ item.nItem }}</p>
                 <p>Categories: 
-                    {% for category in item.categories.all %}
-                        {{ category.tag }}{% if not forloop.last %}, {% endif %}
+                    {% for tag in item.itemtag.all %}
+                        {{ tag.tag }}{% if not forloop.last %}, {% endif %}
                     {% endfor %}
                 </p>
                 {% if item.itemdescription %}

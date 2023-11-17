@@ -68,3 +68,8 @@ body{
 .signup:hover{
     color: rgb(166, 255, 139);
 }
+
+/* เจมแก้เอานะอยากไว้ที่ไหน */
+.checkbox-group input[type="checkbox"] {
+    margin-right: 5px; 
+}
