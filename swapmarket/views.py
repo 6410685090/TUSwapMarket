@@ -10,10 +10,10 @@ def home(request):
             return redirect('/admin/')
         else:
             return render(request, 'user/homepage.html',{
-            'item' : Item.objects.all()
+            'item' : Item.objects.all(), 'categories': Category.objects.all()
         })  
     return render(request, 'swapmarket/homepage.html',{
-        'item' : Item.objects.all()
+        'item' : Item.objects.all(), 'categories': Category.objects.all()
     })
 
 def about(request):

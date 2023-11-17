@@ -27,10 +27,9 @@
     <div class="main">
         <div class="side">
             <div class="inside tag" >Tag</div>
-            <a class="inside item " style="margin-top: 20px;" href="#">Food</a>
-            <a class="inside item" href="#">Dessert</a>
-            <a class="inside item" href="#">Ticket</a>
-            <a class="inside item" style="margin-bottom: 20px;" href="#">Electronic</a>
+            {% for category in categories %}
+            <a class="inside item" href="#">{{ category.tag }}</a>
+            {% endfor %}
         </div>
         </div>
         <div class="fbitem"></div>
