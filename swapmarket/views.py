@@ -1,4 +1,4 @@
-from django.shortcuts import render , redirect
+from django.shortcuts import render , redirect, get_object_or_404
 from swapmarket.models import Item, Category
 from swapmarket.forms import ItemForm
 from django.contrib.auth.decorators import login_required
@@ -47,4 +47,14 @@ def item_detail(request, username, itemname):
                 "item" : items
             })
     except:
+        return redirect('home')
+    
+@login_required
+def delete_item(request, username, itemname):
+    item = Item.objects.get(seller__username=username, itemname=itemname)
+
+    if request.user == item.seller:
+        item.delete()
+        return redirect('/profile')
+    else:
         return redirect('home')
