@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect 
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
-from user.models import CustomUser 
+from user.models import CustomUser, Message
 from swapmarket.models import  Item
 from django.core.files.storage import FileSystemStorage
 from django.urls import reverse
-from .forms import CustomUserEditForm
+from .forms import CustomUserEditForm, MessageForm
 from itertools import chain
 from operator import attrgetter
 import os
@@ -133,12 +133,6 @@ def changepassword(request):
                 'message' : 'Password not match.'
             })
     return render(request, 'user/chpass.html')
-
-# myapp/views.py
-from django.shortcuts import render, redirect
-from .models import Message
-from .forms import MessageForm
-from django.contrib.auth.decorators import login_required
 
 @login_required
 def send_message(request):
