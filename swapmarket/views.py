@@ -39,6 +39,11 @@ def sell_item(request):
 
     return render(request, 'swapmarket/sell_item.html', {'form': form, 'categories': categories})
 
+def search_by_tag(request, tag):
+    items = Item.objects.filter(itemtag__tag=tag)
+    categories = Category.objects.all()
+    return render(request, 'swapmarket/sbt.html', {'item': items, 'categories': categories})
+
 @login_required
 def item_detail(request, username, itemname):
     try:
@@ -58,3 +63,4 @@ def delete_item(request, username, itemname):
         return redirect('/profile')
     else:
         return redirect('home')
+
