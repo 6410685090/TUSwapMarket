@@ -105,6 +105,7 @@ def registered(request):
 
     return render(request, 'user/registered.html')
 
+@login_required
 def edit_profile(request):
     if request.method == 'POST':
         old_picture = request.user.userpicture.path if request.user.userpicture else None
@@ -122,6 +123,7 @@ def edit_profile(request):
         form = CustomUserEditForm(instance=request.user)
     return render(request, 'user/editprofile.html', {'form': form})
 
+@login_required
 def changepassword(request):
     if request.method == "POST":
         if request.POST["newpass"] == request.POST["cnewpass"]:
