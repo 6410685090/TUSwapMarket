@@ -6,6 +6,8 @@ from swapmarket.models import  Item
 from django.core.files.storage import FileSystemStorage
 from django.urls import reverse
 from .forms import CustomUserEditForm
+from itertools import chain
+from operator import attrgetter
 import os
 
 def profile(request):
@@ -132,4 +134,30 @@ def changepassword(request):
             })
     return render(request, 'user/chpass.html')
 
-    
+# myapp/views.py
+from django.shortcuts import render, redirect
+from .models import Message
+from .forms import MessageForm
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def send_message(request):
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.sender = request.user
+            message.save()
+            return redirect('user:inbox')
+    else:
+        form = MessageForm()
+    return render(request, 'user/send_message.html', {'form': form})
+
+@login_required
+def inbox(request):
+    received_messages = Message.objects.filter(receiver=request.user)
+    sent_messages = Message.objects.filter(sender=request.user)
+    all_messages = list(chain(received_messages, sent_messages))
+    all_messages.sort(key=attrgetter('timestamp'))
+
+    return render(request, 'user/inbox.html', {'all_messages': all_messages})

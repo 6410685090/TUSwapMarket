@@ -1,0 +1,16 @@
+{% extends 'user/layout.html' %}
+{% load static %}
+{% block title %}Change password{% endblock %}
+{% block link %}
+    <link rel="stylesheet" href="{% static 'user/css/signin.css' %}">
+{% endblock %}
+{% block body %}
+<div class="main">
+    <div class="box" style="height: 38vh;">
+        <h2>Messages</h2>
+        {% for message in all_messages %}
+            <p>{{ message.sender.username }}: {{ message.content }} ({{ message.timestamp }})</p>
+        {% endfor %}
+    </div>  
+</div>
+{% endblock %}
