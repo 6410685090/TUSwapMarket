@@ -2,10 +2,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="{% static 'swapmarket/css/head.css' %}">
     <link rel="stylesheet" href="{% static 'swapmarket/css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'swapmarket/css/head.css' %}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Homepage</title>
 </head>
 
@@ -36,7 +37,9 @@
             <script>
                 var urlParams = new URLSearchParams(window.location.search);
                 var selectedTags = urlParams.getAll('tags');
-            
+                if (selectedTags.length === 0) {
+                    window.location.href = "{% url 'home' %}";
+                }
                 selectedTags.forEach(function (tag) {
                     var checkbox = document.getElementById(tag);
                     if (checkbox) {
@@ -44,7 +47,6 @@
                     }
                 });
             </script>
-        </div>
         </div>
         <div class="fbitem"></div>
         <div class="content">
@@ -57,10 +59,13 @@
                         ฿{{ i.price }}
                     </div>
                     <div class="name">{{ i.itemname }}</div>
-                </a>              
+                </a>
+                
                 {% empty %}
                 <p>no item</p>
+                
             {% endfor %}
+            
         </div>
     </div>
 </body>

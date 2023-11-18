@@ -1,7 +1,8 @@
-from django.shortcuts import render , redirect, get_object_or_404
+from django.shortcuts import render , redirect
 from swapmarket.models import Item, Category
 from swapmarket.forms import ItemForm
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
 # Create your views here.
 
 def home(request):
@@ -39,9 +40,12 @@ def sell_item(request):
 
     return render(request, 'swapmarket/sell_item.html', {'form': form, 'categories': categories})
 
-def search_by_tag(request, tag):
-    items = Item.objects.filter(itemtag__tag=tag)
+def sbt(request):
+    selected_tags = request.GET.getlist('tags')
+    items = Item.objects.filter(itemtag__tag__in=selected_tags).annotate(tag_count=Count('itemtag')).filter(tag_count=len(selected_tags))
     categories = Category.objects.all()
+    if request.user.is_authenticated:
+        return render(request, 'user/sbt.html', {'item': items, 'categories': categories}) 
     return render(request, 'swapmarket/sbt.html', {'item': items, 'categories': categories})
 
 @login_required
