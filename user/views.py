@@ -8,6 +8,7 @@ from django.urls import reverse
 from .forms import CustomUserEditForm, MessageForm
 from itertools import chain
 from operator import attrgetter
+from django.contrib.auth.decorators import login_required
 import os
 
 def profile(request):
