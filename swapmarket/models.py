@@ -19,6 +19,7 @@ class Item(models.Model):
     itemdescription = models.CharField(max_length=500, blank=True, null=True, default='')
     itempicture = models.ImageField(upload_to='item_pictures/')
     itemtag = models.ManyToManyField(Category, related_name='item_tags', blank=True)
+    payment = models.CharField(max_length=64, blank=True, null=True, choices=[('coin', 'Coin'),('other', 'Other'),])
 
     def __str__(self):
         return self.itemname

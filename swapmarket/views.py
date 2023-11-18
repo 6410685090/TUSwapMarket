@@ -3,6 +3,7 @@ from swapmarket.models import Item, Category
 from swapmarket.forms import ItemForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
+import os
 # Create your views here.
 
 def home(request):
@@ -63,6 +64,7 @@ def delete_item(request, username, itemname):
     item = Item.objects.get(seller__username=username, itemname=itemname)
 
     if request.user == item.seller:
+        os.remove(item.itempicture.path)
         item.delete()
         return redirect('/profile')
     else:

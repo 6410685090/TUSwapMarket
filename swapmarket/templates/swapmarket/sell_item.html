@@ -40,6 +40,15 @@
                         {% endfor %}
                     </div>
                 </div>
+                <div class="form-group">
+                    <label for="payment" class="mt-2">Payment :</label>
+                    <div class="radio-group">
+                        <input type="radio" name="payment" id="coin" value="coin">
+                        <label for="coin">Coin</label>
+                        <input type="radio" name="payment" id="other" value="other">
+                        <label for="other">Other</label>
+                    </div>
+                </div>
                 <button type="submit" class="submit" style="margin-top: 20px;">Sell</button>
             </div>
         </form>
