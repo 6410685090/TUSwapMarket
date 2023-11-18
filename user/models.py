@@ -12,3 +12,12 @@ class CustomUser(AbstractUser):
     userdescription = models.CharField(max_length=300, blank=True, null=True, default='')
     userpicture = models.ImageField(upload_to='user_pictures/')
     coins_balance = models.PositiveIntegerField(default=0)
+
+class Chat(models.Model):
+    participants = models.ManyToManyField(CustomUser, related_name='chats')
+
+class Message(models.Model):
+    chat = models.ForeignKey(Chat, on_delete=models.CASCADE)
+    sender = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    content = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
