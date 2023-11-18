@@ -10,7 +10,7 @@ class Category(models.Model):
         return self.tag
 
 class Item(models.Model):
-    itemname = models.CharField(max_length=64)
+    itemname = models.CharField(max_length=64, blank=True, null=True, default='')
     seller = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='items_for_sale', default=None, null=False)
     buyers = models.ManyToManyField(CustomUser, related_name='items_bought', blank=True)
     nItem = models.PositiveIntegerField(validators=[MaxValueValidator(99)])
