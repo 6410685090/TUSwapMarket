@@ -1,6 +1,7 @@
 
 from django.test import TestCase, Client
 # from django.contrib.auth.models import User
+from swapmarket.models import Item
 from user.models import CustomUser
 from django.urls import reverse, resolve
 from .views import signin, signup, profile, registered, edit_profile, changepassword
@@ -14,12 +15,45 @@ class ProfileTest(TestCase):
     def setUp(self) -> None:
         self.client = Client()
         self.profile_url = reverse('user:profile')
+        self.user = CustomUser.objects.create_user(
+            username='testuser',
+            email='test@example.com',
+            password='oldpassword',
+            phone='1234567890',
+            firstname='John',
+            lastname='Doe',
+            userdescription='Test user description',
+            userpicture='path/to/user/picture.jpg',
+            coins_balance=100,
+        )
+        self.client.login(username='testuser', password='oldpassword')
     def test_url_profile(self):
         response = self.client.get(self.profile_url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'user/profile.html')
     def test_templates_profile(self):
         self.assertEqual(resolve(self.profile_url).func, profile)
+    def test_check_my_item(self):
+        item1 = Item.objects.create(
+                                itemname = '1',
+                                seller = self.user,
+                                nItem = 0,
+                                price = 0,
+                                itempicture = 'path/to/user/picture1.jpg',)
+        item2 = Item.objects.create(
+                                itemname = '2',
+                                seller = self.user,
+                                nItem = 0,
+                                price = 0,
+                                itempicture = 'path/to/user/picture2.jpg',)
+        response = self.client.get(self.profile_url)
+        self.assertEqual(response.status_code, 200)
+        for i in range(0, len([subject for subject in Item.objects.filter(seller=self.user)])):
+            self.assertEqual(
+            response.context['myitem'][i],
+            [subject for subject in Item.objects.filter(seller=self.user)][i]
+            )
+
 
 class signinTest(TestCase):
     def setUp(self) -> None:

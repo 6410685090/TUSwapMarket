@@ -1,10 +1,10 @@
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from django.urls import reverse, resolve
-
 from .models import Category, Item, Coins
-from .views import home, about
+from .views import home, about, sell_item
 from user.models import CustomUser
+from .forms import ItemForm
 
 # Create your tests here.
 
@@ -93,3 +93,42 @@ class Testing(TestCase):
         response = self.client.get(home_url)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(resolve(home_url).func, home)
+
+class SellItemTest(TestCase):
+    def setUp(self) -> None:
+        self.client = Client()
+        self.user = CustomUser.objects.create_user(username='testuser', password='testpassword')
+        self.sell_item = reverse('sell_item')
+        self.category1 = Category.objects.create(tag='Category 1')
+        self.category2 = Category.objects.create(tag='Category 2')
+
+    # def test_template_sell_item(self):
+    #     response = self.client.get(self.sell_item)
+    #     self.assertEqual(response.status_code, 200)
+    #     self.assertTemplateUsed(response, 'swapmarket/sell_item.html')
+    def test_url_sell_item(self):
+        self.assertEqual(resolve(self.sell_item).func, sell_item)
+    # def test_item_form_valid_data(self):
+    #     # Create form data with valid values
+    #     form_data = {
+    #         'itemname': 'Test Item',
+    #         'nItem': 1,
+    #         'price': 10.0,
+    #         'itemdescription': 'This is a test item.',
+    #         'itempicture': 'path/to/user/picture.jpg',
+    #         'itemtag': [self.category1.id, self.category2.id],
+    #     }
+    #     print(form.errors)
+    #     form = ItemForm(data=form_data)
+    #     self.assertTrue(form.is_valid())
+    def test_item_form_invalid_data(self):
+        self.client.login(username='testuser', password='testpassword')
+
+        # Create a POST request with invalid data
+        form_data = {
+        }
+        form = ItemForm(data=form_data)  # 200 is the status code for a successful GET request (rendering the form page)
+        self.assertFalse(form.is_valid())
+        self.assertIn('itemname', form.errors)
+        self.assertIn('nItem', form.errors) # Adjust the error message based on your form validation
+
