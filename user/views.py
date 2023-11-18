@@ -6,6 +6,7 @@ from swapmarket.models import  Item
 from django.core.files.storage import FileSystemStorage
 from django.urls import reverse
 from .forms import CustomUserEditForm
+import os
 
 def profile(request):
     return render(request,"user/profile.html",{
@@ -103,9 +104,16 @@ def registered(request):
 
 def edit_profile(request):
     if request.method == 'POST':
+        old_picture = request.user.userpicture.path if request.user.userpicture else None
         form = CustomUserEditForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
+
+            print(old_picture)
             form.save()
+
+            if old_picture and os.path.exists(old_picture):
+                os.remove(old_picture)
+
             return redirect('/profile') 
     else:
         form = CustomUserEditForm(instance=request.user)
