@@ -13,5 +13,9 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('profile', views.profile, name="profile"),
     path('edit_profile/', views.edit_profile, name='edit_profile'),
+    path('chat/<str:room>/', views.findroom, name='room'),
+    path('send', views.send, name='send'),
+    path('getMessages/<str:room>/', views.getMessages, name='getMessages'),
+    path('inbox', views.inbox , name="inbox")
 ]
 

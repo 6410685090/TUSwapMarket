@@ -1,0 +1,25 @@
+{% extends 'user/layout.html' %}
+{% load static %}
+{% block title %}Change password{% endblock %}
+{% block link %}
+    <link rel="stylesheet" href="{% static 'user/css/inbox.css' %}">
+{% endblock %}
+{% block body %}
+<div class="main">
+    <div class="box">
+        <h2>Messages</h2>
+        <div class="allchat">
+            {% for i in allroom %}
+            <div class="chat">
+                <a href="/chat/{{ i.name }}/?username={{ user.username }}" class="bbt">{{ i.name }}</a>
+            </div>
+            {% endfor %}
+            {% for i in mychat %}
+            <div class="chat">
+                <a href="/chat/{{ i.name }}/?username={{ user.username }}" style="color: red;" class="bbt">{{ i.name }}</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>  
+</div>
+{% endblock %}

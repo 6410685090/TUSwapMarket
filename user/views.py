@@ -1,16 +1,18 @@
 from django.shortcuts import render, redirect 
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
-from user.models import CustomUser 
-from swapmarket.models import  Item
+from user.models import CustomUser, Message , Room
+from swapmarket.models import  Item 
 from django.core.files.storage import FileSystemStorage
 from django.urls import reverse
 from .forms import CustomUserEditForm
+from django.http import HttpResponse, JsonResponse
+from django.contrib.auth.decorators import login_required
 import os
 
 def profile(request):
     return render(request,"user/profile.html",{
-        "myitem" : Item.objects.filter(seller=request.user)
+        "myitem" : Item.objects.filter(seller=request.user),
     })
 
 def signin(request):
@@ -102,6 +104,7 @@ def registered(request):
 
     return render(request, 'user/registered.html')
 
+@login_required
 def edit_profile(request):
     if request.method == 'POST':
         old_picture = request.user.userpicture.path if request.user.userpicture else None
@@ -119,6 +122,7 @@ def edit_profile(request):
         form = CustomUserEditForm(instance=request.user)
     return render(request, 'user/editprofile.html', {'form': form})
 
+@login_required
 def changepassword(request):
     if request.method == "POST":
         if request.POST["newpass"] == request.POST["cnewpass"]:
@@ -132,4 +136,41 @@ def changepassword(request):
             })
     return render(request, 'user/chpass.html')
 
-    
+
+def findroom(request, room):
+    username = request.user.username
+    if Room.objects.filter(name=room).exists():
+        room_details = Room.objects.get(name=room)
+        return render(request, 'user/room.html', {
+            'username': username,
+            'room': room,
+            'room_details': room_details
+        })
+    else:
+        new_room = Room.objects.create(name=room)
+        new_room.save()
+        return findroom(request, room)
+
+def send(request):
+    message = request.POST['message']
+    username = request.POST['username']
+    room_id = request.POST['room_id']
+
+    new_message = Message.objects.create(value=message, user=username, room=room_id)
+    new_message.save()
+    return HttpResponse('Message sent successfully')
+
+def getMessages(request, room):
+    room_details = Room.objects.get(name=room)
+
+    messages = Message.objects.filter(room=room_details.id)
+    return JsonResponse({"messages":list(messages.values())})
+
+def inbox(request):
+    myroom = Room.objects.filter(name__startswith=request.user.username+"_")
+    mychat = Room.objects.filter(name__icontains="_" + request.user.username)
+    mychat = [room for room in mychat if room.name.endswith("_" + request.user.username)]
+    return render(request , "user/inbox.html",{
+        "allroom": myroom,
+        "mychat" : mychat,
+    })

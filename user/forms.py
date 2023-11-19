@@ -1,7 +1,8 @@
 from django import forms
-from .models import CustomUser
+from .models import CustomUser, Message
 
 class CustomUserEditForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ['userpicture', 'displayname', 'firstname', 'lastname', 'phone', 'userdescription']
+        

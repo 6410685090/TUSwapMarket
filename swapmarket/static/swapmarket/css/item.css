@@ -1,32 +1,48 @@
+:root {
+    --base-font-size: 1.3vw;
+    --head-font-size: 2.5vw;
+}
+
 .picbg{
+    background-color: white;
     position: absolute;
     left: 5%;
     top: 25%;
     width: 50%;
-    height: 60%;
+    height: calc(40vh + 10vw);
     display: flex;
-    align-items: center;
     justify-content: center;
 }
 
 .pic{
     height: 100%;
+    max-width: 100%;
     object-fit: contain;
 }
 
 .box{
     position: absolute;
     top:25%;
-    right: 5%;
+    left : 58%;
     display: flex;
-    align-self: start;
+    flex-direction: column;
     justify-content: start;
     width: 40%;
     height: 60%;
 }
 
-.text{
-    font-size: 20px;
+.desc{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: var(--base-font-size);
+}
+
+.tag{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: var(--base-font-size);
 }
 
 .namebox{
@@ -41,5 +57,38 @@
 }
 
 .name{
-    font-size: 40px;
+    font-size: var(--head-font-size);
+}
+
+
+.footbar{
+    position: fixed;
+    left: 5%;
+    top: 85%;
+    margin-top: 1%;
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+    font-size: calc(var(--head-font-size) - .5vw);
+}
+
+.price{
+    font-size: var(--base-font-size);
+
+}
+
+.chat{
+    position: absolute;
+    bottom: 8vh;
+    right: 2vw;
+}
+
+.btt{
+    background-color: rgb(72, 226, 0);
+    padding: 10px 5vw; 
+    color: rgb(255, 255, 255);      
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 5px;   
+    font-weight: bold;
 }
