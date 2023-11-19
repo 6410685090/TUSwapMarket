@@ -83,9 +83,11 @@ form.formtag input{
 .boxitem{
     background-color: white;
     display: flex;
+    flex-direction: column;
     position: relative;
-    justify-content: center;
+    align-items: center;
     text-align: center;
+    text-decoration: none;
     padding-top: 15px;
     height: 450px;
     width: 23%;
@@ -94,8 +96,8 @@ form.formtag input{
     box-sizing: border-box;
     border: 1px solid rgb(255, 227, 216);
     border-radius: 10px;  
+    
 }
-
 
 .pic {
     max-height: 270px; 
@@ -118,20 +120,29 @@ form.formtag input{
     left: 25%; 
 }
 
-.name{
-    top: 300px;
+.namecontainer {
     position: absolute;
-    overflow:hidden;
-    font-size: 2.5vw;
+    text-decoration: none;
+    width: 90%;
+    bottom: 7vh;
+}
+
+.name {
+    bottom: 20%;
+    overflow: hidden;
+    font-size: 2vw;
     text-align: center;
     color: black;
+    white-space: nowrap;
+    margin-top: 20px
 }
+
 
 .price{
     position: absolute;
     bottom: 10px;
     right: 20px;
-    font-size: 2.5vw;
+    font-size: 1.8vw;
     text-align: start;
     color: black;
 }

@@ -10,10 +10,9 @@ class CustomUser(AbstractUser):
     displayname = models.CharField(max_length=64, blank=True, null=True)
     firstname = models.CharField(max_length=64)
     lastname = models.CharField(max_length=64)
-    userdescription = models.CharField(max_length=300, blank=True, null=True, default='')
+    userdescription = models.CharField(max_length=300, blank=True, null=True)
     userpicture = models.ImageField(upload_to='user_pictures/')
     coins_balance = models.PositiveIntegerField(default=0)
-
 
 class Room(models.Model):
     name = models.CharField(max_length=1000,null=True)

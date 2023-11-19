@@ -71,9 +71,11 @@
 .boxitem{
     background-color: white;
     display: flex;
+    flex-direction: column;
+    align-items: center;
     position: relative;
-    justify-content: center;
     text-align: center;
+    text-decoration: none;
     padding-top: 15px;
     height: 450px;
     width: 24%;
@@ -105,20 +107,29 @@
     left: 25%; 
 }
 
-.name{
-    bottom: 20%;
+
+.namecontainer {
     position: absolute;
-    overflow:hidden;
-    font-size: 2.5vw;
+    text-decoration: none;
+    width: 90%;
+    bottom: 10vh;
+}
+
+.name {
+    bottom: 20%;
+    overflow: hidden;
+    font-size: 2vw;
     text-align: center;
     color: black;
+    white-space: nowrap;
+    margin-top: 20px;
 }
 
 .price{
     position: absolute;
     bottom: 10%;
     right: 20px;
-    font-size: 2vw;
+    font-size: 1.8vw;
     text-align: start;
     color: black;
 }

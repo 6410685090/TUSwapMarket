@@ -39,6 +39,9 @@
             <script>
                 var urlParams = new URLSearchParams(window.location.search);
                 var selectedTags = urlParams.getAll('tags');
+                if (selectedTags.length === 0) {
+                    window.location.href = "{% url 'home' %}";
+                }
                 selectedTags.forEach(function (tag) {
                     var checkbox = document.getElementById(tag);
                     if (checkbox) {
@@ -58,7 +61,7 @@
                     <div class="price">
                         ฿{{ i.price }}
                     </div>
-                    <div class="name">{{ i.itemname }}</div>
+                    <div class="namecontainer"><div class="name">{{ i.itemname }}</div></div>
                 </a>
                 
                 {% empty %}

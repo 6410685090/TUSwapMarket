@@ -12,9 +12,12 @@
             <div class="name">Item Name: {{ item.itemname }}</div>
         </div>
         <div class="footbar">
+            {% if item.seller.displayname != None %}
+            <div>Seller: {{ item.seller.displayname }}</div>
+            {% else %}
             <div>Seller: {{ item.seller.username }}</div>
-            
-            <div>Number of Items: {{ item.nItem }}</div>
+            {% endif %}
+            <div>{{ item.nItem }} EA</div>
         </div>
         
         <div class="box">
@@ -25,7 +28,7 @@
                     {% endfor %}
                 </p>
                 <p>Payment: {{ item.payment }}</p>
-                <p>Price: {{ item.price }}</p>
+                <p>Price: ฿{{ item.price }}</p>
             </div>
             <div class="desc">
                 {% if item.itemdescription %}
