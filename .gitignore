@@ -162,3 +162,5 @@ cython_debug/
 media/
 
 ez.sh
+
+Pipfile
