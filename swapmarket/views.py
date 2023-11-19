@@ -41,6 +41,8 @@ def sell_item(request):
 
     return render(request, 'swapmarket/sell_item.html', {'form': form, 'categories': categories})
 
+
+
 def sbt(request):
     selected_tags = request.GET.getlist('tags')
     items = Item.objects.filter(itemtag__tag__in=selected_tags).annotate(tag_count=Count('itemtag')).filter(tag_count=len(selected_tags))
@@ -51,12 +53,12 @@ def sbt(request):
 
 @login_required
 def item_detail(request, username, itemname):
-    try:
+    if Item.objects.filter(seller__username=username, itemname=itemname):
         items = Item.objects.get(seller__username=username, itemname=itemname)
         return render(request, 'swapmarket/item.html' , {
                 "item" : items
             })
-    except:
+    else:
         return redirect('home')
     
 @login_required

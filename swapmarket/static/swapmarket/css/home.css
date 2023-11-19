@@ -15,7 +15,6 @@
     margin-top: 10px;
     min-width: 250px;
     width: 20%;
-    height: auto;
     border: 1px solid rgb(255, 227, 216);
 }
 
@@ -25,13 +24,29 @@
     text-align: center;
     margin-left: 5px;
     margin-right: 5px;
+}
 
+.formtag{
+    display: flex;                      
+    flex-direction: column;
+    margin-bottom: 1.5vh;
+}
+
+form.formtag label{
+    display: inline-block;
+    font-size: 2.5vh;
+    padding-left: 20px;
+}                 
+
+form.formtag input{
+    display: inline-flex;
+    padding-left: 20px;
 }
 
 .tag{
     margin-top: 20px;
     font-size: 30px;
-
+    padding-bottom: 1.5vh;
 }
 
 .item{
@@ -48,7 +63,7 @@
 .content{
     background-color:rgb(255, 250, 244);
     height: auto;
-    margin-left: max(25% , 290px);
+    margin-left: max(25% , 300px);
     width: 75%;
     display: flex;
     flex-direction: row;

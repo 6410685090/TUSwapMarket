@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from datetime import datetime
 
 # Create your models here.
 
@@ -13,10 +14,13 @@ class CustomUser(AbstractUser):
     userpicture = models.ImageField(upload_to='user_pictures/')
     coins_balance = models.PositiveIntegerField(default=0)
 
-class Message(models.Model):
-    sender = models.ForeignKey(CustomUser, related_name='sender', on_delete=models.CASCADE)
-    receiver = models.ForeignKey(CustomUser, related_name='receiver', on_delete=models.CASCADE)
-    content = models.TextField()
-    timestamp = models.DateTimeField(auto_now_add=True)
 
+class Room(models.Model):
+    name = models.CharField(max_length=1000,null=True)
+
+class Message(models.Model):
+    value = models.CharField(max_length=1000000,null=True)
+    date= models.DateTimeField(default=datetime.now, blank=True)
+    user = models.CharField(max_length=1000000,null=True)
+    room = models.CharField(max_length=1000000,null=True)
 

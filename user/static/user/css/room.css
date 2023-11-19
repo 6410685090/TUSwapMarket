@@ -1,0 +1,133 @@
+body {
+    margin: 0 auto;
+    max-width: 800px;
+    padding: 0 20px;
+    background-color: rgb(255, 250, 244);
+}
+
+.room{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5vh;
+}
+
+.container {
+    border: 2px solid #dedede;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.box{
+    background-color: white;
+    border-radius: 5px;
+    padding: 20px;
+    height: 60vh;
+    overflow: scroll;
+}
+
+.darker {
+    border-color: #ccc;
+    background-color: #ebebeb;
+}
+
+.container::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.container img {
+    float: left;
+    max-width: 60px;
+    width: 100%;
+    margin-right: 20px;
+    border-radius: 50%;
+}
+
+.container img.right {
+    float: right;   
+    margin-left: 20px;
+    margin-right:0;
+}
+
+.time-right {
+    float: right;
+    color: #aaa;
+}
+
+.time-left {
+    float: left;
+    color: #999;
+    display: none;
+}
+
+.container.darker:hover .time-left {
+    display: inline;
+}
+
+.me{
+    float: right;
+    font-size: 25px;
+}
+
+.you{
+    float: left;
+    font-size: 25px;
+}
+
+.text-me{
+    margin-top: 20px;
+    float: right;
+    font-size: 20px;
+    margin-bottom: 0px;
+}
+
+.text-you{
+    margin-top: 20px;
+    float: left;
+    font-size: 20px;
+    margin-bottom: 0px;
+}
+
+#post-form input[type=text] {
+    width: 89%; /* Adjust the width as needed */
+    padding: 12px 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    display: inline-block;
+}
+
+#post-form input[type=submit] {
+    width: 10%; /* Adjust the width as needed */
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+#post-form input[type=submit]:hover {
+    background-color: #45a049;
+}
+
+.back{
+    position: absolute;
+    bottom: 3vh;
+    left: 2vw;
+}
+
+.bbt {
+    background-color: rgb(255, 132, 132);
+    padding: 10px 15px; 
+    color: white;      
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 3px;   
+}
+
