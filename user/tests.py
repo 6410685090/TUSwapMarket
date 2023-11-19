@@ -1,5 +1,7 @@
-
+import os
+from PIL import Image
 from django.test import TestCase, Client
+from io import BytesIO
 # from django.contrib.auth.models import User
 from swapmarket.models import Item
 from user.models import CustomUser
@@ -249,8 +251,12 @@ class RegisteredTest(TestCase):
         )
         self.assertEqual(response.context['message'], "Please upload you picture")
     def test_registered_email_exists(self):
-        image_content = b'This is a test image.'
-        image_file = SimpleUploadedFile('test_image.jpg', image_content, content_type='image/jpeg')
+        image = Image.new('RGB', (100, 100), 'white')
+        image_io = BytesIO()
+        image.save(image_io, format='JPEG')
+        image_io.seek(0)
+
+        image_file = SimpleUploadedFile("test_image.jpg", image_io.read(), content_type="image/jpeg")
         CustomUser.objects.create(username='existinguser', email='test@example.com', password='testpass')
         s = self.client.session
         s.update({
@@ -280,6 +286,12 @@ class RegisteredTest(TestCase):
 class EditProfileViewTests(TestCase):
     def setUp(self):
         self.client = Client()
+        image = Image.new('RGB', (100, 100), 'white')
+        image_io = BytesIO()
+        image.save(image_io, format='JPEG')
+        image_io.seek(0)
+
+        image_file = SimpleUploadedFile("test_image.jpg", image_io.read(), content_type="image/jpeg")
         self.user = CustomUser.objects.create_user(
             username='testuser',
             email='test@example.com',
@@ -288,7 +300,7 @@ class EditProfileViewTests(TestCase):
             firstname='John',
             lastname='Doe',
             userdescription='Test user description',
-            userpicture='path/to/user/picture.jpg',
+            userpicture='item_pictures/diy1eyzh3qi71.jpg',
             coins_balance=100,
         )
         self.client.login(username='testuser', password='testpass')
@@ -318,6 +330,35 @@ class EditProfileViewTests(TestCase):
         self.assertEqual(self.user.firstname, 'UpdatedFirstName')
         self.assertEqual(self.user.lastname, 'UpdatedLastName')
         self.assertEqual(self.user.userdescription, 'Updated user description')
+    # def test_remove_old_picture(self):
+    #     new_picture_content = b'This is a new profile picture.'
+    #     new_picture_file = SimpleUploadedFile('new_profile_picture.jpg', new_picture_content, content_type='image/jpeg')
+    #     response = self.client.post(self.edit_profile, {'userpicture': new_picture_file})
+    #     self.user.refresh_from_db()
+    #     self.assertEqual(self.user.userpicture, new_picture_file)
+        # old_picture_path = os.path.join(settings.MEDIA_ROOT, 'initial_profile_picture.jpg')
+        # self.assertFalse(os.path.exists(old_picture_path))
+    def test_remove_old_picture(self):
+
+        # Ensure the old picture file exists before making the request
+        self.assertTrue(os.path.exists('item_pictures/diy1eyzh3qi71.jpg'))
+
+        # Set up the form data with a new picture
+        form_data = {
+            # ... (other form fields)
+            'userpicture': 'item_pictures/newpicture.jpg',
+        }
+
+        # Perform the request to the edit_profile view
+        response = self.client.post(self.edit_profile, data=form_data)
+
+        # Check if the old picture file is removed
+        self.assertFalse(os.path.exists('item_pictures/diy1eyzh3qi71.jpg'))
+
+        # Check the response, e.g., assert a redirect or specific status code
+        self.assertEqual(response.status_code, 302)  # Example: Redirect status code
+        self.assertRedirects(response, '/profile')
+
 
 class ChangePasswordViewTests(TestCase):
     def setUp(self):
