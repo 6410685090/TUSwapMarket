@@ -199,12 +199,17 @@ class SellItemTest(TestCase):
 class SbtTest(TestCase):
 
     def setUp(self):
-        img1 = Image.new(mode="RGB", size=(200, 200))
-        img1.save("media/user_pictures/test_image.jpg")
+        image = Image.new('RGB', (100, 100), 'white')
+        image_io = BytesIO()
+        image.save(image_io, format='JPEG')
+        image_io.seek(0)
+
+        # Create a SimpleUploadedFile from the image content
+        image_file = SimpleUploadedFile("test_image.jpg", image_io.read(), content_type="image/jpeg")
         self.client = Client()
 
         self.user1 = CustomUser.objects.create(username='TEST1', email = "1")
-        self.user1.userpicture = 'user_pictures/test_user.jpg'
+        self.user1.userpicture = image_file
         self.user1.set_password('Student331')
         self.user1.save()
 
@@ -227,14 +232,17 @@ class SbtTest(TestCase):
 class ItemDetailTest(TestCase):
         
     def setUp(self):
-        img1 = Image.new(mode="RGB", size=(200, 200))
-        img1.save("media/user_pictures/test_image.jpg")
-        img2 = Image.new(mode="RGB", size=(200, 200))
-        img2.save("media/user_pictures/test_user.jpg")
+        image = Image.new('RGB', (100, 100), 'white')
+        image_io = BytesIO()
+        image.save(image_io, format='JPEG')
+        image_io.seek(0)
+
+        # Create a SimpleUploadedFile from the image content
+        image_file = SimpleUploadedFile("test_image.jpg", image_io.read(), content_type="image/jpeg")
         self.client = Client()
 
         self.user1 = CustomUser.objects.create(username='TEST1', email = "1")
-        self.user1.userpicture = 'user_pictures/test_user.jpg'
+        self.user1.userpicture = image_file
         self.user1.set_password('Student331')
         self.user1.save()
         self.user2 = CustomUser.objects.create(username='TEST2', email = "2")
@@ -247,7 +255,7 @@ class ItemDetailTest(TestCase):
                                    seller = self.user1,
                                    nItem = 0,
                                    price = 0,
-                                   itempicture = 'user_pictures/test_image.jpg')
+                                   itempicture = image_file)
         self.item.itemtag.add(self.category)
 
     def test_item_required_pass(self):
@@ -273,15 +281,16 @@ class ItemDetailTest(TestCase):
 class DeleteItemTest(TestCase):
     def setUp(self):
         
-        img1 = Image.new(mode="RGB", size=(200, 200))
-        img1.save("media/user_pictures/test_image.jpg")
-        
-        img2 = Image.new(mode="RGB", size=(200, 200))
-        img2.save("media/user_pictures/test_user.jpg")
+        image = Image.new('RGB', (100, 100), 'white')
+        image_io = BytesIO()
+        image.save(image_io, format='JPEG')
+        image_io.seek(0)
+
+        image_file = SimpleUploadedFile("test_image.jpg", image_io.read(), content_type="image/jpeg")
         self.client = Client()
 
         self.user1 = CustomUser.objects.create(username='TEST1', email = "1")
-        self.user1.userpicture = 'user_pictures/test_user.jpg'
+        self.user1.userpicture = image_file
         self.user1.set_password('Student331')
         self.user1.save()
         
@@ -298,7 +307,7 @@ class DeleteItemTest(TestCase):
                                    seller = self.user1,
                                    nItem = 0,
                                    price = 0,
-                                   itempicture = 'user_pictures/test_image.jpg')
+                                   itempicture = image_file)
         self.item.itemtag.add(self.category)
 
     # Test when delete your own item.
