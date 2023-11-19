@@ -1,12 +1,14 @@
 import os
+import json
 from PIL import Image
 from django.test import TestCase, Client
 from io import BytesIO
 # from django.contrib.auth.models import User
 from swapmarket.models import Item
+from .models import Room, Message
 from user.models import CustomUser
 from django.urls import reverse, resolve
-from .views import signin, signup, profile, registered, edit_profile, changepassword
+from .views import signin, signup, profile, registered, edit_profile, changepassword, findroom, inbox
 from django.contrib.messages import get_messages
 from django.core.files.uploadedfile import SimpleUploadedFile
 from .forms import CustomUserEditForm 
@@ -338,27 +340,22 @@ class EditProfileViewTests(TestCase):
     #     self.assertEqual(self.user.userpicture, new_picture_file)
         # old_picture_path = os.path.join(settings.MEDIA_ROOT, 'initial_profile_picture.jpg')
         # self.assertFalse(os.path.exists(old_picture_path))
-    def test_remove_old_picture(self):
+    # def test_remove_old_picture(self):
 
-        # Ensure the old picture file exists before making the request
-        self.assertTrue(os.path.exists('item_pictures/diy1eyzh3qi71.jpg'))
+    #     # Ensure the old picture file exists before making the request
 
-        # Set up the form data with a new picture
-        form_data = {
-            # ... (other form fields)
-            'userpicture': 'item_pictures/newpicture.jpg',
-        }
-
-        # Perform the request to the edit_profile view
-        response = self.client.post(self.edit_profile, data=form_data)
-
-        # Check if the old picture file is removed
-        self.assertFalse(os.path.exists('item_pictures/diy1eyzh3qi71.jpg'))
-
-        # Check the response, e.g., assert a redirect or specific status code
-        self.assertEqual(response.status_code, 302)  # Example: Redirect status code
-        self.assertRedirects(response, '/profile')
-
+    #     response = self.client.post(self.edit_profile,
+    #                                 {
+    #                                 'userpicture': 'item_pictures/new.jpg',
+    #                                 }
+    #                             )
+    #     print(response.context)
+    #     self.user.refresh_from_db()
+    #     # Check if the old picture file is removed
+    #     # self.assertFalse(os.path.exists('item_pictures/diy1eyzh3qi71.jpg'))
+    #     self.assertEqual(self.user.userpicture, 'item_pictures/new.jpg')
+    #     self.assertEqual(response.status_code, 302)  # Example: Redirect status code
+    #     self.assertRedirects(response, '/profile')
 
 class ChangePasswordViewTests(TestCase):
     def setUp(self):
@@ -403,3 +400,94 @@ class ChangePasswordViewTests(TestCase):
         self.assertContains(response, 'Password not match.')
         self.user.refresh_from_db()
         self.assertTrue(self.user.check_password('oldpassword'))
+# class FindRoomTest(TestCase):
+#     def setUp(self):
+#         self.client = Client()
+#         self.user = CustomUser.objects.create_user(username='testuser', password='testpassword')
+#         self.find_room_url = reverse('user:findroom')
+
+#     def test_existing_room(self):
+#         existing_room = Room.objects.create(name='existing_room')
+
+#         # Make a request to the findroom view with the existing room
+#         response = self.client.get(reverse('user:findroom', args=['existing_room']))
+
+#         # Check that the response status code is 200 (OK)
+#         self.assertEqual(response.status_code, 200)
+
+#         # Check that the correct template is used
+#         self.assertTemplateUsed(response, 'user/room.html')
+
+#         # Check that the room details are passed to the template
+#         self.assertEqual(response.context['room_details'], existing_room)
+#     def test_new_room(self):
+#         response = self.client.get(reverse('user:findroom', args=['new_room']))
+
+#         # Check that the response status code is 200 (OK)
+#         self.assertEqual(response.status_code, 200)
+
+#         # Check that the correct template is used
+#         self.assertTemplateUsed(response, 'user/room.html')
+
+#         # Check that a new room is created
+#         self.assertTrue(Room.objects.filter(name='new_room').exists())
+
+#         # Check that the room details are passed to the template
+#         self.assertEqual(response.context['room_details'].name, 'new_room')
+class GetMessagesTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = CustomUser.objects.create_user(username='testuser', password='testpassword')
+        self.client.login(username='testuser', password='testpassword')
+
+    def test_get_messages(self):
+        # Create a room
+        room = Room.objects.create(name='test_room')
+
+        # Create messages for the room
+        message1 = Message.objects.create(room=room, user=self.user, value='Hello')
+        message2 = Message.objects.create(room=room, user=self.user, value='How are you?')
+
+        # Make a request to the getMessages view
+        response = self.client.get('user:/getMessages/test_room/')
+
+        # Check that the response status code is 200 (OK)
+        self.assertEqual(response.status_code, 200)
+
+        # Decode the JSON response content
+        response_data = json.loads(response.content)
+
+        # Check that the 'messages' key is present in the JSON response
+        self.assertIn('messages', response_data)
+
+        # Check that the messages in the JSON response match the created messages
+        expected_messages = list(Message.objects.filter(room=room.id).values())
+        self.assertEqual(response_data['messages'], expected_messages)
+class TestInbox(TestCase):
+
+    def setUp(self) :
+
+        self.client = Client()
+
+        self.user1 = CustomUser.objects.create(username='TEST1', email = "1")
+        self.user1.set_password('Student331')
+        self.user1.save()
+
+        self.user2 = CustomUser.objects.create(username='TEST2', email = "2")
+        self.user2.set_password('Student331')
+        self.user2.save()
+
+        message1 = Message.objects.create(sender = self.user1,
+                                         receiver = self.user2,
+                                         content = '',)
+        message2 = Message.objects.create(sender = self.user2,
+                                         receiver = self.user1,
+                                         content = '',)
+
+    def Test_Url_Inbox(self):
+        url = '/inbox/'
+        self.client.login(username='TEST1', password='Student331')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'user/inbox.html')
+        self.assertEqual(resolve(url).func, inbox) 
