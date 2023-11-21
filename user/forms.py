@@ -6,7 +6,3 @@ class CustomUserEditForm(forms.ModelForm):
         model = CustomUser
         fields = ['userpicture', 'displayname', 'firstname', 'lastname', 'phone', 'userdescription']
         
-class MessageForm(forms.ModelForm):
-    class Meta:
-        model = Message
-        fields = ['receiver', 'content']

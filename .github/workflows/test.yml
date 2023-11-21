@@ -2,9 +2,9 @@ name: Testing
 
 on:
   push:
-    branches: [ "main-disable" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "main-disable" ]
+    branches: [ "main" ]
 
 jobs:
   build:

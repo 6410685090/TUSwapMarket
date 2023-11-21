@@ -54,11 +54,11 @@
 .content{
     display: flex;
     background-color: rgb(255, 250, 244);
-    width: 70%;
+    width: 75%;
     height: auto;
     min-height: 500px;
     margin-top: calc(10vh + 10px);
-    margin-left: 430px;
+    margin-left: max(470px , 300px);
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: flex-start;
@@ -71,9 +71,11 @@
 .boxitem{
     background-color: white;
     display: flex;
+    flex-direction: column;
+    align-items: center;
     position: relative;
-    justify-content: center;
     text-align: center;
+    text-decoration: none;
     padding-top: 15px;
     height: 450px;
     width: 24%;
@@ -83,8 +85,6 @@
     border: 1px solid rgb(255, 227, 216);
     border-radius: 10px;  
 }
-
-
 
 .ipic {
     max-height: 270px; 
@@ -107,25 +107,41 @@
     left: 25%; 
 }
 
-.name{
-    top: 300px;
+
+.namecontainer {
     position: absolute;
-    overflow:hidden;
-    font-size: 2.5vw;
+    text-decoration: none;
+    width: 90%;
+    bottom: 10vh;
+}
+
+.name {
+    bottom: 20%;
+    overflow: hidden;
+    font-size: 2vw;
     text-align: center;
     color: black;
+    white-space: nowrap;
+    margin-top: 20px;
 }
 
 .price{
     position: absolute;
-    bottom: 10px;
+    bottom: 10%;
     right: 20px;
-    font-size: 2.5vw;
+    font-size: 1.8vw;
     text-align: start;
     color: black;
 }
 
-@media only screen and (max-width: 1300px) {
+.delete{
+    position: absolute;
+    left: 3%;
+    bottom: 3%;
+}
+
+
+@media only screen and (max-width: 1450px) {
     .boxitem{
         background-color: white;
         display: flex;
@@ -134,7 +150,7 @@
         text-align: center;
         padding-top: 15px;
         height: 450px;
-        width: 30%;
+        width: 32%;
         margin-bottom: 10px;
         margin-right: 10px;
         box-sizing: border-box;
@@ -143,7 +159,7 @@
     }
 }
 
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: 1210px) {
     .boxitem{
         background-color: white;
         display: flex;
@@ -152,7 +168,7 @@
         text-align: center;
         padding-top: 15px;
         height: 450px;
-        width: 40%;
+        width: 47%;
         margin-bottom: 10px;
         margin-right: 10px;
         box-sizing: border-box;
@@ -161,7 +177,7 @@
     }
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 850px) {
     .boxitem{
         background-color: white;
         display: flex;
@@ -170,7 +186,7 @@
         text-align: center;
         padding-top: 15px;
         height: 450px;
-        width: 75%;
+        width: 95%;
         margin-bottom: 10px;
         margin-right: 10px;
         box-sizing: border-box;

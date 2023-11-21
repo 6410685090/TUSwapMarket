@@ -19,22 +19,24 @@
         <div class="header-right">
             <a href="/signin" class="button-headerright">Sign in</a>
             <a href="/signup" class="button-headerright">Sign up</a>
-        </div>
+        </div>                              
     </header>
 
     <div class="main">
         <div class="side">
             <div class="inside tag" >Tag</div>
-            <form method="GET" action="{% url 'sbt' %}">
-                {% for category in categories %}
-                    <label for="{{ category.tag }}">{{ category.tag }}</label>
-                    <input type="checkbox" name="tags" id="{{ category.tag }}" value="{{ category.tag }}" {% if category.tag in selected_tags %}checked{% endif %} onchange="this.form.submit()">
-                {% endfor %}
+            <form method="GET" action="{% url 'sbt' %}" class="formtag">  
+                {% for category in categories %}          
+                <div style="margin-bottom: 2vh;">
+                    <label class="insidefometag" for="{{ category.tag }}">{{ category.tag }}</label>                                                                                         
+                    <input type="checkbox" name="tags" id="{{ category.tag }}" value="{{ category.tag }}" \ 
+                    {% if category.tag in selected_tags %}checked{% endif %} onchange="this.form.submit()">     
+                </div>    
+                {% endfor %}         
             </form>
             <script>
                 var urlParams = new URLSearchParams(window.location.search);
                 var selectedTags = urlParams.getAll('tags');
-            
                 selectedTags.forEach(function (tag) {
                     var checkbox = document.getElementById(tag);
                     if (checkbox) {
@@ -54,7 +56,7 @@
                     <div class="price">
                         ฿{{ i.price }}
                     </div>
-                    <div class="name">{{ i.itemname }}</div>
+                    <div class="namecontainer"><div class="name">{{ i.itemname }}</div></div>
                 </a>
                 
                 {% empty %}

@@ -15,7 +15,6 @@
     margin-top: 10px;
     min-width: 250px;
     width: 20%;
-    height: auto;
     border: 1px solid rgb(255, 227, 216);
 }
 
@@ -25,13 +24,29 @@
     text-align: center;
     margin-left: 5px;
     margin-right: 5px;
+}
 
+.formtag{
+    display: flex;                      
+    flex-direction: column;
+    margin-bottom: 1.5vh;
+}
+
+form.formtag label{
+    display: inline-block;
+    font-size: 2.5vh;
+    padding-left: 20px;
+}                 
+
+form.formtag input{
+    display: inline-flex;
+    padding-left: 20px;
 }
 
 .tag{
     margin-top: 20px;
     font-size: 30px;
-
+    padding-bottom: 1.5vh;
 }
 
 .item{
@@ -48,7 +63,7 @@
 .content{
     background-color:rgb(255, 250, 244);
     height: auto;
-    margin-left: max(25% , 290px);
+    margin-left: max(25% , 300px);
     width: 75%;
     display: flex;
     flex-direction: row;
@@ -68,9 +83,11 @@
 .boxitem{
     background-color: white;
     display: flex;
+    flex-direction: column;
     position: relative;
-    justify-content: center;
+    align-items: center;
     text-align: center;
+    text-decoration: none;
     padding-top: 15px;
     height: 450px;
     width: 23%;
@@ -79,8 +96,8 @@
     box-sizing: border-box;
     border: 1px solid rgb(255, 227, 216);
     border-radius: 10px;  
+    
 }
-
 
 .pic {
     max-height: 270px; 
@@ -103,20 +120,29 @@
     left: 25%; 
 }
 
-.name{
-    top: 300px;
+.namecontainer {
     position: absolute;
-    overflow:hidden;
-    font-size: 2.5vw;
+    text-decoration: none;
+    width: 90%;
+    bottom: 7vh;
+}
+
+.name {
+    bottom: 20%;
+    overflow: hidden;
+    font-size: 2vw;
     text-align: center;
     color: black;
+    white-space: nowrap;
+    margin-top: 20px
 }
+
 
 .price{
     position: absolute;
     bottom: 10px;
     right: 20px;
-    font-size: 2.5vw;
+    font-size: 1.8vw;
     text-align: start;
     color: black;
 }
