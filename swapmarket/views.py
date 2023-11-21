@@ -13,7 +13,8 @@ import os
 def home(request):
     if request.user.is_authenticated:
         if request.user.is_staff:
-            return redirect('deposit/approval/')
+            return redirect('deposit/admin/')
+
         else:
             return render(request, 'user/homepage.html',{
             'item' : Item.objects.all(), 'categories': Category.objects.all()
@@ -94,10 +95,10 @@ def deposit_coins(request):
     return render(request, 'swapmarket/deposit.html', {'form': form})
 
 @login_required
-def deposit_approval(request):
+def deposit_admin(request):
     if request.user.is_staff:
         pending_deposits = Coins.objects.filter(is_confirmed=False)
-        return render(request, 'swapmarket/deposit_approval.html', {'pending_deposits': pending_deposits})
+        return render(request, 'swapmarket/deposit_admin.html', {'pending_deposits': pending_deposits})
 
 @login_required
 def approve_deposit(request, deposit_id):
@@ -112,4 +113,4 @@ def approve_deposit(request, deposit_id):
             deposit.save()
             messages.success(request, f'Deposit of {deposit.amount} coins has been approved.')
 
-        return redirect('deposit_approval')
+        return redirect('deposit_admin')
