@@ -1,5 +1,5 @@
 from django import forms
-from .models import Item, Category
+from .models import Item, Category, Coins
 
 class ItemForm(forms.ModelForm):
     class Meta:
@@ -18,3 +18,8 @@ class ItemForm(forms.ModelForm):
     ],
     widget=forms.RadioSelect,
     )
+
+class DepositForm(forms.ModelForm):
+    class Meta:
+        model = Coins
+        fields = ['amount']

@@ -1,0 +1,38 @@
+{% extends 'user/layout.html' %}
+{% load static %}
+{% block title %}Admin page{% endblock %}
+{% block link %}
+    <link rel="stylesheet" href="{% static 'user/css/signin.css' %}">
+{% endblock %}
+{% block body %}
+<div class="main">
+    <div class="box" style="height: 38vh;">
+        <div class="top">
+            Deposit Approval
+        </div>
+        <table>
+            <thead>
+              <tr>
+                <th>Sender</th>
+                <th>Amount</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for deposit in pending_deposits %}
+                <tr>
+                  <td>{{ deposit.sender.username }}</td>
+                  <td>{{ deposit.amount }}</td>
+                  <td>
+                    <form method="post" action="{% url 'approve_deposit' deposit.id %}">
+                      {% csrf_token %}
+                      <button type="submit">Approve</button>
+                    </form>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+    </div>  
+</div>
+{% endblock %}

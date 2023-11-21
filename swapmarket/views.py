@@ -1,15 +1,19 @@
 from django.shortcuts import render , redirect
-from swapmarket.models import Item, Category
+from swapmarket.models import Item, Category, Coins
 from swapmarket.forms import ItemForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
+from django.contrib import messages
+from .forms import DepositForm
+from user.models import CustomUser
 import os
+
 # Create your views here.
 
 def home(request):
     if request.user.is_authenticated:
         if request.user.is_staff:
-            return redirect('/admin/')
+            return redirect('deposit/approval/')
         else:
             return render(request, 'user/homepage.html',{
             'item' : Item.objects.all(), 'categories': Category.objects.all()
@@ -72,3 +76,40 @@ def delete_item(request, username, itemname):
     else:
         return redirect('home')
 
+@login_required
+def deposit_coins(request):
+    if request.method == 'POST':
+        form = DepositForm(request.POST)
+        if form.is_valid():
+            amount = form.cleaned_data['amount']
+            
+            deposit = Coins(sender=CustomUser.objects.get(username='admin'), receiver=request.user, amount=amount, is_confirmed=False)
+            deposit.save()
+
+            messages.success(request, f'Deposit of {amount} coins successful.')
+            return redirect('home') 
+    else:
+        form = DepositForm()
+
+    return render(request, 'swapmarket/deposit.html', {'form': form})
+
+@login_required
+def deposit_approval(request):
+    if request.user.is_staff:
+        pending_deposits = Coins.objects.filter(is_confirmed=False)
+        return render(request, 'swapmarket/deposit_approval.html', {'pending_deposits': pending_deposits})
+
+@login_required
+def approve_deposit(request, deposit_id):
+    if request.user.is_staff:
+        deposit = Coins.objects.get(id=deposit_id)
+        if deposit.is_confirmed:
+            messages.error(request, 'This deposit has already been confirmed.')
+        else:
+            deposit.is_confirmed = True
+            deposit.receiver.coins_balance += deposit.amount
+            deposit.receiver.save()
+            deposit.save()
+            messages.success(request, f'Deposit of {deposit.amount} coins has been approved.')
+
+        return redirect('deposit_approval')

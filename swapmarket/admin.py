@@ -3,9 +3,6 @@ from .models import Coins, Category, Item
 
 # Register your models here.
 
-from django.contrib import admin
-from .models import Coins, Category, Item
-
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('tag',)
 
