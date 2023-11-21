@@ -108,13 +108,11 @@ def registered(request):
 def edit_profile(request):
     if request.method == 'POST':
         old_picture = request.user.userpicture.path if request.user.userpicture else None
+        emty_word = ''
         form = CustomUserEditForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
-
-            print(old_picture)
             form.save()
-
-            if old_picture and os.path.exists(old_picture):
+            if old_picture and os.path.exists(old_picture) and form.instance.userpicture.path != old_picture:
                 os.remove(old_picture)
 
             return redirect('/profile') 
