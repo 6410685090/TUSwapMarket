@@ -197,4 +197,24 @@ def approve_withdraw(request, withdraw_id):
 
         return redirect('withdraw_admin')
     
+@login_required
+def cart_user(request):
+    pending_carts = Coins.objects.filter(sender=request.user, is_confirmed=False).exclude(receiver=CustomUser.objects.get(username='admin'))
+    return render(request, 'swapmarket/cart_user.html', {'pending_carts': pending_carts})
 
+@login_required
+def approve_cart(request, cart_id):
+    cart = Coins.objects.get(id=cart_id)
+    if cart.is_confirmed:
+        messages.error(request, 'This cart has already been confirmed.')
+    elif cart.sender.coins_balance >= cart.amount:
+        cart.is_confirmed = True
+        admin_user = CustomUser.objects.get(username='admin')
+        admin_user.coins_balance -= cart.amount
+        admin_user.save()
+        cart.receiver.coins_balance += cart.amount
+        cart.receiver.save()
+        cart.save()
+        messages.success(request, f'cart of {cart.amount} coins has been approved.')
+
+    return redirect('cart_user')

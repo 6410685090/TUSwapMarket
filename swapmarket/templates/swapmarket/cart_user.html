@@ -1,0 +1,38 @@
+{% extends 'user/layout.html' %}
+{% load static %}
+{% block title %}Cart{% endblock %}
+{% block link %}
+    <link rel="stylesheet" href="{% static 'user/css/signin.css' %}">
+{% endblock %}
+{% block body %}
+<div class="main">
+    <div class="box" style="height: 38vh;">
+        <div class="top">
+            My Cart
+        </div>
+        <table>
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Amount</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for cart in pending_carts %}
+                <tr>
+                  <td>{{ cart.sender.username }}</td>
+                  <td>{{ cart.amount }}</td>
+                  <td>
+                    <form method="post" action="{% url 'approve_cart' cart.id %}">
+                      {% csrf_token %}
+                      <button type="submit">Approve</button>
+                    </form>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+    </div>  
+</div>
+{% endblock %}
