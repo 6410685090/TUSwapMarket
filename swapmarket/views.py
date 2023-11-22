@@ -4,7 +4,7 @@ from swapmarket.forms import ItemForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
 from django.contrib import messages
-from .forms import DepositForm
+from .forms import DepositForm , WithdrawForm
 from user.models import CustomUser
 import os
 
@@ -97,8 +97,10 @@ def deposit_coins(request):
 @login_required
 def deposit_admin(request):
     if request.user.is_staff:
-        pending_deposits = Coins.objects.filter(is_confirmed=False)
+        pending_deposits = Coins.objects.filter(sender=CustomUser.objects.get(username='admin'),is_confirmed=False)
         return render(request, 'swapmarket/deposit_admin.html', {'pending_deposits': pending_deposits})
+    else:
+        return redirect('home')
 
 @login_required
 def approve_deposit(request, deposit_id):
@@ -106,11 +108,55 @@ def approve_deposit(request, deposit_id):
         deposit = Coins.objects.get(id=deposit_id)
         if deposit.is_confirmed:
             messages.error(request, 'This deposit has already been confirmed.')
-        else:
+        elif deposit.sender.coins_balance >= deposit.amount:
             deposit.is_confirmed = True
+            deposit.sender.coins_balance -= deposit.amount
+            deposit.sender.save()
             deposit.receiver.coins_balance += deposit.amount
             deposit.receiver.save()
             deposit.save()
             messages.success(request, f'Deposit of {deposit.amount} coins has been approved.')
 
         return redirect('deposit_admin')
+    
+@login_required
+def withdraw_coins(request):
+    if request.method == 'POST':
+        form = WithdrawForm(request.POST)
+        if form.is_valid():
+            amount = form.cleaned_data['amount']
+            
+            withdraw = Coins(sender=request.user, receiver=CustomUser.objects.get(username='admin'), amount=amount, is_confirmed=False)
+            withdraw.save()
+
+            messages.success(request, f'Withdraw of {amount} coins successful.')
+            return redirect('home') 
+    else:
+        form = WithdrawForm()
+
+    return render(request, 'swapmarket/withdraw.html', {'form': form})
+
+@login_required
+def withdraw_admin(request):
+    if request.user.is_staff:
+        pending_withdraws = Coins.objects.filter(receiver=CustomUser.objects.get(username='admin'),is_confirmed=False)
+        return render(request, 'swapmarket/withdraw_admin.html', {'pending_withdraws': pending_withdraws})
+    else:
+        return redirect('home')
+
+@login_required
+def approve_withdraw(request, withdraw_id):
+    if request.user.is_staff:
+        withdraw = Coins.objects.get(id=withdraw_id)
+        if withdraw.is_confirmed:
+            messages.error(request, 'This withdraw has already been confirmed.')
+        elif withdraw.sender.coins_balance >= withdraw.amount:
+            withdraw.is_confirmed = True
+            withdraw.sender.coins_balance -= withdraw.amount
+            withdraw.sender.save()
+            withdraw.receiver.coins_balance += withdraw.amount
+            withdraw.receiver.save()
+            withdraw.save()
+            messages.success(request, f'withdraw of {withdraw.amount} coins has been approved.')
+
+        return redirect('withdraw_admin')

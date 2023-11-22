@@ -3,6 +3,8 @@ from . import views
 urlpatterns = [
     path('deposit/admin/', views.deposit_admin, name='deposit_admin'),
     path('deposit/admin/<int:deposit_id>/', views.approve_deposit, name='approve_deposit'),
+    path('withdraw/admin/', views.withdraw_admin, name='withdraw_admin'),
+    path('withdraw/admin/<int:withdraw_id>/', views.approve_withdraw, name='approve_withdraw'),
     path('', views.home, name='home'),
     path('about', views.about, name="about"),
     path('sell_item/', views.sell_item, name='sell_item'),
@@ -10,6 +12,6 @@ urlpatterns = [
     path('<str:username>/<str:itemname>/', views.item_detail, name='item_detail'),
     path('<str:username>/<str:itemname>/delete/', views.delete_item, name='delete_item'),
     path('deposit/', views.deposit_coins, name='deposit_coins'),
-
+    path('withdraw/', views.withdraw_coins, name='withdraw_coins'),
 ]
     

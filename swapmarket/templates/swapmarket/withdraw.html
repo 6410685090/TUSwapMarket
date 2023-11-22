@@ -1,6 +1,6 @@
 {% extends 'user/layout.html' %}
 {% load static %}
-{% block title %}Deposit page{% endblock %}
+{% block title %}Withdraw page{% endblock %}
 {% block link %}
     <link rel="stylesheet" href="{% static 'user/css/signin.css' %}">
 {% endblock %}
@@ -8,12 +8,12 @@
 <div class="main">
     <div class="box" style="height: 38vh;">
         <div class="top">
-            Deposit Coins
+            Withdraw Coins
         </div>
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit">Deposit</button>
+            <button type="submit">Withdraw</button>
           </form>
     </div>  
 </div>

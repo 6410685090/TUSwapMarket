@@ -1,6 +1,6 @@
 {% extends 'user/layout.html' %}
 {% load static %}
-{% block title %}Admin Deposit{% endblock %}
+{% block title %}Admin Withdraw{% endblock %}
 {% block link %}
     <link rel="stylesheet" href="{% static 'user/css/signin.css' %}">
 {% endblock %}
@@ -8,7 +8,7 @@
 <div class="main">
     <div class="box" style="height: 38vh;">
         <div class="top">
-            Deposit Approval
+            Withdraw Approval
         </div>
         <table>
             <thead>
@@ -19,12 +19,12 @@
               </tr>
             </thead>
             <tbody>
-              {% for deposit in pending_deposits %}
+              {% for withdraw in pending_withdraws %}
                 <tr>
-                  <td>{{ deposit.receiver.username }}</td>
-                  <td>{{ deposit.amount }}</td>
+                  <td>{{ withdraw.sender.username }}</td>
+                  <td>{{ withdraw.amount }}</td>
                   <td>
-                    <form method="post" action="{% url 'approve_deposit' deposit.id %}">
+                    <form method="post" action="{% url 'approve_withdraw' withdraw.id %}">
                       {% csrf_token %}
                       <button type="submit">Approve</button>
                     </form>

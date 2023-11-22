@@ -23,3 +23,8 @@ class DepositForm(forms.ModelForm):
     class Meta:
         model = Coins
         fields = ['amount']
+
+class WithdrawForm(forms.ModelForm):
+    class Meta:
+        model = Coins
+        fields = ['amount']
