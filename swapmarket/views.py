@@ -58,13 +58,49 @@ def sbt(request):
 
 @login_required
 def item_detail(request, username, itemname):
-    if Item.objects.filter(seller__username=username, itemname=itemname):
-        items = Item.objects.get(seller__username=username, itemname=itemname)
-        return render(request, 'swapmarket/item.html' , {
-                "item" : items
-            })
-    else:
+    try:
+        item = Item.objects.get(seller__username=username, itemname=itemname)
+    except Item.DoesNotExist:
+        messages.error(request, 'Item not found.')
         return redirect('home')
+
+    if request.method == 'POST':
+        nitem_buyers = request.POST.get('nitem_buyers', 0)
+
+        if request.user == item.seller:
+            messages.error(request, 'You cannot buy your own item.')
+            return redirect('item_detail', username=username, itemname=itemname)
+        
+        if not nitem_buyers.isdigit() or int(nitem_buyers) <= 0:
+            messages.error(request, 'Invalid nitem.')
+            return redirect('item_detail', username=username, itemname=itemname)
+
+        nitem_buyers = int(nitem_buyers)
+
+        if nitem_buyers > item.nItem:
+            messages.error(request, 'Item exceeds available stock.')
+            return redirect('item_detail', username=username, itemname=itemname)
+
+        total_cost = nitem_buyers * item.price
+        if request.user.coins_balance < total_cost:
+            messages.error(request, 'Insufficient funds.')
+            return redirect('item_detail', username=username, itemname=itemname)
+
+        coins_transfer = Coins(sender=request.user, receiver=item.seller, amount=total_cost, is_confirmed=False)
+        coins_transfer.sender.coins_balance -= coins_transfer.amount
+        coins_transfer.sender.save()
+        admin_user = CustomUser.objects.get(username='admin')
+        admin_user.coins_balance += coins_transfer.amount
+        admin_user.save()
+        coins_transfer.save()
+
+        item.nItem -= nitem_buyers
+        item.save()
+
+        messages.success(request, f'Successfully purchased {nitem_buyers} {item.itemname}(s).')
+        return redirect('home')
+
+    return render(request, 'swapmarket/item.html', {'item': item})
     
 @login_required
 def delete_item(request, username, itemname):
@@ -160,3 +196,5 @@ def approve_withdraw(request, withdraw_id):
             messages.success(request, f'withdraw of {withdraw.amount} coins has been approved.')
 
         return redirect('withdraw_admin')
+    
+

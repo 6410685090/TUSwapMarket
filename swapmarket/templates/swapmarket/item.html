@@ -36,6 +36,19 @@
                 {% else %}
                     <p>Description : No Description</p>
                 {% endif %}
+                <form method="post" class="form1">
+                    {% csrf_token %}
+                    <div>
+                        <input type="nitem_buyers" name="nitem_buyers" class="inputbox" required placeholder="item ea">
+                    </div>
+                    {% if message %}
+                    <p style="color: red;">{{ message }}</p>
+                    {% endif %}
+                    <br>
+                    <div>
+                        <input type="submit" value="Buys" class="submit">
+                    </div>
+                </form>
             </div>
         </div>
         <div class="chat">
