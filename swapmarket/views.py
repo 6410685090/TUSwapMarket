@@ -11,14 +11,6 @@ import os
 # Create your views here.
 
 def home(request):
-    if request.user.is_authenticated:
-        if request.user.is_staff:
-            return redirect('deposit/admin/')
-
-        else:
-            return render(request, 'user/homepage.html',{
-            'item' : Item.objects.all(), 'categories': Category.objects.all()
-        })  
     return render(request, 'swapmarket/homepage.html',{
         'item' : Item.objects.all(), 'categories': Category.objects.all()
     })

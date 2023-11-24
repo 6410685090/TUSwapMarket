@@ -82,21 +82,21 @@ form.formtag input{
 
 .boxitem{
     background-color: white;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    align-items: center;
-    text-align: center;
-    text-decoration: none;
+    width: 24%;
     padding-top: 15px;
-    height: 450px;
-    width: 23%;
     margin-bottom: 10px;
     margin-right: 10px;
+    height: 450px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     box-sizing: border-box;
     border: 1px solid rgb(255, 227, 216);
     border-radius: 10px;  
-    
+    position: relative;
+    text-decoration: none;
+
 }
 
 .pic {
@@ -108,43 +108,41 @@ form.formtag input{
     object-fit: contain;
 }
 
-.bcpic {
+.bgpic{
+    display: flex;
     justify-content: center;
-    text-align: center;
-    margin-top: 10px;
+    align-items: center;
+    margin-top: 20px;
     background-color: white;
     width: 80%; 
-    max-width: 480px;
-    height: auto;
-    top: 30px;
-    left: 25%; 
+    height: 65%;
 }
 
 .namecontainer {
-    position: absolute;
+    margin-top: 15px;
+    width: 85%;
     text-decoration: none;
-    width: 90%;
-    bottom: 7vh;
+    overflow: hidden;
 }
 
 .name {
     bottom: 20%;
+    text-decoration: none;
     overflow: hidden;
     font-size: 2vw;
     text-align: center;
     color: black;
     white-space: nowrap;
-    margin-top: 20px
+    margin-top: 25px;
 }
 
 
 .price{
     position: absolute;
+    right: 10px;
     bottom: 10px;
-    right: 20px;
-    font-size: 1.8vw;
-    text-align: start;
-    color: black;
+    font-size: 20px;
+    color: #000;
 }
 
 
