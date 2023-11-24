@@ -96,15 +96,14 @@
 }
 
 .ibcpic {
+    display: flex;
     justify-content: center;
     text-align: center;
     margin-top: 10px;
     background-color: white;
     width: 80%; 
     max-width: 480px;
-    height: auto;
-    top: 30px;
-    left: 25%; 
+    height: 65%;
 }
 
 
@@ -146,7 +145,6 @@
         background-color: white;
         display: flex;
         position: relative;
-        justify-content: center;
         text-align: center;
         padding-top: 15px;
         height: 450px;
@@ -164,7 +162,6 @@
         background-color: white;
         display: flex;
         position: relative;
-        justify-content: center;
         text-align: center;
         padding-top: 15px;
         height: 450px;
@@ -182,7 +179,6 @@
         background-color: white;
         display: flex;
         position: relative;
-        justify-content: center;
         text-align: center;
         padding-top: 15px;
         height: 450px;
