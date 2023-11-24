@@ -44,8 +44,6 @@ def sbt(request):
     selected_tags = request.GET.getlist('tags')
     items = Item.objects.filter(itemtag__tag__in=selected_tags).annotate(tag_count=Count('itemtag')).filter(tag_count=len(selected_tags))
     categories = Category.objects.all()
-    if request.user.is_authenticated:
-        return render(request, 'user/sbt.html', {'item': items, 'categories': categories}) 
     return render(request, 'swapmarket/sbt.html', {'item': items, 'categories': categories})
 
 @login_required
