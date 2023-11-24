@@ -47,7 +47,7 @@ class HomeTest(TestCase):
         self.client.login(username='TEST1', password='Student331')
         response = self.client.get(home_url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'user/homepage.html')
+        self.assertTemplateUsed(response, 'swapmarket/homepage.html')
         self.assertEqual(resolve(home_url).func, home)
 
 
