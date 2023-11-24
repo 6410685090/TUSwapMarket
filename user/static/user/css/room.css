@@ -14,7 +14,7 @@ body {
 
 .container {
     border: 2px solid #dedede;
-    background-color: #f1f1f1;
+    background-color: #f5f5f5;
     border-radius: 5px;
     padding: 10px;
     margin: 10px 0;
@@ -25,11 +25,11 @@ body {
     border-radius: 5px;
     padding: 20px;
     height: 60vh;
-    overflow: scroll;
+    overflow: auto;
 }
 
 .darker {
-    border-color: #ccc;
+    border-color: #e6e6e6;
     background-color: #ebebeb;
 }
 

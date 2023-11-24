@@ -129,7 +129,7 @@ form.formtag input{
     bottom: 20%;
     text-decoration: none;
     overflow: hidden;
-    font-size: 2vw;
+    font-size: 30px;
     text-align: center;
     color: black;
     white-space: nowrap;
@@ -141,7 +141,7 @@ form.formtag input{
     position: absolute;
     right: 10px;
     bottom: 10px;
-    font-size: 20px;
+    font-size: 25px;
     color: #000;
 }
 
