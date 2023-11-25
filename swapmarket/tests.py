@@ -39,7 +39,7 @@ class HomeTest(TestCase):
         home_url = reverse('home')
         self.client.login(username='STAFF', password='Student331')
         response = self.client.get(home_url)
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(resolve(home_url).func, home)
 
     def test_url_profile_Authenticate(self):
@@ -226,7 +226,7 @@ class SbtTest(TestCase):
         self.client.login(username='TEST1', password='Student331')
         response = self.client.get(self.sbt_url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'user/sbt.html')
+        self.assertTemplateUsed(response, 'swapmarket/sbt.html')
         self.assertEqual(resolve(self.sbt_url).func, sbt)
     
 class ItemDetailTest(TestCase):
