@@ -27,9 +27,21 @@
                 <a href="/profile" class="button-headerright">Profile</a>
                 <a href="/inbox" class="button-headerright">Inbox</a>
                 <a href="/cart" class="button-headerright">Mycart</a>
+                <a href="/deposit" class="button-headerright">Deposit</a>
+                {% if user.is_staff %}
+                <a href="/deposit/admin" class="button-headerright">Deposit Admin</a>
+                <a href="/withdraw" class="button-headerright">Withdraw</a>
+                <a href="/withdraw/admin" class="button-headerright">Withdraw Admin</a>
+                <a href="/edit_profile" class="button-headerright">Edit Profile</a>
+                <a href="/changepassword" class="button-headerright">Changepassword</a>
+                <a href="/admin" class="button-headerright">Admin Django</a>
+                <a href="{% url 'user:logout' %}" class="button-headerright">Logout</a>
+                {% else %}
+                <a href="/withdraw" class="button-headerright">Withdraw</a>
                 <a href="/edit_profile" class="button-headerright">Edit Profile</a>
                 <a href="/changepassword" class="button-headerright">Changepassword</a>
                 <a href="{% url 'user:logout' %}" class="button-headerright">Logout</a>
+                {% endif %}
             </div>
         </div>
       </div>

@@ -10,7 +10,7 @@
         <div class="top">
             Withdraw Coins
         </div>
-        <form method="post">
+        <form method="post" action="{% url 'withdraw_coins' %}">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit">Withdraw</button>

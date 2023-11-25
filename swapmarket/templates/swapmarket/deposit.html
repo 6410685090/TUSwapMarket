@@ -10,7 +10,7 @@
         <div class="top">
             Deposit Coins
         </div>
-        <form method="post">
+        <form method="post" action="{% url 'deposit_coins' %}">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit">Deposit</button>
