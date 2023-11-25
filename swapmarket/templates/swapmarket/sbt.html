@@ -96,13 +96,13 @@
         <div class="content">
             {% for i in item %}
                 <a class="boxitem" href="{% url 'item_detail' username=i.seller.username itemname=i.itemname %}">
-                    <div class="bcpic">
+                    <div class="bgpic">
                         <img src="{{ i.itempicture.url }}" alt="" class="pic">
                     </div>
-                    <div class="price">
-                        ฿{{ i.price }}
-                    </div>
                     <div class="namecontainer"><div class="name">{{ i.itemname }}</div></div>
+                    <div class="price">
+                      ฿{{ i.price }}
+                  </div>
                 </a>
                 
                 {% empty %}
