@@ -10,11 +10,14 @@
         <div class="top">
             Withdraw Coins
         </div>
-        <form method="post" action="{% url 'withdraw_coins' %}">
+        <div class="mycoin" style="margin-top: 30px;">
+            Balance : {{ user.coins_balance }}
+        </div>
+        <form method="post" action="{% url 'withdraw_coins' %}" style="margin-top: 30px;">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit">Withdraw</button>
-          </form>
+        </form>
     </div>  
 </div>
 {% endblock %}
