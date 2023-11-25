@@ -400,40 +400,40 @@ class ChangePasswordViewTests(TestCase):
         self.assertContains(response, 'Password not match.')
         self.user.refresh_from_db()
         self.assertTrue(self.user.check_password('oldpassword'))
-# class FindRoomTest(TestCase):
-#     def setUp(self):
-#         self.client = Client()
-#         self.user = CustomUser.objects.create_user(username='testuser', password='testpassword')
-#         self.find_room_url = reverse('user:findroom')
+class FindRoomTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = CustomUser.objects.create_user(username='testuser', password='testpassword')
 
-#     def test_existing_room(self):
-#         existing_room = Room.objects.create(name='existing_room')
+    def test_existing_room(self):
+        existing_room = Room.objects.create(name='existing_room')
 
-#         # Make a request to the findroom view with the existing room
-#         response = self.client.get(reverse('user:findroom', args=['existing_room']))
+        # Make a request to the findroom view with the existing room
+        # response = self.client.get(reverse('user:findroom', args=['existing_room']))
+        response = self.client.get('user:/chat/existing_room/')
 
-#         # Check that the response status code is 200 (OK)
-#         self.assertEqual(response.status_code, 200)
+        # Check that the response status code is 200 (OK)
+        self.assertEqual(response.status_code, 200)
 
-#         # Check that the correct template is used
-#         self.assertTemplateUsed(response, 'user/room.html')
+        # Check that the correct template is used
+        self.assertTemplateUsed(response, 'user/room.html')
 
-#         # Check that the room details are passed to the template
-#         self.assertEqual(response.context['room_details'], existing_room)
-#     def test_new_room(self):
-#         response = self.client.get(reverse('user:findroom', args=['new_room']))
+        # Check that the room details are passed to the template
+        self.assertEqual(response.context['room_details'], existing_room)
+    def test_new_room(self):
+        # response = self.client.get(reverse('user:findroom', args=['new_room']))
+        response = self.client.get('user:/chat/new_room/')
+        # Check that the response status code is 200 (OK)
+        self.assertEqual(response.status_code, 200)
 
-#         # Check that the response status code is 200 (OK)
-#         self.assertEqual(response.status_code, 200)
+        # Check that the correct template is used
+        self.assertTemplateUsed(response, 'user/room.html')
 
-#         # Check that the correct template is used
-#         self.assertTemplateUsed(response, 'user/room.html')
+        # Check that a new room is created
+        self.assertTrue(Room.objects.filter(name='new_room').exists())
 
-#         # Check that a new room is created
-#         self.assertTrue(Room.objects.filter(name='new_room').exists())
-
-#         # Check that the room details are passed to the template
-#         self.assertEqual(response.context['room_details'].name, 'new_room')
+        # Check that the room details are passed to the template
+        self.assertEqual(response.context['room_details'].name, 'new_room')
 class GetMessagesTest(TestCase):
     def setUp(self):
         self.client = Client()
