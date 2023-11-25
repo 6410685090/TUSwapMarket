@@ -75,10 +75,6 @@ body{
     background-color: #d8d8d8;
 }
   
-.dropdown:hover .dropbtn {
-    background-color: #3e8e41;
-}
-
 .imgicon{
     width: 60px;
     height: 60px;

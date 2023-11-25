@@ -19,9 +19,13 @@
         </div>
         <div class="header-right">
             <div class="dropdown">
-                <div class="imgicon">
-                    <img src="{{ user.userpicture.url }}" class="img">
-                </div>
+                {% if user.is_staff %}
+                    <div style="color: white; font-size: 20px;">Admin Account</div>
+                    {% else %}
+                    <div class="imgicon">
+                        <img src="{{ user.userpicture.url }}" class="img">
+                    </div>
+                {% endif %}
                 <div class="dropdown-content">
                     <a href="/profile" class="button-headerright">Profile</a>
                     <a href="/inbox" class="button-headerright">Inbox</a>

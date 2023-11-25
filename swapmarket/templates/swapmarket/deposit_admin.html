@@ -2,37 +2,39 @@
 {% load static %}
 {% block title %}Admin Deposit{% endblock %}
 {% block link %}
-    <link rel="stylesheet" href="{% static 'user/css/signin.css' %}">
+    <link rel="stylesheet" href="{% static 'swapmarket/css/cart.css' %}">
 {% endblock %}
 {% block body %}
-<div class="main">
-    <div class="box" style="height: 38vh;">
-        <div class="top">
+
+    <div class="content">
+        <div class="head">
             Deposit Approval
         </div>
-        <table>
-            <thead>
-              <tr>
-                <th>Username</th>
-                <th>Amount</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for deposit in pending_deposits %}
+        <div class="info">
+          <table>
+              <thead>
                 <tr>
-                  <td>{{ deposit.receiver.username }}</td>
-                  <td>{{ deposit.amount }}</td>
-                  <td>
-                    <form method="post" action="{% url 'approve_deposit' deposit.id %}">
-                      {% csrf_token %}
-                      <button type="submit">Approve</button>
-                    </form>
-                  </td>
+                  <th>Username</th>
+                  <th>Amount</th>
+                  <th>Action</th>
                 </tr>
-              {% endfor %}
-            </tbody>
+              </thead>
+              <tbody>
+                {% for deposit in pending_deposits %}
+                  <tr>
+                    <td>{{ deposit.receiver.username }}</td>
+                    <td>{{ deposit.amount }}</td>
+                    <td>
+                      <form method="post" action="{% url 'approve_deposit' deposit.id %}">
+                        {% csrf_token %}
+                        <button type="submit">Approve</button>
+                      </form>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
           </table>
+        </div>
     </div>  
-</div>
+
 {% endblock %}

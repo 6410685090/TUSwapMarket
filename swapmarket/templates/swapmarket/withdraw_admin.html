@@ -2,14 +2,15 @@
 {% load static %}
 {% block title %}Admin Withdraw{% endblock %}
 {% block link %}
-    <link rel="stylesheet" href="{% static 'user/css/signin.css' %}">
+    <link rel="stylesheet" href="{% static 'swapmarket/css/cart.css' %}">
 {% endblock %}
 {% block body %}
-<div class="main">
-    <div class="box" style="height: 38vh;">
-        <div class="top">
+
+    <div class="content">
+        <div class="head">
             Withdraw Approval
         </div>
+        <div class="info">
         <table>
             <thead>
               <tr>
@@ -33,6 +34,7 @@
               {% endfor %}
             </tbody>
           </table>
+        </div>
     </div>  
-</div>
+
 {% endblock %}
