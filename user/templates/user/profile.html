@@ -8,7 +8,13 @@
 {% block body %}
 <div class="main">
     <div class="side">
-        <div class="picbg"><img src="{{ user.userpicture.url }}" alt="User Picture" class="pic"></div>
+        <div class="picbg">
+            {% if user.is_staff %}
+            <div>Admin Account</div>
+            {% else %}
+            <img src="{{ user.userpicture.url }}" alt="User Picture" class="pic">
+            {% endif %}
+        </div>
         <div class="inside">
             <div class="text">
                 {% if user.displayname != None %}

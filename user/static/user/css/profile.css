@@ -191,6 +191,124 @@
     }
 }
 
-@media only screen and (max-width: 700px) {
-    /* TODO : hide sidebar */
+@media only screen and (max-width: 501px) {
+    .hide{
+        display: none;
+    }
+
+    .main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;     
+        z-index: -2;
+    }
+    
+    .pic {
+        height: 168px;
+        object-fit: contain;
+    
+    }
+    
+    .picbg {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 20vh;
+        width: 350px;
+        background-color: white;
+        margin-top: 20px;
+    }
+        
+    .side{
+        position: relative;
+    }
+    
+    .content{
+        display: flex;
+        background-color: rgb(255, 250, 244);
+        width: 75%;
+        height: auto;
+        min-height: 500px;
+        margin-top: calc(10vh + 10px);
+        margin-left: 20%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: stretch;
+        box-sizing: border-box;
+        margin-right: 10px;
+    }
+    
+    
+    .boxitem{
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        text-align: center;
+        text-decoration: none;
+        padding-top: 15px;
+        height: 450px;
+        width: 80%;
+        margin-bottom: 10px;
+        margin-right: 10px;
+        box-sizing: border-box;
+        border: 1px solid rgb(255, 227, 216);
+        border-radius: 10px;  
+    }
+    
+    .ipic {
+        max-height: 270px; 
+        max-width: 480px; 
+        width: 100%;
+        height: auto;
+        vertical-align: top;
+        object-fit: contain;
+    }
+    
+    .ibcpic {
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        margin-top: 10px;
+        background-color: white;
+        width: 80%; 
+        max-width: 480px;
+        height: 65%;
+    }
+    
+    
+    .namecontainer {
+        position: absolute;
+        text-decoration: none;
+        width: 90%;
+        bottom: 10vh;
+    }
+    
+    .name {
+        bottom: 20%;
+        overflow: hidden;
+        font-size: 25px;
+        text-align: center;
+        color: black;
+        white-space: nowrap;
+        margin-top: 20px;
+    }
+    
+    .price{
+        position: absolute;
+        bottom: 10%;
+        right: 20px;
+        font-size: 20px;
+        text-align: start;
+        color: black;
+    }
+    
+    .delete{
+        position: absolute;
+        left: 3%;
+        bottom: 3%;
+    }
+
 }
