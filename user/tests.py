@@ -302,7 +302,7 @@ class EditProfileViewTests(TestCase):
             firstname='John',
             lastname='Doe',
             userdescription='Test user description',
-            userpicture='item_pictures/diy1eyzh3qi71.jpg',
+            userpicture=image_file ,
             coins_balance=100,
         )
         self.client.login(username='testuser', password='testpass')
@@ -333,13 +333,16 @@ class EditProfileViewTests(TestCase):
         self.assertEqual(self.user.lastname, 'UpdatedLastName')
         self.assertEqual(self.user.userdescription, 'Updated user description')
     # def test_remove_old_picture(self):
-    #     new_picture_content = b'This is a new profile picture.'
-    #     new_picture_file = SimpleUploadedFile('new_profile_picture.jpg', new_picture_content, content_type='image/jpeg')
-    #     response = self.client.post(self.edit_profile, {'userpicture': new_picture_file})
+
+    #     image = Image.new('RGB', (100, 100), 'white')
+    #     image_io = BytesIO()
+    #     image.save(image_io, format='JPEG')
+    #     image_io.seek(0)
+
+    #     new_image_file = SimpleUploadedFile("new_test_image.jpg", image_io.read(), content_type="image/jpeg")
+    #     response = self.client.post(self.edit_profile, {'userpicture': new_image_file})
     #     self.user.refresh_from_db()
-    #     self.assertEqual(self.user.userpicture, new_picture_file)
-        # old_picture_path = os.path.join(settings.MEDIA_ROOT, 'initial_profile_picture.jpg')
-        # self.assertFalse(os.path.exists(old_picture_path))
+    #     self.assertEqual(self.user.userpicture, new_image_file)
     # def test_remove_old_picture(self):
 
     #     # Ensure the old picture file exists before making the request
@@ -400,6 +403,41 @@ class ChangePasswordViewTests(TestCase):
         self.assertContains(response, 'Password not match.')
         self.user.refresh_from_db()
         self.assertTrue(self.user.check_password('oldpassword'))
+class SendMessageTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+        # Create a test user and room
+        self.user = CustomUser.objects.create_user(username='testuser', password='testpassword')
+        self.room = Room.objects.create(name='Test Room')
+
+        # Set up the URL for the send view
+        self.send_url = reverse('user:send')
+
+    def test_send_message(self):
+        # Log in the user
+        self.client.login(username='testuser', password='testpassword')
+
+        # Make a POST request to the send view
+        data = {
+            'message': 'Hello, test message!',
+            'username': 'testuser',
+            'room_id': self.room.id,
+        }
+        response = self.client.post(self.send_url, data)
+
+        # Check that the response status code is 200
+        self.assertEqual(response.status_code, 200)
+
+        # Check that a new message is created in the database
+        self.assertEqual(Message.objects.count(), 1)
+
+        # Retrieve the created message and check its values
+        created_message = Message.objects.first()
+        self.assertEqual(created_message.value, 'Hello, test message!')
+        self.assertEqual(created_message.user, 'testuser')
+        self.assertEqual(created_message.room, str(self.room.id))
+
 class FindRoomTest(TestCase):
     def setUp(self):
         self.client = Client()
