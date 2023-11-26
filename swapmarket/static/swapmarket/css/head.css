@@ -88,3 +88,30 @@ body{
     object-fit: cover; 
     border-radius: 50%;
 }
+
+.signinh{
+    margin-right: 20px;
+    font-size: 25px;
+}
+
+.signinh:hover{
+    color: rgb(167, 167, 167);
+}
+
+.signuph{
+    margin-right: 10px;
+    font-size: 25px;
+}
+
+.signuph:hover{
+    color: rgb(167, 167, 167);
+}
+
+
+@media only screen and (max-width: 501px) {
+
+    .hide{
+        display: none;
+    }
+
+}

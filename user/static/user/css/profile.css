@@ -115,7 +115,6 @@
 }
 
 .name {
-    bottom: 20%;
     overflow: hidden;
     font-size: 2vw;
     text-align: center;
@@ -139,8 +138,22 @@
     bottom: 3%;
 }
 
+.dbtn{
+    background-color: #ff5c5c;
+    color: #fff; 
+    padding: 7px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 
-@media only screen and (max-width: 1450px) {
+.dbtn:hover{
+    background-color: #d9534f;
+}
+
+
+@media only screen and (max-width: 1700px) {
     .boxitem{
         background-color: white;
         display: flex;
@@ -157,7 +170,7 @@
     }
 }
 
-@media only screen and (max-width: 1210px) {
+@media only screen and (max-width: 1300px) {
     .boxitem{
         background-color: white;
         display: flex;
@@ -174,7 +187,7 @@
     }
 }
 
-@media only screen and (max-width: 850px) {
+@media only screen and (max-width: 1000px) {
     .boxitem{
         background-color: white;
         display: flex;
@@ -258,57 +271,12 @@
         border-radius: 10px;  
     }
     
-    .ipic {
-        max-height: 270px; 
-        max-width: 480px; 
-        width: 100%;
-        height: auto;
-        vertical-align: top;
-        object-fit: contain;
-    }
-    
-    .ibcpic {
-        display: flex;
-        justify-content: center;
-        text-align: center;
-        margin-top: 10px;
-        background-color: white;
-        width: 80%; 
-        max-width: 480px;
-        height: 65%;
-    }
-    
-    
-    .namecontainer {
-        position: absolute;
-        text-decoration: none;
-        width: 90%;
-        bottom: 10vh;
-    }
-    
     .name {
-        bottom: 20%;
-        overflow: hidden;
         font-size: 25px;
-        text-align: center;
-        color: black;
-        white-space: nowrap;
-        margin-top: 20px;
     }
     
     .price{
-        position: absolute;
-        bottom: 10%;
-        right: 20px;
         font-size: 20px;
-        text-align: start;
-        color: black;
     }
     
-    .delete{
-        position: absolute;
-        left: 3%;
-        bottom: 3%;
-    }
-
 }
