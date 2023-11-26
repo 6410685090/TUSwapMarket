@@ -13,7 +13,7 @@ body {
 }
 
 .container {
-    border: 2px solid #dedede;
+    border: 1px solid #dedede;
     background-color: #f5f5f5;
     border-radius: 5px;
     padding: 10px;
@@ -131,3 +131,25 @@ body {
     border-radius: 3px;   
 }
 
+.bbt:hover{
+    background-color: rgb(226, 107, 107);
+}
+
+.gohome{
+    position: absolute;
+    bottom: 3vh;
+    right: 2vw;
+}
+
+.home{
+    background-color: rgb(125, 231, 38);
+    padding: 10px 15px; 
+    color: rgb(255, 255, 255);      
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 3px;  
+}
+
+.home:hover{
+    background-color: rgb(106, 199, 30);
+}

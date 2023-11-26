@@ -19,10 +19,12 @@
           <a href="/about" class="button-headerleft hide" style="padding-left: 15px;">About us</a>
       </div>
       <div class="header-right">
+        <div style="color: white;margin-right: 20px;">Balance: ฿{{ user.coins_balance }}</div>
         <div class="dropdown">
             {% if user.is_staff %}
                 <div style="color: white; font-size: 20px;">Admin Account</div>
                 {% else %}
+                
                 <div class="imgicon">
                     <img src="{{ user.userpicture.url }}" class="img">
                 </div>

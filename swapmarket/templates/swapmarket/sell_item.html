@@ -31,18 +31,18 @@
                     <label for="itempicture" class="mt-2">Item Picture:</label>
                     <input type="file" class="form-control" id="itempicture" name="itempicture" value="{{ form.itempicture.value }}">
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="margin-top: 10px;">
                     <label for="itemtag" class="mt-2">Tags:</label>
-                    <div class="checkbox-group">
+                    <div class="checkbox-group" style="margin-top: 10px;">
                         {% for category in categories %}
-                            <input type="checkbox" name="itemtag" id="{{ category.tag }}" value="{{ category.id }}">
                             <label for="{{ category.tag }}">{{ category.tag }}</label>
+                            <input type="checkbox" name="itemtag" id="{{ category.tag }}" value="{{ category.id }}">
                         {% endfor %}
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="margin-top: 10px;">
                     <label for="payment" class="mt-2">Payment :</label>
-                    <div class="radio-group">
+                    <div class="radio-group" style="margin-top: 10px;">
                         <input type="radio" name="payment" id="coin" value="coin">
                         <label for="coin">Coin</label>
                         <input type="radio" name="payment" id="other" value="other">

@@ -18,6 +18,7 @@
           <a href="/about" class="button-headerleft hide" style="padding-left: 15px;">About us</a>
         </div>
         <div class="header-right">
+            <div style="color: white;margin-right: 20px;">Balance: ฿{{ user.coins_balance }}</div>
             <div class="dropdown">
                 {% if user.is_staff %}
                     <div style="color: white; font-size: 20px;">Admin Account</div>
@@ -89,6 +90,7 @@
         <div class="fbitem hide"></div>
         <div class="content">
             {% for i in item %}
+                {% if i.nItem != 0 %}
                 <a class="boxitem" href="{% url 'item_detail' username=i.seller.username itemname=i.itemname %}">
                     <div class="bgpic">
                         <img src="{{ i.itempicture.url }}" alt="" class="pic">
@@ -98,12 +100,10 @@
                       ฿{{ i.price }}
                   </div>
                 </a>
-                
+                {% endif %}
                 {% empty %}
                 <p>no item</p>
-                
             {% endfor %}
-            
         </div>
     </div>
 </body>

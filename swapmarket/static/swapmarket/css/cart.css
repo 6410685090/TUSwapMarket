@@ -5,7 +5,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     height: 50%;
-    min-width: 40%;
+    min-width: 500px;
     overflow: auto;
     display: flex;
     flex-direction: column;
@@ -31,4 +31,34 @@ td{
     padding-left: 60px;
     padding-right: 60px;
     padding-top: 10px;
+}
+
+.btng{
+    background-color: rgb(72, 226, 0);
+    padding: 5px 10px; 
+    color: rgb(255, 255, 255);      
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 5px;   
+    font-weight: bold;
+    border: none;
+}
+
+.btng:hover{
+    background-color: rgb(61, 195, 0);
+}
+
+.btnr{
+    background-color: rgb(255, 136, 128);
+    padding: 5px 10px; 
+    color: rgb(255, 255, 255);      
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 5px;   
+    font-weight: bold;
+    border: none;
+}
+
+.btnr:hover{
+    background-color: rgb(255, 106, 96);
 }

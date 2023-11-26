@@ -39,7 +39,11 @@
                         <img src="{{ i.itempicture.url }}" alt="" class="ipic">
                     </div>
                     <div class="price">
+                        {% if i.nItem == 0 %}
+                        <p style="font-size: 20px;color: red;">Out of stock</p>
+                        {% else %}
                         ฿{{ i.price }}
+                        {% endif %}
                     </div>
                     <div class="namecontainer"><div class="name">{{ i.itemname }}</div></div>
                     

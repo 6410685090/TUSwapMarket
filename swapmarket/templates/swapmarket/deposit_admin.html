@@ -27,7 +27,7 @@
                     <td>
                       <form method="post" action="{% url 'approve_deposit' deposit.id %}">
                         {% csrf_token %}
-                        <button type="submit">Approve</button>
+                        <button type="submit" class="btng">Approve</button>
                       </form>
                     </td>
                   </tr>

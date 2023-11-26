@@ -85,10 +85,98 @@
 
 .btt{
     background-color: rgb(72, 226, 0);
-    padding: 10px 5vw; 
+    padding: 10px 3vw; 
     color: rgb(255, 255, 255);      
     text-decoration: none;
     display: inline-block;
     border-radius: 5px;   
     font-weight: bold;
+}
+
+.btt:hover{
+    background-color: rgb(61, 195, 0);;
+}
+
+.coinbuy{
+    position: absolute;
+    bottom: 7.95vh;
+    right: 10vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.pdlf{
+    margin-left: 10px;
+}
+
+.bbtn{
+    background-color: rgb(72, 226, 0);
+    color: #fff;
+    padding: 11.5px 2.7vw;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+    border-radius: 5px;   
+    font-weight: bold;
+}
+
+.bbtn:hover {
+    background-color: rgb(61, 195, 0);;
+  }
+
+.ipbox{
+    width: 200px;
+    padding: 9px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.message{
+    position: absolute;
+    top: 83%;
+    left: 72%;
+}
+
+@media only screen and (max-width: 1700px) {
+
+    .coinbuy{
+        bottom: 7.95vh;
+        right: 11vw;
+    }
+
+    
+}
+
+@media only screen and (max-width: 1200px) {
+
+    .coinbuy{
+        bottom: 7.95vh;
+        right: 12vw;
+    }
+
+    .footbar{
+        left: 5%;
+        width: 50%;
+        font-size: 25px;
+    }
+    
+}
+
+@media only screen and (max-width: 900px) {
+
+    .coinbuy{
+        bottom: 7.95vh;
+        right: 13vw;
+    }
+    
+    .footbar{
+        left: 5%;
+        top: 75%;
+        font-size: 20px;
+    }
+
 }

@@ -6,17 +6,17 @@
 {% endblock %}
 {% block body %}
 <div class="main">
-    <div class="box" style="height: 38vh;">
+    <div class="box" style="height: 300px;">
         <div class="top">
             Deposit Coins
         </div>
         <div class="mycoin" style="margin-top: 30px;">
             Balance : {{ user.coins_balance }}
         </div>
-        <form method="post" action="{% url 'deposit_coins' %}" style="margin-top: 30px;">
+        <form method="post" action="{% url 'deposit_coins' %}" style="margin-top: 30px;" >
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit">Deposit</button>
+            <button type="submit" class="btng">Deposit</button>
           </form>
     </div>  
 </div>

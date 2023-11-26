@@ -24,13 +24,13 @@
                         <td>{{ cart.sender.username }}</td>
                         <td>{{ cart.amount }}</td>
                         <td style="display: flex;">
-                            <form method="post" action="{% url 'cancel_cart' cart.id %}">
-                                {% csrf_token %}
-                                <button type="submit">Cancel</button>
-                            </form>
                             <form method="post" action="{% url 'approve_cart' cart.id %}">
                                 {% csrf_token %}
-                                <button type="submit">Approve</button>
+                                <button type="submit" class="btng" style="margin-right: 5px;">Approve</button>
+                            </form>
+                            <form method="post" action="{% url 'cancel_cart' cart.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btnr">Cancel</button>
                             </form>
                         </td>
                     </tr>

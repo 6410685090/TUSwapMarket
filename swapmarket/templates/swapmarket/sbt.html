@@ -95,6 +95,7 @@
         <div class="fbitem"></div>
         <div class="content">
             {% for i in item %}
+                {% if i.nItem != 0 %}
                 <a class="boxitem" href="{% url 'item_detail' username=i.seller.username itemname=i.itemname %}">
                     <div class="bgpic">
                         <img src="{{ i.itempicture.url }}" alt="" class="pic">
@@ -104,12 +105,10 @@
                       ฿{{ i.price }}
                   </div>
                 </a>
-                
+                {% endif %}
                 {% empty %}
                 <p>no item</p>
-                
             {% endfor %}
-            
         </div>
     </div>
 </body>

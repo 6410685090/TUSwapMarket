@@ -9,7 +9,7 @@
     <div>
         <div class="picbg"><img src="{{ item.itempicture.url }}" alt="Item Picture" class="pic"></div>
         <div class="namebox">
-            <div class="name">Item Name: {{ item.itemname }}</div>
+            <div class="name">{{ item.itemname }}</div>
         </div>
         <div class="footbar">
             {% if item.seller.displayname != None %}
@@ -36,22 +36,29 @@
                 {% else %}
                     <p>Description : No Description</p>
                 {% endif %}
-                <form method="post" class="form1">
-                    {% csrf_token %}
-                    <div>
-                        <input type="nitem_buyers" name="nitem_buyers" class="inputbox" required placeholder="item ea">
-                    </div>
-                    {% if message %}
-                    <p style="color: red;">{{ message }}</p>
-                    {% endif %}
-                    <br>
-                    <div>
-                        <input type="submit" value="Buys" class="submit">
-                    </div>
-                </form>
             </div>
         </div>
-        <div class="chat">
+        {% if messages %}
+            <p style="color: red;" class="message">{{ messages.error }}</p>
+        {% endif %}
+        {% if item.seller == user %}
+            <style>
+                .hides{
+                    display: none;
+                }
+            </style>
+        {% endif %}
+        <form method="post" class="form1 coinbuy hides">
+            {% csrf_token %}
+            <div>
+                <input type="nitem_buyers" name="nitem_buyers" class="ipbox pdlf" required placeholder="item ea">
+            </div>
+            <br>
+            <div>
+                <input type="submit" value="Buys" class="bbtn pdlf">
+            </div>
+        </form>
+        <div class="chat hides">
             <a href="/chat/{{ item.seller.username }}_{{ user.username }}/?username={{ user.username }}" class="btt">Chat</a>
         </div>
     </div>
