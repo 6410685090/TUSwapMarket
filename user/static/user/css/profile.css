@@ -152,6 +152,25 @@
     background-color: #d9534f;
 }
 
+.confirm{
+    position: absolute;
+    right: 3%;
+    bottom: 3%;
+}
+
+.cbtn{
+    background-color: rgb(83, 211, 32);
+    color: #fff; 
+    padding: 7px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.cbtn:hover{
+    background-color: #39b41b;
+}
 
 @media only screen and (max-width: 1700px) {
     .boxitem{

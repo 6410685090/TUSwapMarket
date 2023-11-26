@@ -16,5 +16,6 @@ urlpatterns = [
     path('<str:username>/<str:itemname>/delete/', views.delete_item, name='delete_item'),
     path('deposit/', views.deposit_coins, name='deposit_coins'),
     path('withdraw/', views.withdraw_coins, name='withdraw_coins'),
+    path('<str:username>/<str:itemname>/confirm/', views.confirm_item, name='confirm_item'),
 ]
     

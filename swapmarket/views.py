@@ -100,6 +100,22 @@ def delete_item(request, username, itemname):
         return redirect('/profile')
     else:
         return redirect('home')
+    
+@login_required
+def confirm_item(request, username, itemname):
+    item = Item.objects.get(seller__username=username, itemname=itemname)
+
+    if request.user == item.seller:
+        if item.nItem > 0 :
+            item.nItem -= 1
+            item.save()
+            return redirect('/profile')
+        else :
+            os.remove(item.itempicture.path)
+            item.delete()
+            return redirect('/profile')
+    else:
+        return redirect('home')
 
 @login_required
 def deposit_coins(request):
