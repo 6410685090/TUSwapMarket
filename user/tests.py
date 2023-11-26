@@ -453,7 +453,7 @@ class GetMessagesTest(TestCase):
         expected_messages = list(Message.objects.filter(room=room.id).values())
         self.assertEqual(response_data['messages'], expected_messages)
 
-class TestInbox(TestCase):
+class InboxTest(TestCase):
     def setUp(self) :
         image = Image.new('RGB', (100, 100), 'white')
         image_io = BytesIO()
