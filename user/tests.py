@@ -359,6 +359,29 @@ class EditProfileViewTests(TestCase):
     #     self.assertEqual(self.user.userpicture, 'item_pictures/new.jpg')
     #     self.assertEqual(response.status_code, 302)  # Example: Redirect status code
     #     self.assertRedirects(response, '/profile')
+    def test_remove_old_picture(self):
+        file = BytesIO()
+        image = Image.new('RGBA', size=(100, 100), color=(155, 0, 0))
+        image.save(file, 'png')
+        file.name = 'new_user_picture.jpg'
+        file.seek(0)
+        
+        response = self.client.post(self.edit_profile,
+            {
+                'userpicture': file,
+                'phone': '9876543210',
+                'firstname': 'UpdatedFirstName',
+                'lastname': 'UpdatedLastName',
+                'userdescription': 'Updated user description',
+            },
+            format="multipart"
+        )
+        
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.phone, '9876543210')
+        self.assertEqual(self.user.userpicture.name, 'user_pictures/new_user_picture.jpg')
+        self.assertEqual(response.status_code, 302)  # Example: Redirect status code
+        self.assertRedirects(response, '/profile')
 
 class ChangePasswordViewTests(TestCase):
     def setUp(self):

@@ -1,4 +1,3 @@
-import os
 from io import BytesIO
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
@@ -8,6 +7,7 @@ from .views import home, about, sell_item, sbt, item_detail, delete_item, deposi
 from user.models import CustomUser
 from .forms import ItemForm
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.contrib.messages import get_messages
 from PIL import Image
 
 # Create your tests here.
@@ -392,10 +392,22 @@ class DepositTest(TestCase):
     #         'amount' : 100,
     #     }
     #     response = self.client.post(self.deposit_coins, data=form_data)
-    #     print(response.context)
+        
+    #     all_messages = [msg for msg in get_messages(response.wsgi_request)]
+    #     self.assertEqual(all_messages[0].tags, "success")
+    #     self.assertEqual(all_messages[0].message, f'Deposit of 100 coins successful.')
+        
+    #     self.assertEqual(response.status_code, 302)
+    #     self.assertRedirects(response, reverse('home'))
+    # def test_deposit_coins_post(self):
+    #     self.client.login(username='testuser', password='testpassword')
+    #     form_data = {
+    #         'amount' : 100,
+    #     }
+    #     response = self.client.post(self.deposit_coins, data=form_data)
     #     self.assertEqual(response.status_code, 200)
-        # self.assertRedirects(response, 'home')
-        # self.assertContains(response, f'Deposit of {amount} coins successful.')
+    #     self.assertRedirects(response, 'home')
+    #     self.assertContains(response, f'Deposit of {amount} coins successful.')
 
 class DepositAdminTest(TestCase):
     def setUp(self):
@@ -511,47 +523,25 @@ class WithdrawCoinsTest(TestCase):
         self.client.login(username='testuser', password='testpassword')
 
     def test_successful_withdrawal(self):
-        # Set up the form data with a valid amount
         form_data = {
             'amount': 50,
         }
-
-        # Make a POST request to the withdraw_coins view
         response = self.client.post(reverse('withdraw_coins'), data=form_data)
-
-        # Check that the response status code is 302 (redirect)
         self.assertEqual(response.status_code, 302)
-
-        # Check that the withdrawal record is created
         self.assertTrue(Coins.objects.filter(sender=self.user, receiver=self.admin_user, amount=50, is_confirmed=False).exists())
-
-        # Check the success message
-        
-        # print(get_messages(response.wsgi_request))
-        # messages = [m.message for m in response.context['messages']]
-        # self.assertIn('Withdraw of 50 coins successful.', messages)
         self.assertRedirects(response, reverse('home'))
 
     def test_invalid_withdrawal(self):
-        # Set up the form data with an invalid amount (e.g., negative value)
         form_data = {
             'amount': -50,
         }
-
-        # Make a POST request to the withdraw_coins view
         response = self.client.post(reverse('withdraw_coins'), data=form_data)
-
-        # Check that the response status code is 200 (form submission failed)
         self.assertEqual(response.status_code, 200)
-
-        # Check that the form is rendered with errors
-        # self.assertContains(response, 'Enter a valid number.')
-
-        # # Check that the withdrawal record is not created
         self.assertFalse(Coins.objects.filter(sender=self.user, receiver=self.admin_user, amount=-50, is_confirmed=False).exists())
 
 class WithdrawAdminTest(TestCase):
     def setUp(self):
+        self.client = Client()
         self.user = CustomUser.objects.create_user(username='testuser', password='testpassword')
         image = Image.new('RGB', (100, 100), 'white')
         image_io = BytesIO()
@@ -579,3 +569,175 @@ class WithdrawAdminTest(TestCase):
         response = self.client.get(reverse('withdraw_admin'))
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, reverse('home'))
+
+class CartOfUserTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = CustomUser.objects.create_user(username='testuser', password='testpassword')
+        image = Image.new('RGB', (100, 100), 'white')
+        image_io = BytesIO()
+        image.save(image_io, format='JPEG')
+        image_io.seek(0)
+
+        # Create a SimpleUploadedFile from the image content
+        image_file = SimpleUploadedFile("test_image.jpg", image_io.read(), content_type="image/jpeg")
+        self.user.userpicture = image_file
+        self.user.save()
+        self.admin_user = CustomUser.objects.create_user(username='admin', email = 'admin@gmail.com', password='adminpassword', is_staff=True)
+        self.client.login(username='testuser', password='testpassword')
+        self.cart_user_url = reverse('cart_user')
+
+    def test_cart_user_authenticated(self):
+        response = self.client.get(self.cart_user_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'swapmarket/cart_user.html')
+        self.assertIn('pending_carts', response.context)
+
+class ApproveDepositTest(TestCase):
+    def setUp(self):
+        # Create user's image.
+        image = Image.new('RGB', (100, 100), 'white')
+        image_io = BytesIO()
+        image.save(image_io, format='JPEG')
+        image_io.seek(0)
+        image_file = SimpleUploadedFile("test_image.jpg", image_io.read(), content_type="image/jpeg")
+        
+        # Create user testuser.
+        self.user = CustomUser.objects.create_user(username='testuser', password='testpassword')
+        self.user.userpicture = image_file
+        self.user.save()
+
+        # Create staff user and login to website.
+        self.admin_user = CustomUser.objects.create_user(username='admin',email = 'admin@gmail.com', password='adminpassword', is_staff=True)
+        self.admin_user.coins_balance = 500
+        self.admin_user.save()
+        self.client.login(username='admin', password='adminpassword')
+        
+        # Create deposit.
+        self.deposit = Coins.objects.create(sender=self.admin_user, receiver=self.user, amount=50, is_confirmed=False)
+    
+    def test_approve_deposit_normal(self):
+        url = reverse('approve_deposit', args=[self.deposit.pk])
+        self.assertEqual(url, f'/deposit/admin/{self.deposit.pk}/')
+        
+        response = self.client.get(url, kwargs={'deposit_id': self.deposit.pk})
+        all_messages = [msg for msg in get_messages(response.wsgi_request)]
+        self.assertEqual(all_messages[0].tags, "success")
+        self.assertEqual(all_messages[0].message, f'Deposit of {self.deposit.amount} coins has been approved.')
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('deposit_admin'))
+        
+    def test_approve_deposit_already_confirmed(self):
+        self.deposit.is_confirmed = True
+        self.deposit.save()
+        
+        url = reverse('approve_deposit', args=[self.deposit.pk])
+        self.assertEqual(url, f'/deposit/admin/{self.deposit.pk}/')
+        
+        response = self.client.get(url, kwargs={'deposit_id': self.deposit.pk})
+        all_messages = [msg for msg in get_messages(response.wsgi_request)]
+        self.assertEqual(all_messages[0].tags, "error")
+        self.assertEqual(all_messages[0].message, "This deposit has already been confirmed.")
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('deposit_admin'))
+       
+class ApproveWithdrawTest(TestCase):
+    def setUp(self):
+        # Create user's image.
+        image = Image.new('RGB', (100, 100), 'white')
+        image_io = BytesIO()
+        image.save(image_io, format='JPEG')
+        image_io.seek(0)
+        image_file = SimpleUploadedFile("test_image.jpg", image_io.read(), content_type="image/jpeg")
+        
+        # Create user testuser.
+        self.user = CustomUser.objects.create_user(username='testuser', password='testpassword')
+        self.user.userpicture = image_file
+        self.user.coins_balance = 500
+        self.user.save()
+
+        # Create staff user and login to website.
+        self.admin_user = CustomUser.objects.create_user(username='admin',email = 'admin@gmail.com', password='adminpassword', is_staff=True)
+        self.client.login(username='admin', password='adminpassword')
+        
+        # Create withdrawal.
+        self.withdrawal = Coins.objects.create(sender=self.user, receiver=self.admin_user, amount=50, is_confirmed=False)
+        
+    def test_approve_withdraw_normal(self):
+        url = reverse('approve_withdraw', args=[self.withdrawal.pk])
+        self.assertEqual(url, f'/withdraw/admin/{self.withdrawal.pk}/')
+        
+        response = self.client.get(url, kwargs={'withdraw_id': self.withdrawal.pk})
+        all_messages = [msg for msg in get_messages(response.wsgi_request)]
+        self.assertEqual(all_messages[0].tags, "success")
+        self.assertEqual(all_messages[0].message, f'withdraw of {self.withdrawal.amount} coins has been approved.')
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('withdraw_admin'))
+    
+    def test_approve_withdraw_already_confirmed(self):
+        self.withdrawal.is_confirmed = True
+        self.withdrawal.save()
+        
+        url = reverse('approve_withdraw', args=[self.withdrawal.pk])
+        self.assertEqual(url, f'/withdraw/admin/{self.withdrawal.pk}/')
+        
+        response = self.client.get(url, kwargs={'withdraw_id': self.withdrawal.pk})
+        all_messages = [msg for msg in get_messages(response.wsgi_request)]
+        self.assertEqual(all_messages[0].tags, "error")
+        self.assertEqual(all_messages[0].message, "This withdraw has already been confirmed.")
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('withdraw_admin'))
+
+class ApproveCartTest(TestCase):
+    def setUp(self):
+        # Create user's image.
+        image = Image.new('RGB', (100, 100), 'white')
+        image_io = BytesIO()
+        image.save(image_io, format='JPEG')
+        image_io.seek(0)
+        image_file = SimpleUploadedFile("test_image.jpg", image_io.read(), content_type="image/jpeg")
+        
+        # Create user testuser1.
+        self.user1 = CustomUser.objects.create_user(username='testuser1',email = "1@gmail.com", password='testpassword')
+        self.user1.userpicture = image_file
+        self.user1.coins_balance = 500
+        self.user1.save()
+        
+        # Create user testuser2.
+        self.user2 = CustomUser.objects.create_user(username='testuser2',email = "2@gmail.com", password='testpassword')
+        self.user2.userpicture = image_file
+        self.user2.save()
+
+        # Create staff user and login to website.
+        self.admin_user = CustomUser.objects.create_user(username='admin',email = 'admin@gmail.com', password='adminpassword', is_staff=True)
+        self.admin_user.coins_balance = 500
+        self.admin_user.save()
+        self.client.login(username='admin', password='adminpassword')
+        
+        # Create cart.
+        self.cart = Coins.objects.create(sender=self.user1, receiver=self.user2, amount=50, is_confirmed=False)
+        
+    def test_approve_cart_normal(self):
+        url = reverse('approve_cart', args=[self.cart.pk])
+        self.assertEqual(url, f'/cart/{self.cart.pk}/')
+        
+        response = self.client.get(url, kwargs={'cart_id': self.cart.pk})
+        all_messages = [msg for msg in get_messages(response.wsgi_request)]
+        self.assertEqual(all_messages[0].tags, "success")
+        self.assertEqual(all_messages[0].message, f'cart of {self.cart.amount} coins has been approved.')
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('cart_user'))
+    
+    def test_approve_cart_already_confirmed(self):
+        self.cart.is_confirmed = True
+        self.cart.save()
+        
+        url = reverse('approve_cart', args=[self.cart.pk])
+        self.assertEqual(url, f'/cart/{self.cart.pk}/')
+        
+        response = self.client.get(url, kwargs={'cart_id': self.cart.pk})
+        all_messages = [msg for msg in get_messages(response.wsgi_request)]
+        self.assertEqual(all_messages[0].tags, "error")
+        self.assertEqual(all_messages[0].message, "This cart has already been confirmed.")
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('cart_user'))
