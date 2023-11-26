@@ -19,5 +19,41 @@
             <button type="submit" class="btng">Withdraw</button>
         </form>
     </div>  
+    <div class="box2">
+        <div style="margin-top:15px;">
+        <table>
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for withdraw in pending_withdraws %}
+                <tr>
+                  <td>{{ withdraw.receiver.username }}</td>
+                  <td>{{ withdraw.amount }}</td>
+                  <td>
+                    {% if withdraw.is_confirmed %}
+                        Complete
+                    {% else %}
+                        Pending
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if withdraw.is_confirmed %}
+                    {{ withdraw.confirmed_at}}
+                    {% else %}
+                    {{ withdraw.created_at}}
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div> 
 </div>
 {% endblock %}

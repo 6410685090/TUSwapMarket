@@ -15,6 +15,7 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
 
 .box{
@@ -91,4 +92,30 @@ body{
 
 .mycoin{
     font-size: 20px;
+}
+
+.box2{
+    margin-top: 10px;
+    background-color: #ffffff;
+    width: 30vw;
+    min-height: 300px;
+    border-radius: 20px;
+    border: none;
+    text-align: center;
+    min-width: 450px;
+}
+
+:root{
+    --pd: 25px;
+}
+
+th{
+    padding-left: var(--pd);
+    padding-right: var(--pd);
+}
+
+td{
+    padding-left: var(--pd);
+    padding-right: var(--pd);
+    padding-top: 10px;
 }

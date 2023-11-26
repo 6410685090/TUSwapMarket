@@ -6,6 +6,7 @@ from django.db.models import Count
 from django.contrib import messages
 from .forms import DepositForm , WithdrawForm
 from user.models import CustomUser
+from django.utils import timezone
 import os
 
 # Create your views here.
@@ -131,8 +132,8 @@ def deposit_coins(request):
             return redirect('home') 
     else:
         form = DepositForm()
-
-    return render(request, 'swapmarket/deposit.html', {'form': form})
+    pending_deposits = Coins.objects.filter(receiver=request.user , sender=CustomUser.objects.get(username='admin'))
+    return render(request, 'swapmarket/deposit.html', {'form': form ,'pending_deposits': pending_deposits})
 
 @login_required
 def deposit_admin(request):
@@ -150,6 +151,7 @@ def approve_deposit(request, deposit_id):
             messages.error(request, 'This deposit has already been confirmed.')
         elif deposit.sender.coins_balance >= deposit.amount:
             deposit.is_confirmed = True
+            deposit.confirmed_at = timezone.now()
             deposit.sender.coins_balance -= deposit.amount
             deposit.sender.save()
             deposit.receiver.coins_balance += deposit.amount
@@ -173,8 +175,12 @@ def withdraw_coins(request):
             return redirect('home') 
     else:
         form = WithdrawForm()
-
-    return render(request, 'swapmarket/withdraw.html', {'form': form})
+    pending_withdraws = Coins.objects.filter(sender=request.user , receiver=CustomUser.objects.get(username='admin'))
+    return render(request, 'swapmarket/withdraw.html', {
+        'form': form , 
+        "pending_withdraws" : pending_withdraws
+        }
+    )
 
 @login_required
 def withdraw_admin(request):
@@ -192,6 +198,7 @@ def approve_withdraw(request, withdraw_id):
             messages.error(request, 'This withdraw has already been confirmed.')
         elif withdraw.sender.coins_balance >= withdraw.amount:
             withdraw.is_confirmed = True
+            withdraw.confirmed_at = timezone.now()
             withdraw.sender.coins_balance -= withdraw.amount
             withdraw.sender.save()
             withdraw.receiver.coins_balance += withdraw.amount

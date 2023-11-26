@@ -17,7 +17,43 @@
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit" class="btng">Deposit</button>
-          </form>
-    </div>  
+        </form>
+    </div> 
+    <div class="box2">
+        <div style="margin-top:15px;">
+        <table>
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for deposit in pending_deposits %}
+                <tr>
+                  <td>{{ deposit.receiver.username }}</td>
+                  <td>{{ deposit.amount }}</td>
+                  <td>
+                    {% if deposit.is_confirmed %}
+                        Complete
+                    {% else %}
+                        Pending
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if deposit.is_confirmed %}
+                    {{ deposit.confirmed_at}}
+                    {% else %}
+                    {{ deposit.created_at}}
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div> 
 </div>
 {% endblock %}
