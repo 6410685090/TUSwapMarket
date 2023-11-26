@@ -222,7 +222,7 @@ form.formtag input{
     }
 
     .side{
-        position: relative;
+        position: fixed;
         display: inline-block;
         margin-right: 20px;
         margin-top: 5px;
