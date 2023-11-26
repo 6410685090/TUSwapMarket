@@ -263,36 +263,84 @@ class SbtTest(TestCase):
         self.assertTemplateUsed(response, 'swapmarket/sbt.html')
         self.assertEqual(resolve(self.sbt_url).func, sbt)
     
-class ItemDetailTest(TestCase):
+# class ItemDetailTest(TestCase):
         
-    def setUp(self):
-        image = Image.new('RGB', (100, 100), 'white')
-        image_io = BytesIO()
-        image.save(image_io, format='JPEG')
-        image_io.seek(0)
+#     def setUp(self):
+#         image = Image.new('RGB', (100, 100), 'white')
+#         image_io = BytesIO()
+#         image.save(image_io, format='JPEG')
+#         image_io.seek(0)
 
-        # Create a SimpleUploadedFile from the image content
-        image_file = SimpleUploadedFile("test_image.jpg", image_io.read(), content_type="image/jpeg")
+#         # Create a SimpleUploadedFile from the image content
+#         image_file = SimpleUploadedFile("test_image.jpg", image_io.read(), content_type="image/jpeg")
+#         self.client = Client()
+
+#         self.user1 = CustomUser.objects.create(username='TEST1', email = "1")
+#         self.user1.userpicture = image_file
+#         self.user1.set_password('Student331')
+#         self.user1.save()
+#         self.user2 = CustomUser.objects.create(username='TEST2', email = "2")
+#         self.user2.set_password('Student331')
+#         self.user2.save()
+#         self.category = Category.objects.create(tag = '1')
+        
+#         # Create example item 1
+#         self.item = Item.objects.create(itemname = 'A',
+#                                    seller = self.user1,
+#                                    nItem = 0,
+#                                    price = 0,
+#                                    itempicture = image_file)
+#         self.item.itemtag.add(self.category)
+
+#     def test_item_required_pass(self):
+#         item_detail_url = reverse('item_detail', args=['TEST1', 'A'])
+#         self.client.login(username='TEST1', password='Student331')
+#         self.assertEqual(item_detail_url, '/TEST1/A/')
+#         response = self.client.get(item_detail_url)
+#         self.assertTemplateUsed(response, 'swapmarket/item.html')
+#         self.assertEqual(response.status_code, 200)
+#         self.assertEqual(response.context['item'], self.item)
+#         self.assertEqual(resolve(item_detail_url).func, item_detail)
+   
+#     # Test when look at item detail with error.
+#     def test_item_required_except(self):
+#         item_detail_url = reverse('item_detail', args=['TEST1', 'B'])
+#         self.client.login(username='TEST1', password='Student331')
+#         self.assertEqual(item_detail_url, '/TEST1/B/')
+#         response = self.client.get(item_detail_url)
+#         self.assertEqual(response.status_code, 302)
+#         self.assertRedirects(response, '/')
+#         self.assertEqual(resolve(item_detail_url).func, item_detail)
+class ItemDetailTest(TestCase):
+    def setUp(self):
         self.client = Client()
+        
+        image_file = Image.new(mode="RGB", size=(200, 200))
+        image_file.save('media/user_pictures/old_user_picture.jpg', 'JPEG')
 
         self.user1 = CustomUser.objects.create(username='TEST1', email = "1")
-        self.user1.userpicture = image_file
+        self.user1.userpicture = 'user_pictures/old_user_picture.jpg'
         self.user1.set_password('Student331')
         self.user1.save()
+        
         self.user2 = CustomUser.objects.create(username='TEST2', email = "2")
         self.user2.set_password('Student331')
+        self.user2.userpicture = 'user_pictures/old_user_picture.jpg'
+        self.user2.coins_balance = 10
         self.user2.save()
+        
+        self.admin_user = CustomUser.objects.create_user(username='admin', email = 'admin@gmail.com' ,password='adminpassword', is_staff=True)
+        
         self.category = Category.objects.create(tag = '1')
         
-        # Create example item 1
         self.item = Item.objects.create(itemname = 'A',
                                    seller = self.user1,
-                                   nItem = 0,
-                                   price = 0,
-                                   itempicture = image_file)
+                                   nItem = 100,
+                                   price = 1,
+                                   itempicture = 'user_pictures/old_user_picture.jpg')
         self.item.itemtag.add(self.category)
 
-    def test_item_required_pass(self):
+    def test_item_detail_pass(self):
         item_detail_url = reverse('item_detail', args=['TEST1', 'A'])
         self.client.login(username='TEST1', password='Student331')
         self.assertEqual(item_detail_url, '/TEST1/A/')
@@ -301,9 +349,8 @@ class ItemDetailTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context['item'], self.item)
         self.assertEqual(resolve(item_detail_url).func, item_detail)
-   
-    # Test when look at item detail with error.
-    def test_item_required_except(self):
+        
+    def test_item_detail_except(self):
         item_detail_url = reverse('item_detail', args=['TEST1', 'B'])
         self.client.login(username='TEST1', password='Student331')
         self.assertEqual(item_detail_url, '/TEST1/B/')
@@ -311,6 +358,75 @@ class ItemDetailTest(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, '/')
         self.assertEqual(resolve(item_detail_url).func, item_detail)
+        
+    def test_item_detail_post_error1(self):
+        item_detail_url = reverse('item_detail', args=['TEST1', 'A'])
+        self.client.login(username='TEST1', password='Student331')
+        self.assertEqual(item_detail_url, '/TEST1/A/')
+        response = self.client.post(item_detail_url, {'nitem_buyers': 10})
+        
+        all_messages = [msg for msg in get_messages(response.wsgi_request)]
+        self.assertEqual(all_messages[0].tags, "error")
+        self.assertEqual(all_messages[0].message, "You cannot buy your own item.")
+        
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, item_detail_url)
+        
+    def test_item_detail_post_error2(self):
+        item_detail_url = reverse('item_detail', args=['TEST1', 'A'])
+        self.assertEqual(item_detail_url, '/TEST1/A/')
+        
+        self.client.login(username='TEST2', password='Student331')
+        response = self.client.post(item_detail_url, {'nitem_buyers': 0})
+        
+        all_messages = [msg for msg in get_messages(response.wsgi_request)]
+        self.assertEqual(all_messages[0].tags, "error")
+        self.assertEqual(all_messages[0].message, "Invalid nitem.")
+        
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, item_detail_url)
+        
+    def test_item_detail_post_error3(self):
+        item_detail_url = reverse('item_detail', args=['TEST1', 'A'])
+        self.assertEqual(item_detail_url, '/TEST1/A/')
+        
+        self.client.login(username='TEST2', password='Student331')
+        response = self.client.post(item_detail_url, {'nitem_buyers': 1000})
+        
+        all_messages = [msg for msg in get_messages(response.wsgi_request)]
+        self.assertEqual(all_messages[0].tags, "error")
+        self.assertEqual(all_messages[0].message, "Item exceeds available stock.")
+        
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, item_detail_url)
+        
+    def test_item_detail_post_error4(self):
+        item_detail_url = reverse('item_detail', args=['TEST1', 'A'])
+        self.assertEqual(item_detail_url, '/TEST1/A/')
+        
+        self.client.login(username='TEST2', password='Student331')
+        response = self.client.post(item_detail_url, {'nitem_buyers': 50})
+        
+        all_messages = [msg for msg in get_messages(response.wsgi_request)]
+        self.assertEqual(all_messages[0].tags, "error")
+        self.assertEqual(all_messages[0].message, "Insufficient funds.")
+        
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, item_detail_url)
+        
+    def test_item_detail_post_pass(self):
+        item_detail_url = reverse('item_detail', args=['TEST1', 'A'])
+        self.assertEqual(item_detail_url, '/TEST1/A/')
+        
+        self.client.login(username='TEST2', password='Student331')
+        response = self.client.post(item_detail_url, {'nitem_buyers': 10})
+        
+        all_messages = [msg for msg in get_messages(response.wsgi_request)]
+        self.assertEqual(all_messages[0].tags, "success")
+        self.assertEqual(all_messages[0].message, f'Successfully purchased 10 {self.item.itemname}(s).')
+        
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('home'))
 
 class DeleteItemTest(TestCase):
     def setUp(self):
@@ -763,7 +879,7 @@ class CancelCartTest(TestCase):
         image.save(image_io, format='JPEG')
         image_io.seek(0)
         image_file = SimpleUploadedFile("test_image.jpg", image_io.read(), content_type="image/jpeg")
-        
+
         self.user = CustomUser.objects.create_user(username='testuser', password='testpassword')
         self.user.userpicture = image_file
         self.user.save()
