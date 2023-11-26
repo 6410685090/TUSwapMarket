@@ -74,7 +74,7 @@ def item_detail(request, username, itemname):
             messages.error(request, 'Insufficient funds.')
             return redirect('item_detail', username=username, itemname=itemname)
 
-        coins_transfer = Coins(sender=request.user, receiver=item.seller, amount=total_cost, is_confirmed=False)
+        coins_transfer = Coins(sender=request.user, receiver=item.seller, amount=total_cost, is_confirmed=False, item=item, nItem=nitem_buyers)
         coins_transfer.sender.coins_balance -= coins_transfer.amount
         coins_transfer.sender.save()
         admin_user = CustomUser.objects.get(username='admin')
@@ -217,7 +217,8 @@ def cancel_cart(request, cart_id):
         admin_user.coins_balance -= cart.amount
         admin_user.save()
         cart.sender.coins_balance += cart.amount
-        
+        cart.item.nItem += cart.nItem
+        cart.item.save()
         cart.sender.save()
         cart.delete()
         messages.success(request, f'cart of {cart.amount} coins has been cancelled.')
