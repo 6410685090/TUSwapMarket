@@ -99,7 +99,7 @@
 
 .coinbuy{
     position: absolute;
-    bottom: 7.95vh;
+    bottom: 8vh;
     right: 10vw;
     display: flex;
     flex-direction: row;
@@ -144,8 +144,13 @@
 @media only screen and (max-width: 1700px) {
 
     .coinbuy{
-        bottom: 7.95vh;
+        bottom: 8vh;
         right: 11vw;
+    }
+
+    :root {
+        --base-font-size: 25px;
+        --head-font-size: 28px;
     }
 
     
@@ -154,7 +159,7 @@
 @media only screen and (max-width: 1200px) {
 
     .coinbuy{
-        bottom: 7.95vh;
+        bottom: 8vh;
         right: 12vw;
     }
 
@@ -163,13 +168,18 @@
         width: 50%;
         font-size: 25px;
     }
+
+    :root {
+        --base-font-size: 20px;
+        --head-font-size: 23px;
+    }
     
 }
 
 @media only screen and (max-width: 900px) {
 
     .coinbuy{
-        bottom: 7.95vh;
+        bottom: 8vh;
         right: 13vw;
     }
     
@@ -178,5 +188,28 @@
         top: 75%;
         font-size: 20px;
     }
+}
 
+
+@media only screen and (max-width: 700px) {
+
+    .coinbuy{
+        bottom: 8vh;
+        right: 14vw;
+    }
+
+}
+
+
+
+@media only screen and (max-width: 600px) {
+    :root {
+        --base-font-size: 15px;
+        --head-font-size: 18px;
+    }
+
+    .coinbuy{
+        bottom: 8vh;
+        right: 15.5vw;
+    }
 }

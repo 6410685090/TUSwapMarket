@@ -15,8 +15,8 @@
     <header class="header">
         <a href="/"><img src="{% static 'swapmarket/pic/logo.png' %}" alt="logo" style="height: 50px; padding-left: 15px;"></a>
         <div class="header-left">
-          <a href="/" class="button-headerleft" style="font-size: 30px; font-weight: bold;">TUSwapMarket</a>
-          <a href="/about" class="button-headerleft" style="padding-left: 15px;">About us</a>
+          <a href="/" class="button-headerleft hide" style="font-size: 30px; font-weight: bold;">TUSwapMarket</a>
+          <a href="/about" class="button-headerleft hide" style="padding-left: 15px;">About us</a>
         </div>
         <div class="header-right">
             <div class="dropdown">
@@ -67,6 +67,7 @@
     <div class="main">
         <div class="side">
             <div class="inside tag" >Tag</div>  
+            <div class="inside pictag"><img src="" alt=""></div>
             <form method="GET" action="{% url 'sbt' %}" class="formtag">  
                 {% for category in categories %}          
                 <div style="margin-bottom: 2vh;"> 
