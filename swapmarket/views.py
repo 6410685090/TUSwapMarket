@@ -16,8 +16,6 @@ def home(request):
     })
 
 def about(request):
-    if request.user.is_authenticated:
-        return render(request,"user/about.html")    
     return render(request,"swapmarket/about.html")
 
 @login_required

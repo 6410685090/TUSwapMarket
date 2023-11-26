@@ -101,7 +101,7 @@ class AboutTest(TestCase):
         self.client.login(username='TEST1', password='Student331')
         response = self.client.get(about_url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'user/about.html')
+        self.assertTemplateUsed(response, 'swapmarket/about.html')
         self.assertEqual(resolve(about_url).func, about)
 
     def test_url_about_notAuthenticate(self):
@@ -364,6 +364,7 @@ class DeleteItemTest(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, '/')
         self.assertEqual(resolve(delete_item_url).func, delete_item)
+
 class DepositTest(TestCase):
     def setUp(self) -> None:
         self.client = Client()
@@ -399,6 +400,13 @@ class DepositTest(TestCase):
         
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, reverse('home'))
+    def test_deposit_coins_not_post(self):
+        self.client.login(username='testuser', password='testpassword')
+        form_data = {
+            'amount' : 100,
+        }
+        response = self.client.get(self.deposit_coins, data=form_data)
+        self.assertEqual(response.status_code, 200)
     # def test_deposit_coins_post(self):
     #     self.client.login(username='testuser', password='testpassword')
     #     form_data = {
@@ -538,6 +546,12 @@ class WithdrawCoinsTest(TestCase):
         response = self.client.post(reverse('withdraw_coins'), data=form_data)
         self.assertEqual(response.status_code, 200)
         self.assertFalse(Coins.objects.filter(sender=self.user, receiver=self.admin_user, amount=-50, is_confirmed=False).exists())
+    def test_not_post_withdrawal(self):
+        form_data = {
+            'amount': 50,
+        }
+        response = self.client.get(reverse('withdraw_coins'), data=form_data)
+        self.assertEqual(response.status_code, 200)
 
 class WithdrawAdminTest(TestCase):
     def setUp(self):
@@ -741,3 +755,45 @@ class ApproveCartTest(TestCase):
         self.assertEqual(all_messages[0].message, "This cart has already been confirmed.")
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, reverse('cart_user'))
+class CancelCartTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        image = Image.new('RGB', (100, 100), 'white')
+        image_io = BytesIO()
+        image.save(image_io, format='JPEG')
+        image_io.seek(0)
+        image_file = SimpleUploadedFile("test_image.jpg", image_io.read(), content_type="image/jpeg")
+        
+        self.user = CustomUser.objects.create_user(username='testuser', password='testpassword')
+        self.user.userpicture = image_file
+        self.user.save()
+        
+        self.admin_user = CustomUser.objects.create_user(username='admin',email = 'admin@gmail.com', password='adminpassword', is_staff=True)
+        self.admin_user.coins_balance = 500
+        self.admin_user.save()
+
+        self.cart = Coins.objects.create(sender=self.user, receiver=CustomUser.objects.get(username='admin'), amount=50, is_confirmed=False)
+        self.cancel_cart_url = reverse('cancel_cart', args=[self.cart.id])
+        self.client.login(username='testuser', password='testpassword')
+
+    def test_cancel_cart_not_confirmed(self):
+        response = self.client.get(self.cancel_cart_url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('cart_user'))
+        self.assertFalse(Coins.objects.filter(id=self.cart.id).exists())
+        messages = [m.message for m in get_messages(response.wsgi_request)]
+        self.assertEqual(f'cart of {self.cart.amount} coins has been cancelled.', str(messages[0]))
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.coins_balance, 50)
+
+    def test_cancel_cart_confirmed(self):
+        self.cart.is_confirmed = True
+        self.cart.save()
+        response = self.client.get(self.cancel_cart_url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('cart_user'))
+        self.assertTrue(Coins.objects.filter(id=self.cart.id).exists())
+        messages = [m.message for m in get_messages(response.wsgi_request)]
+        self.assertIn('This cart has already been confirmed.', str(messages[0]))
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.coins_balance, 0)
