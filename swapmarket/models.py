@@ -31,6 +31,8 @@ class Coins(models.Model):
     is_confirmed = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     confirmed_at = models.DateTimeField(null=True, blank=True)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name='coins', null=True, blank=True)   
+    nItem = models.PositiveIntegerField(validators=[MaxValueValidator(99)], null=True, blank=True)
 
     def __str__(self):
         return f"{self.sender} -> {self.receiver}: {self.amount} coins"
