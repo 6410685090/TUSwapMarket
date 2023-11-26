@@ -208,3 +208,20 @@ def approve_cart(request, cart_id):
         messages.success(request, f'cart of {cart.amount} coins has been approved.')
 
     return redirect('cart_user')
+
+@login_required
+def cancel_cart(request, cart_id):
+    cart = Coins.objects.get(id=cart_id)
+    if cart.is_confirmed:
+        messages.error(request, 'This cart has already been confirmed.')
+    else:
+        admin_user = CustomUser.objects.get(username='admin')
+        admin_user.coins_balance -= cart.amount
+        admin_user.save()
+        cart.sender.coins_balance += cart.amount
+        
+        cart.sender.save()
+        cart.delete()
+        messages.success(request, f'cart of {cart.amount} coins has been cancelled.')
+        
+    return redirect('cart_user')

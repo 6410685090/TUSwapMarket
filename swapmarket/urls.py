@@ -6,6 +6,7 @@ urlpatterns = [
     path('withdraw/admin/', views.withdraw_admin, name='withdraw_admin'),
     path('withdraw/admin/<int:withdraw_id>/', views.approve_withdraw, name='approve_withdraw'),
     path('cart/', views.cart_user, name='cart_user'),
+    path('cartc/<int:cart_id>/', views.cancel_cart, name='cancel_cart'),
     path('cart/<int:cart_id>/', views.approve_cart, name='approve_cart'),
     path('', views.home, name='home'),
     path('about', views.about, name="about"),

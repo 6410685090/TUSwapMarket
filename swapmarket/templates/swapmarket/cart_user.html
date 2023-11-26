@@ -10,29 +10,33 @@
             My Cart
         </div>
         <div class="info">
-          <table>
-            <thead>
-              <tr>
-                <th>Item</th>
-                <th>Amount</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for cart in pending_carts %}
-                <tr>
-                  <td>{{ cart.sender.username }}</td>
-                  <td>{{ cart.amount }}</td>
-                  <td>
-                    <form method="post" action="{% url 'approve_cart' cart.id %}">
-                      {% csrf_token %}
-                      <button type="submit">Approve</button>
-                    </form>
-                  </td>
-                </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Amount</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cart in pending_carts %}
+                    <tr>
+                        <td>{{ cart.sender.username }}</td>
+                        <td>{{ cart.amount }}</td>
+                        <td style="display: flex;">
+                            <form method="post" action="{% url 'cancel_cart' cart.id %}">
+                                {% csrf_token %}
+                                <button type="submit">Cancel</button>
+                            </form>
+                            <form method="post" action="{% url 'approve_cart' cart.id %}">
+                                {% csrf_token %}
+                                <button type="submit">Approve</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
-    </div>  
+    </div>
 {% endblock %}
