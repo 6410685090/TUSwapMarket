@@ -13,7 +13,7 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Item</th>
+                        <th>Seller</th>
                         <th>Amount</th>
                         <th>Action</th>
                     </tr>
@@ -21,7 +21,7 @@
                 <tbody>
                     {% for cart in pending_carts %}
                     <tr>
-                        <td>{{ cart.sender.username }}</td>
+                        <td>{{ cart.receiver.username }}</td>
                         <td>{{ cart.amount }}</td>
                         <td style="display: flex;">
                             <form method="post" action="{% url 'approve_cart' cart.id %}">
