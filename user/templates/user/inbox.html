@@ -10,17 +10,19 @@
     <div class="box">
         <h2>Messages</h2>
         <div class="allchat">
+            <p style="align-self:center;">Chat for my product</p>
             {% for i in allroom %}
             <div class="chat">
                 <a href="/chat/{{ i.name }}/?username={{ user.username }}" class="bbt">{{ i.name }}</a>
             </div>
             {% endfor %}
+            <p style="align-self:center;">Chat for my order</p>
             {% for i in mychat %}
             <div class="chat">
                 <a href="/chat/{{ i.name }}/?username={{ user.username }}" style="color: rgb(255, 169, 169);" class="bbt">{{ i.name }}</a>
             </div>
             {% endfor %}
         </div>
-    </div>  
+    </div>
 </div>
 {% endblock %}
