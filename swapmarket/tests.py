@@ -372,11 +372,11 @@ class DepositTest(TestCase):
         image_io = BytesIO()
         image.save(image_io, format='JPEG')
         image_io.seek(0)
-
         # Create a SimpleUploadedFile from the image content
         image_file = SimpleUploadedFile("test_image.jpg", image_io.read(), content_type="image/jpeg")
         self.user.userpicture = image_file
         self.user.save()
+        self.admin_user = CustomUser.objects.create_user(username='admin',email = 'admin@gmail.com', password='adminpassword', is_staff=True)
 
         self.deposit_coins = reverse('deposit_coins')
     def test_templates(self):
@@ -386,19 +386,19 @@ class DepositTest(TestCase):
         self.assertTemplateUsed(response, 'swapmarket/deposit.html')
     def test_url_deposit_coins(self):
         self.assertEqual(resolve(self.deposit_coins).func, deposit_coins)
-    # def test_deposit_coins_post(self):
-    #     self.client.login(username='testuser', password='testpassword')
-    #     form_data = {
-    #         'amount' : 100,
-    #     }
-    #     response = self.client.post(self.deposit_coins, data=form_data)
+    def test_deposit_coins_post(self):
+        self.client.login(username='testuser', password='testpassword')
+        form_data = {
+            'amount' : 100,
+        }
+        response = self.client.post(self.deposit_coins, data=form_data)
         
-    #     all_messages = [msg for msg in get_messages(response.wsgi_request)]
-    #     self.assertEqual(all_messages[0].tags, "success")
-    #     self.assertEqual(all_messages[0].message, f'Deposit of 100 coins successful.')
+        all_messages = [msg for msg in get_messages(response.wsgi_request)]
+        self.assertEqual(all_messages[0].tags, "success")
+        self.assertEqual(all_messages[0].message, f'Deposit of 100 coins successful.')
         
-    #     self.assertEqual(response.status_code, 302)
-    #     self.assertRedirects(response, reverse('home'))
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('home'))
     # def test_deposit_coins_post(self):
     #     self.client.login(username='testuser', password='testpassword')
     #     form_data = {
