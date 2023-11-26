@@ -13,37 +13,28 @@ from PIL import Image
 # Create your tests here.
 
 class HomeTest(TestCase):
-    
-    # Set up for testing.
     def setUp(self) :
-        
-        # Create client.
         self.client = Client()
         image = Image.new('RGB', (100, 100), 'white')
         image_io = BytesIO()
         image.save(image_io, format='JPEG')
         image_io.seek(0)
 
-        # Create a SimpleUploadedFile from the image content
         image_file = SimpleUploadedFile("test_image.jpg", image_io.read(), content_type="image/jpeg")
 
-        # Create user TEST1.
         self.user1 = CustomUser.objects.create_user(username='TEST1', email = "1")
         self.user1.set_password('Student331')
         self.user1.userpicture = image_file
         self.user1.save()
         
-        # Create user TEST2.
         self.user2 = CustomUser.objects.create_user(username='TEST2', email = "2")
         self.user2.set_password('Student331')
         self.user2.userpicture = image_file
         self.user1.save()
         
-        # Create staff user STAFF.
         self.staffUser = CustomUser.objects.create_user(username='STAFF',email = "3", is_staff=True)
         self.staffUser.set_password('Student331')
         self.staffUser.save()
-
     def test_url_profile_Staff(self):
         home_url = reverse('home')
         self.client.login(username='STAFF', password='Student331')
@@ -76,26 +67,21 @@ class AboutTest(TestCase):
         image.save(image_io, format='JPEG')
         image_io.seek(0)
 
-        # Create a SimpleUploadedFile from the image content
         image_file = SimpleUploadedFile("test_image.jpg", image_io.read(), content_type="image/jpeg")
         
-        # Create user TEST1.
         self.user1 = CustomUser.objects.create_user(username='TEST1', email = "1")
         self.user1.set_password('Student331')
         self.user1.userpicture = image_file
         self.user1.save()
         
-        # Create user TEST2.
         self.user2 = CustomUser.objects.create_user(username='TEST2', email = "2")
         self.user2.set_password('Student331')
         self.user2.userpicture = image_file
         self.user2.save()
         
-        # Create staff user STAFF.
         self.staffUser = CustomUser.objects.create_user(username='STAFF',email = "3", is_staff=True)
         self.staffUser.set_password('Student331')
         self.staffUser.save()
-
     def test_url_about_Authenticate(self):
         about_url = reverse('about')
         self.client.login(username='TEST1', password='Student331')
@@ -103,7 +89,6 @@ class AboutTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'swapmarket/about.html')
         self.assertEqual(resolve(about_url).func, about)
-
     def test_url_about_notAuthenticate(self):
         about_url = reverse('about')
         response = self.client.get(about_url)
@@ -119,9 +104,7 @@ class ModelTest(TestCase):
         image.save(image_io, format='JPEG')
         image_io.seek(0)
 
-        # Create a SimpleUploadedFile from the image content
         image_file = SimpleUploadedFile("test_image.jpg", image_io.read(), content_type="image/jpeg")
-
         self.user1 = CustomUser.objects.create_user(username='TEST1', email = "1")
         self.user1.set_password('Student331')
         self.user1.userpicture = image_file
@@ -219,17 +202,16 @@ class SellItemTest(TestCase):
         self.assertEqual(response.status_code, 200)
     def test_item_form_invalid_data(self):
         self.client.login(username='testuser', password='testpassword')
-
-        # Create a POST request with invalid data
         form_data = {
         }
-        form = ItemForm(data=form_data)  # 200 is the statusd code for a successful GET request (rendering the form page)
+        form = ItemForm(data=form_data)
         self.assertFalse(form.is_valid())
         self.assertIn('nItem', form.errors)
         self.assertIn('price', form.errors)
         self.assertIn('itempicture', form.errors)
         self.assertIn('itemtag', form.errors)
         self.assertIn('payment', form.errors)
+
 class SbtTest(TestCase):
 
     def setUp(self):
@@ -238,7 +220,6 @@ class SbtTest(TestCase):
         image.save(image_io, format='JPEG')
         image_io.seek(0)
 
-        # Create a SimpleUploadedFile from the image content
         image_file = SimpleUploadedFile("test_image.jpg", image_io.read(), content_type="image/jpeg")
         self.client = Client()
 
@@ -255,7 +236,6 @@ class SbtTest(TestCase):
         self.assertTemplateUsed(response, 'swapmarket/sbt.html')
         self.assertEqual(resolve(self.sbt_url).func, sbt)
     
-    # Check that authenticated user will go to user/sbtl.html.
     def test_url_sbt_Authenticate(self):
         self.client.login(username='TEST1', password='Student331')
         response = self.client.get(self.sbt_url)
@@ -263,54 +243,6 @@ class SbtTest(TestCase):
         self.assertTemplateUsed(response, 'swapmarket/sbt.html')
         self.assertEqual(resolve(self.sbt_url).func, sbt)
     
-# class ItemDetailTest(TestCase):
-        
-#     def setUp(self):
-#         image = Image.new('RGB', (100, 100), 'white')
-#         image_io = BytesIO()
-#         image.save(image_io, format='JPEG')
-#         image_io.seek(0)
-
-#         # Create a SimpleUploadedFile from the image content
-#         image_file = SimpleUploadedFile("test_image.jpg", image_io.read(), content_type="image/jpeg")
-#         self.client = Client()
-
-#         self.user1 = CustomUser.objects.create(username='TEST1', email = "1")
-#         self.user1.userpicture = image_file
-#         self.user1.set_password('Student331')
-#         self.user1.save()
-#         self.user2 = CustomUser.objects.create(username='TEST2', email = "2")
-#         self.user2.set_password('Student331')
-#         self.user2.save()
-#         self.category = Category.objects.create(tag = '1')
-        
-#         # Create example item 1
-#         self.item = Item.objects.create(itemname = 'A',
-#                                    seller = self.user1,
-#                                    nItem = 0,
-#                                    price = 0,
-#                                    itempicture = image_file)
-#         self.item.itemtag.add(self.category)
-
-#     def test_item_required_pass(self):
-#         item_detail_url = reverse('item_detail', args=['TEST1', 'A'])
-#         self.client.login(username='TEST1', password='Student331')
-#         self.assertEqual(item_detail_url, '/TEST1/A/')
-#         response = self.client.get(item_detail_url)
-#         self.assertTemplateUsed(response, 'swapmarket/item.html')
-#         self.assertEqual(response.status_code, 200)
-#         self.assertEqual(response.context['item'], self.item)
-#         self.assertEqual(resolve(item_detail_url).func, item_detail)
-   
-#     # Test when look at item detail with error.
-#     def test_item_required_except(self):
-#         item_detail_url = reverse('item_detail', args=['TEST1', 'B'])
-#         self.client.login(username='TEST1', password='Student331')
-#         self.assertEqual(item_detail_url, '/TEST1/B/')
-#         response = self.client.get(item_detail_url)
-#         self.assertEqual(response.status_code, 302)
-#         self.assertRedirects(response, '/')
-#         self.assertEqual(resolve(item_detail_url).func, item_detail)
 class ItemDetailTest(TestCase):
     def setUp(self):
         self.client = Client()
@@ -444,16 +376,13 @@ class DeleteItemTest(TestCase):
         self.user1.set_password('Student331')
         self.user1.save()
         
-        # Create user TEST2.
         self.user2 = CustomUser.objects.create(username='TEST2', email = "2")
         self.user2.userpicture = image_file
         self.user2.set_password('Student331')
         self.user2.save()
         
-        # Create example tag A
         self.category = Category.objects.create(tag = '1')
         
-        # Create example item 1
         self.item = Item.objects.create(itemname = 'A',
                                    seller = self.user1,
                                    nItem = 0,
@@ -461,7 +390,6 @@ class DeleteItemTest(TestCase):
                                    itempicture = image_file)
         self.item.itemtag.add(self.category)
 
-    # Test when delete your own item.
     def test_delete_item_ownItems(self):
         delete_item_url = reverse('delete_item', kwargs={'username': self.user1.username, 'itemname': self.item})
         self.client.login(username='TEST1', password='Student331')
@@ -471,7 +399,6 @@ class DeleteItemTest(TestCase):
         self.assertRedirects(response, '/profile')
         self.assertEqual(resolve(delete_item_url).func, delete_item)
     
-    # Test when trying to delete someone else's item.
     def test_delete_item_notYourOwnItems(self):
         delete_item_url = reverse('delete_item', kwargs={'username': self.user1.username, 'itemname': self.item})
         self.client.login(username='TEST2', password='Student331')
@@ -489,7 +416,7 @@ class DepositTest(TestCase):
         image_io = BytesIO()
         image.save(image_io, format='JPEG')
         image_io.seek(0)
-        # Create a SimpleUploadedFile from the image content
+
         image_file = SimpleUploadedFile("test_image.jpg", image_io.read(), content_type="image/jpeg")
         self.user.userpicture = image_file
         self.user.save()
@@ -523,19 +450,9 @@ class DepositTest(TestCase):
         }
         response = self.client.get(self.deposit_coins, data=form_data)
         self.assertEqual(response.status_code, 200)
-    # def test_deposit_coins_post(self):
-    #     self.client.login(username='testuser', password='testpassword')
-    #     form_data = {
-    #         'amount' : 100,
-    #     }
-    #     response = self.client.post(self.deposit_coins, data=form_data)
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertRedirects(response, 'home')
-    #     self.assertContains(response, f'Deposit of {amount} coins successful.')
 
 class DepositAdminTest(TestCase):
     def setUp(self):
-        # Create a regular user
         self.client = Client()
         self.user = CustomUser.objects.create_user(username='testuser', password='testpassword')
         image = Image.new('RGB', (100, 100), 'white')
@@ -543,7 +460,6 @@ class DepositAdminTest(TestCase):
         image.save(image_io, format='JPEG')
         image_io.seek(0)
 
-        # Create a SimpleUploadedFile from the image content
         image_file = SimpleUploadedFile("test_image.jpg", image_io.read(), content_type="image/jpeg")
         self.user.userpicture = image_file
         self.user.save()
@@ -565,68 +481,6 @@ class DepositAdminTest(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, reverse('home'))
 
-# class ApproveDepositTest(TestCase):
-#     def setUp(self):
-#         self.client = Client()
-
-#         self.user = CustomUser.objects.create_user(username='testuser', password='testpassword')
-#         image = Image.new('RGB', (100, 100), 'white')
-#         image_io = BytesIO()
-#         image.save(image_io, format='JPEG')
-#         image_io.seek(0)
-
-#         # Create a SimpleUploadedFile from the image content
-#         image_file = SimpleUploadedFile("test_image.jpg", image_io.read(), content_type="image/jpeg")
-#         self.user.userpicture = image_file
-#         self.user.save()
-
-#         self.admin_user = CustomUser.objects.create_user(username='admin', email = 'admin@gmail.com', password='adminpassword', is_staff=True)
-#         self.client.login(username='admin', password='adminpassword')
-#         self.deposit = Coins.objects.create(sender=self.user, receiver=self.admin_user, amount=50, is_confirmed=False)
-
-#     def test_approve_deposit_staff_member(self):
-#         # Make a POST request to the approve_deposit view
-#         # response = self.client.post(reverse('approve_deposit', args=[self.deposit.id]))
-#         response = self.client.post(f'deposit/admin/{self.deposit.id}/')
-
-#         # Check that the response status code is 302 (redirect)
-#         self.assertEqual(response.status_code, 302)
-
-#         # Check that the deposit is confirmed and the balances are updated
-#         self.deposit.refresh_from_db()
-#         # self.assertTrue(self.deposit.is_confirmed)
-#         self.assertEqual(self.user.coins_balance, 50)
-#         self.assertEqual(self.admin_user.coins_balance, 0)
-
-#         # Check the success message
-#         messages = [m.message for m in response.context['messages']]
-#         self.assertIn('Deposit of 50 coins has been approved.', messages)
-
-#         # Check that the user is redirected to the deposit_admin page
-#         self.assertRedirects(response, reverse('deposit_admin'))
-
-#     def test_approve_deposit_not_staff_member(self):
-#         # Log out the admin user
-#         self.client.logout()
-#         self.client.login(username='testuser', password='testpassword')
-
-#         # Make a POST request to the approve_deposit view
-#         # response = self.client.post(reverse('approve_deposit', args=[self.deposit.id]))
-#         response = self.client.post(f'deposit/admin/{self.deposit.id}/')
-        
-
-#         # Check that the response status code is 302 (redirect)
-#         self.assertEqual(response.status_code, 302)
-
-#         # Check that the user is redirected to the home page
-#         self.assertRedirects(response, reverse('home'))
-
-#         # Check that the deposit is not confirmed and the balances are not updated
-#         self.deposit.refresh_from_db()
-#         self.assertFalse(self.deposit.is_confirmed)
-#         self.assertEqual(self.user.coins_balance, 0)
-#         self.assertEqual(self.admin_user.coins_balance, 0)
-
 class WithdrawCoinsTest(TestCase):
     def setUp(self):
         self.user = CustomUser.objects.create_user(username='testuser', password='testpassword')
@@ -635,15 +489,11 @@ class WithdrawCoinsTest(TestCase):
         image.save(image_io, format='JPEG')
         image_io.seek(0)
 
-        # Create a SimpleUploadedFile from the image content
         image_file = SimpleUploadedFile("test_image.jpg", image_io.read(), content_type="image/jpeg")
         self.user.userpicture = image_file
         self.user.save()
 
-        # Create an admin user
         self.admin_user = CustomUser.objects.create_user(username='admin', email ='admin@gmail.com', password='adminpassword', is_staff=True)
-
-        # Log in as the regular user
         self.client.login(username='testuser', password='testpassword')
 
     def test_successful_withdrawal(self):
@@ -678,7 +528,6 @@ class WithdrawAdminTest(TestCase):
         image.save(image_io, format='JPEG')
         image_io.seek(0)
 
-        # Create a SimpleUploadedFile from the image content
         image_file = SimpleUploadedFile("test_image.jpg", image_io.read(), content_type="image/jpeg")
         self.user.userpicture = image_file
         self.user.save()
@@ -709,7 +558,6 @@ class CartOfUserTest(TestCase):
         image.save(image_io, format='JPEG')
         image_io.seek(0)
 
-        # Create a SimpleUploadedFile from the image content
         image_file = SimpleUploadedFile("test_image.jpg", image_io.read(), content_type="image/jpeg")
         self.user.userpicture = image_file
         self.user.save()
@@ -725,25 +573,21 @@ class CartOfUserTest(TestCase):
 
 class ApproveDepositTest(TestCase):
     def setUp(self):
-        # Create user's image.
         image = Image.new('RGB', (100, 100), 'white')
         image_io = BytesIO()
         image.save(image_io, format='JPEG')
         image_io.seek(0)
         image_file = SimpleUploadedFile("test_image.jpg", image_io.read(), content_type="image/jpeg")
         
-        # Create user testuser.
         self.user = CustomUser.objects.create_user(username='testuser', password='testpassword')
         self.user.userpicture = image_file
         self.user.save()
 
-        # Create staff user and login to website.
         self.admin_user = CustomUser.objects.create_user(username='admin',email = 'admin@gmail.com', password='adminpassword', is_staff=True)
         self.admin_user.coins_balance = 500
         self.admin_user.save()
         self.client.login(username='admin', password='adminpassword')
         
-        # Create deposit.
         self.deposit = Coins.objects.create(sender=self.admin_user, receiver=self.user, amount=50, is_confirmed=False)
     
     def test_approve_deposit_normal(self):
@@ -773,24 +617,20 @@ class ApproveDepositTest(TestCase):
        
 class ApproveWithdrawTest(TestCase):
     def setUp(self):
-        # Create user's image.
         image = Image.new('RGB', (100, 100), 'white')
         image_io = BytesIO()
         image.save(image_io, format='JPEG')
         image_io.seek(0)
         image_file = SimpleUploadedFile("test_image.jpg", image_io.read(), content_type="image/jpeg")
         
-        # Create user testuser.
         self.user = CustomUser.objects.create_user(username='testuser', password='testpassword')
         self.user.userpicture = image_file
         self.user.coins_balance = 500
         self.user.save()
 
-        # Create staff user and login to website.
         self.admin_user = CustomUser.objects.create_user(username='admin',email = 'admin@gmail.com', password='adminpassword', is_staff=True)
         self.client.login(username='admin', password='adminpassword')
         
-        # Create withdrawal.
         self.withdrawal = Coins.objects.create(sender=self.user, receiver=self.admin_user, amount=50, is_confirmed=False)
         
     def test_approve_withdraw_normal(self):
@@ -820,33 +660,27 @@ class ApproveWithdrawTest(TestCase):
 
 class ApproveCartTest(TestCase):
     def setUp(self):
-        # Create user's image.
         image = Image.new('RGB', (100, 100), 'white')
         image_io = BytesIO()
         image.save(image_io, format='JPEG')
         image_io.seek(0)
         image_file = SimpleUploadedFile("test_image.jpg", image_io.read(), content_type="image/jpeg")
         
-        # Create user testuser1.
         self.user1 = CustomUser.objects.create_user(username='testuser1',email = "1@gmail.com", password='testpassword')
         self.user1.userpicture = image_file
         self.user1.coins_balance = 500
         self.user1.save()
         
-        # Create user testuser2.
         self.user2 = CustomUser.objects.create_user(username='testuser2',email = "2@gmail.com", password='testpassword')
         self.user2.userpicture = image_file
         self.user2.save()
 
-        # Create staff user and login to website.
         self.admin_user = CustomUser.objects.create_user(username='admin',email = 'admin@gmail.com', password='adminpassword', is_staff=True)
         self.admin_user.coins_balance = 500
         self.admin_user.save()
         self.client.login(username='admin', password='adminpassword')
         
-        # Create cart.
         self.cart = Coins.objects.create(sender=self.user1, receiver=self.user2, amount=50, is_confirmed=False)
-        
     def test_approve_cart_normal(self):
         url = reverse('approve_cart', args=[self.cart.pk])
         self.assertEqual(url, f'/cart/{self.cart.pk}/')
@@ -857,20 +691,18 @@ class ApproveCartTest(TestCase):
         self.assertEqual(all_messages[0].message, f'cart of {self.cart.amount} coins has been approved.')
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, reverse('cart_user'))
-    
     def test_approve_cart_already_confirmed(self):
         self.cart.is_confirmed = True
         self.cart.save()
-        
         url = reverse('approve_cart', args=[self.cart.pk])
         self.assertEqual(url, f'/cart/{self.cart.pk}/')
-        
         response = self.client.get(url, kwargs={'cart_id': self.cart.pk})
         all_messages = [msg for msg in get_messages(response.wsgi_request)]
         self.assertEqual(all_messages[0].tags, "error")
         self.assertEqual(all_messages[0].message, "This cart has already been confirmed.")
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, reverse('cart_user'))
+
 class CancelCartTest(TestCase):
     def setUp(self):
         self.client = Client()
@@ -891,7 +723,6 @@ class CancelCartTest(TestCase):
         self.cart = Coins.objects.create(sender=self.user, receiver=CustomUser.objects.get(username='admin'), amount=50, is_confirmed=False)
         self.cancel_cart_url = reverse('cancel_cart', args=[self.cart.id])
         self.client.login(username='testuser', password='testpassword')
-
     def test_cancel_cart_not_confirmed(self):
         response = self.client.get(self.cancel_cart_url)
         self.assertEqual(response.status_code, 302)
@@ -901,7 +732,6 @@ class CancelCartTest(TestCase):
         self.assertEqual(f'cart of {self.cart.amount} coins has been cancelled.', str(messages[0]))
         self.user.refresh_from_db()
         self.assertEqual(self.user.coins_balance, 50)
-
     def test_cancel_cart_confirmed(self):
         self.cart.is_confirmed = True
         self.cart.save()

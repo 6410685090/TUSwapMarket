@@ -3,7 +3,6 @@ import json
 from PIL import Image
 from django.test import TestCase, Client
 from io import BytesIO
-# from django.contrib.auth.models import User
 from swapmarket.models import Item
 from .models import Room, Message
 from user.models import CustomUser
@@ -12,8 +11,6 @@ from .views import signin, signup, profile, registered, edit_profile, changepass
 from django.contrib.messages import get_messages
 from django.core.files.uploadedfile import SimpleUploadedFile
 from .forms import CustomUserEditForm 
-
-# Create your tests here. 
 
 class ProfileTest(TestCase):
     def setUp(self) -> None:
@@ -285,6 +282,7 @@ class RegisteredTest(TestCase):
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(len(messages), 1)
         self.assertEqual(str(messages[0]), "Email already exists")
+
 class EditProfileViewTests(TestCase):
     def setUp(self):
         self.client = Client()
@@ -332,33 +330,6 @@ class EditProfileViewTests(TestCase):
         self.assertEqual(self.user.firstname, 'UpdatedFirstName')
         self.assertEqual(self.user.lastname, 'UpdatedLastName')
         self.assertEqual(self.user.userdescription, 'Updated user description')
-    # def test_remove_old_picture(self):
-
-    #     image = Image.new('RGB', (100, 100), 'white')
-    #     image_io = BytesIO()
-    #     image.save(image_io, format='JPEG')
-    #     image_io.seek(0)
-
-    #     new_image_file = SimpleUploadedFile("new_test_image.jpg", image_io.read(), content_type="image/jpeg")
-    #     response = self.client.post(self.edit_profile, {'userpicture': new_image_file})
-    #     self.user.refresh_from_db()
-    #     self.assertEqual(self.user.userpicture, new_image_file)
-    # def test_remove_old_picture(self):
-
-    #     # Ensure the old picture file exists before making the request
-
-    #     response = self.client.post(self.edit_profile,
-    #                                 {
-    #                                 'userpicture': 'item_pictures/new.jpg',
-    #                                 }
-    #                             )
-    #     print(response.context)
-    #     self.user.refresh_from_db()
-    #     # Check if the old picture file is removed
-    #     # self.assertFalse(os.path.exists('item_pictures/diy1eyzh3qi71.jpg'))
-    #     self.assertEqual(self.user.userpicture, 'item_pictures/new.jpg')
-    #     self.assertEqual(response.status_code, 302)  # Example: Redirect status code
-    #     self.assertRedirects(response, '/profile')
     def test_remove_old_picture(self):
         file = BytesIO()
         image = Image.new('RGBA', size=(100, 100), color=(155, 0, 0))
@@ -376,11 +347,10 @@ class EditProfileViewTests(TestCase):
             },
             format="multipart"
         )
-        
         self.user.refresh_from_db()
         self.assertEqual(self.user.phone, '9876543210')
         self.assertEqual(self.user.userpicture.name, 'user_pictures/new_user_picture.jpg')
-        self.assertEqual(response.status_code, 302)  # Example: Redirect status code
+        self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, '/profile')
         os.remove('media/user_pictures/new_user_picture.jpg')
 
@@ -454,7 +424,6 @@ class FindRoomTest(TestCase):
     def setUp(self):
         self.client = Client()
         self.user = CustomUser.objects.create_user(username='testuser', password='testpassword')
-
     def test_existing_room(self):
         existing_room = Room.objects.create(name='existing_room')
         response = self.client.get('user:/chat/existing_room/')
@@ -467,13 +436,12 @@ class FindRoomTest(TestCase):
         self.assertTemplateUsed(response, 'user/room.html')
         self.assertTrue(Room.objects.filter(name='new_room').exists())
         self.assertEqual(response.context['room_details'].name, 'new_room')
-        
+
 class GetMessagesTest(TestCase):
     def setUp(self):
         self.client = Client()
         self.user = CustomUser.objects.create_user(username='testuser', password='testpassword')
         self.client.login(username='testuser', password='testpassword')
-
     def test_get_messages(self):
         room = Room.objects.create(name='test_room')
         message1 = Message.objects.create(room=room, user=self.user, value='Hello')
@@ -486,7 +454,6 @@ class GetMessagesTest(TestCase):
         self.assertEqual(response_data['messages'], expected_messages)
 
 class TestInbox(TestCase):
-
     def setUp(self) :
         image = Image.new('RGB', (100, 100), 'white')
         image_io = BytesIO()
@@ -499,14 +466,12 @@ class TestInbox(TestCase):
         self.user.userpicture = image_file
         self.user.save()
         self.inbox_url = reverse('user:inbox')
-
     def test_url_inbox(self):
         self.client.login(username='TEST1', password='Student331')
         response = self.client.get(self.inbox_url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'user/inbox.html')
         self.assertEqual(resolve(self.inbox_url).func, inbox) 
-
     def test_inbox_view(self):
         self.client.login(username='TEST1', password='Student331')
         room1 = Room.objects.create(name='testuser_room1')
