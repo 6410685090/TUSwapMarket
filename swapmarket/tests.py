@@ -1,6 +1,5 @@
 from io import BytesIO
 from django.test import TestCase, Client
-from django.contrib.auth.models import User
 from django.urls import reverse, resolve
 from .models import Category, Item, Coins
 from .views import home, about, sell_item, sbt, item_detail, delete_item, deposit_coins
@@ -307,56 +306,44 @@ class ItemDetailTest(TestCase):
     def test_item_detail_post_error2(self):
         item_detail_url = reverse('item_detail', args=['TEST1', 'A'])
         self.assertEqual(item_detail_url, '/TEST1/A/')
-        
         self.client.login(username='TEST2', password='Student331')
         response = self.client.post(item_detail_url, {'nitem_buyers': 0})
-        
         all_messages = [msg for msg in get_messages(response.wsgi_request)]
         self.assertEqual(all_messages[0].tags, "error")
         self.assertEqual(all_messages[0].message, "Invalid nitem.")
-        
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, item_detail_url)
         
     def test_item_detail_post_error3(self):
         item_detail_url = reverse('item_detail', args=['TEST1', 'A'])
         self.assertEqual(item_detail_url, '/TEST1/A/')
-        
         self.client.login(username='TEST2', password='Student331')
         response = self.client.post(item_detail_url, {'nitem_buyers': 1000})
-        
         all_messages = [msg for msg in get_messages(response.wsgi_request)]
         self.assertEqual(all_messages[0].tags, "error")
         self.assertEqual(all_messages[0].message, "Item exceeds available stock.")
-        
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, item_detail_url)
         
     def test_item_detail_post_error4(self):
         item_detail_url = reverse('item_detail', args=['TEST1', 'A'])
         self.assertEqual(item_detail_url, '/TEST1/A/')
-        
         self.client.login(username='TEST2', password='Student331')
         response = self.client.post(item_detail_url, {'nitem_buyers': 50})
-        
         all_messages = [msg for msg in get_messages(response.wsgi_request)]
         self.assertEqual(all_messages[0].tags, "error")
         self.assertEqual(all_messages[0].message, "Insufficient funds.")
-        
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, item_detail_url)
         
     def test_item_detail_post_pass(self):
         item_detail_url = reverse('item_detail', args=['TEST1', 'A'])
         self.assertEqual(item_detail_url, '/TEST1/A/')
-        
         self.client.login(username='TEST2', password='Student331')
         response = self.client.post(item_detail_url, {'nitem_buyers': 10})
-        
         all_messages = [msg for msg in get_messages(response.wsgi_request)]
         self.assertEqual(all_messages[0].tags, "success")
         self.assertEqual(all_messages[0].message, f'Successfully purchased 10 {self.item.itemname}(s).')
-        
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, reverse('home'))
 
@@ -720,7 +707,8 @@ class CancelCartTest(TestCase):
         self.admin_user.coins_balance = 500
         self.admin_user.save()
 
-        self.cart = Coins.objects.create(sender=self.user, receiver=CustomUser.objects.get(username='admin'), amount=50, is_confirmed=False)
+        self.item = Item.objects.create(itemname = 'test item', seller=self.user, nItem = 10, price = 100)
+        self.cart = Coins.objects.create(sender=self.user, receiver=CustomUser.objects.get(username='admin'), amount=50, is_confirmed=False,  item=self.item, nItem=2 )
         self.cancel_cart_url = reverse('cancel_cart', args=[self.cart.id])
         self.client.login(username='testuser', password='testpassword')
     def test_cancel_cart_not_confirmed(self):
