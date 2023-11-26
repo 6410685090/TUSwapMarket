@@ -119,7 +119,7 @@ form.formtag input{
 }
 
 .namecontainer {
-    margin-top: 15px;
+    margin-top: 20px;
     width: 85%;
     text-decoration: none;
     overflow: hidden;
@@ -133,7 +133,6 @@ form.formtag input{
     text-align: center;
     color: black;
     white-space: nowrap;
-    margin-top: 25px;
 }
 
 
@@ -200,6 +199,28 @@ form.formtag input{
     }
 }
 
-@media only screen and (max-width: 700px) {
-    /* TODO : hide sidebar */
+@media only screen and (max-width: 501px) {
+    .side{
+        display: none;
+    }
+    
+    .content{
+        margin-top: 100px;
+        background-color:rgb(255, 250, 244);
+        height: 200px;
+        transform: translate(-50%, -50%);
+        position: absolute;
+        top: 100px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: stretch;
+        box-sizing: border-box;
+    }
+
+    .hide{
+        display: none;
+    }
+
 }
