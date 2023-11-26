@@ -347,6 +347,54 @@ class ItemDetailTest(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, reverse('home'))
 
+class ConfirmItemTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        image = Image.new('RGB', (100, 100), 'white')
+        image_io = BytesIO()
+        image.save(image_io, format='JPEG')
+        image_io.seek(0)
+
+        image_file = SimpleUploadedFile("test_image.jpg", image_io.read(), content_type="image/jpeg")
+        self.user = CustomUser.objects.create_user(username='testuser', password='testpassword')
+        self.user.userpicture = image_file
+        self.user.save()
+        self.client.login(username='testuser', password='testpassword')
+        self.item = Item.objects.create(itemname='Test Item', seller=self.user, nItem=2, price = 50)
+        self.item.itempicture = image_file
+        self.item.save()
+
+        self.confirm_item_url = reverse('confirm_item', args=[self.user.username, self.item.itemname])
+    def test_confirm_item_owner(self):
+        response = self.client.get(self.confirm_item_url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, '/profile')
+        self.item.refresh_from_db()
+        self.assertEqual(self.item.nItem, 1)
+    def test_confirm_item_owner_zero_quantity(self):
+        self.item.nItem = 0
+        self.item.save()
+        response = self.client.get(self.confirm_item_url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, '/profile')
+        self.assertFalse(Item.objects.filter(id=self.item.id).exists())
+    def test_confirm_item_not_owner(self):
+        self.client.logout()
+        image = Image.new('RGB', (100, 100), 'white')
+        image_io = BytesIO()
+        image.save(image_io, format='JPEG')
+        image_io.seek(0)
+        image_file = SimpleUploadedFile("test_image.jpg", image_io.read(), content_type="image/jpeg")
+        self.another_user = CustomUser.objects.create_user(username='anotheruser', email = 'anotheruser@gmail.com', password='anotherpassword')
+        self.another_user.userpicture = image_file
+        self.another_user.save()
+        self.client.login(username='anotheruser', password='anotherpassword')
+        response = self.client.get(self.confirm_item_url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('home'))
+        self.item.refresh_from_db()
+        self.assertEqual(self.item.nItem, 2)
+
 class DeleteItemTest(TestCase):
     def setUp(self):
         
