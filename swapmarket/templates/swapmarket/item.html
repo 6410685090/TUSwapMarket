@@ -2,7 +2,7 @@
 {% load static %}
 {% block title %}Item Detail{% endblock %}
 {% block link %}
-    {% comment %} <link rel="stylesheet" href="{% static 'swapmarket/css/item.css' %}"> {% endcomment %}
+    <link rel="stylesheet" href="{% static 'swapmarket/css/item.css' %}">
 {% endblock %}
 {% block body %}
 <div class="main">
@@ -48,6 +48,7 @@
                 }
             </style>
         {% endif %}
+        {% if item.payment == "coin" %}
         <form method="post" class="form1 coinbuy hides">
             {% csrf_token %}
             <div>
@@ -58,6 +59,7 @@
                 <input type="submit" value="Buys" class="bbtn pdlf">
             </div>
         </form>
+        {% endif %}
         <div class="chat hides">
             <a href="/chat/{{ item.seller.username }}_{{ user.username }}/?username={{ user.username }}" class="btt">Chat</a>
         </div>
