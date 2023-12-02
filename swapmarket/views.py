@@ -227,7 +227,7 @@ def approve_cart(request, cart_id):
     cart = Coins.objects.get(id=cart_id)
     if cart.is_confirmed:
         messages.error(request, 'This cart has already been confirmed.')
-    elif cart.sender.coins_balance >= cart.amount:
+    else:
         cart.is_confirmed = True
         admin_user = CustomUser.objects.get(username='admin')
         admin_user.coins_balance -= cart.amount
