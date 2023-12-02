@@ -16,6 +16,8 @@
               <tr>
                 <th>Username</th>
                 <th>Amount</th>
+                <th>Bank</th>
+                <th>BankID</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -24,6 +26,8 @@
                 <tr>
                   <td>{{ withdraw.sender.username }}</td>
                   <td>{{ withdraw.amount }}</td>
+                  <td>{{ withdraw.sender.bank }}</td>
+                  <td>{{ withdraw.sender.bankid }}</td>
                   <td>
                     <form method="post" action="{% url 'approve_withdraw' withdraw.id %}">
                       {% csrf_token %}

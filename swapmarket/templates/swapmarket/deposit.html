@@ -6,13 +6,14 @@
 {% endblock %}
 {% block body %}
 <div class="main">
-    <div class="box" style="height: 300px;">
+    <div class="box" style="min-height: 300px;">
         <div class="top">
             Deposit Coins
         </div>
         <div class="mycoin" style="margin-top: 30px;">
             Balance : {{ user.coins_balance }}
         </div>
+        <img src="{% static 'swapmarket/pic/payment.png' %}" alt="" style="width: 100px; margin-top: 20px;">
         <form method="post" action="{% url 'deposit_coins' %}" style="margin-top: 30px;" >
             {% csrf_token %}
             {{ form.as_p }}

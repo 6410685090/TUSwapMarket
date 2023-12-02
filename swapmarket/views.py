@@ -167,6 +167,15 @@ def withdraw_coins(request):
         form = WithdrawForm(request.POST)
         if form.is_valid():
             amount = form.cleaned_data['amount']
+            if amount > request.user.coins_balance:
+                form = WithdrawForm()
+                pending_withdraws = Coins.objects.filter(sender=request.user , receiver=CustomUser.objects.get(username='admin'))
+                return render(request, 'swapmarket/withdraw.html', {
+                    'form': form , 
+                    "pending_withdraws" : pending_withdraws ,
+                    'message' : '''You don't have enough balance'''
+                    }
+                )
             
             withdraw = Coins(sender=request.user, receiver=CustomUser.objects.get(username='admin'), amount=amount, is_confirmed=False)
             withdraw.save()

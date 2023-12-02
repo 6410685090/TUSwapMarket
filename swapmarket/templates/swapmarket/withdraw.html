@@ -6,7 +6,7 @@
 {% endblock %}
 {% block body %}
 <div class="main">
-    <div class="box" style="height: 300px;">
+    <div class="box" style="height: 350px;">
         <div class="top">
             Withdraw Coins
         </div>
@@ -16,8 +16,12 @@
         <form method="post" action="{% url 'withdraw_coins' %}" style="margin-top: 40px;">
             {% csrf_token %}
             {{ form.as_p }}
+            {% if message %}
+            <p style="color: red; margin-top: 10px;">{{message}}</p>
+            {% endif %}
             <button type="submit" class="btng">Withdraw</button>
         </form>
+        
     </div>  
     <div class="box2">
         <div style="margin-top:15px;">
@@ -33,7 +37,7 @@
             <tbody>
               {% for withdraw in pending_withdraws %}
                 <tr>
-                  <td>{{ withdraw.receiver.username }}</td>
+                  <td>{{ withdraw.sender.username }}</td>
                   <td>{{ withdraw.amount }}</td>
                   <td>
                     {% if withdraw.is_confirmed %}

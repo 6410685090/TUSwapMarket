@@ -24,6 +24,7 @@
                   <tr>
                     <td>{{ deposit.receiver.username }}</td>
                     <td>{{ deposit.amount }}</td>
+                    <td>{{ deposit.created_at }}</td>
                     <td>
                       <form method="post" action="{% url 'approve_deposit' deposit.id %}">
                         {% csrf_token %}
