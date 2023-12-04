@@ -532,6 +532,8 @@ class WithdrawCoinsTest(TestCase):
         self.client.login(username='testuser', password='testpassword')
 
     def test_successful_withdrawal(self):
+        self.user.coins_balance = 50
+        self.user.save()
         form_data = {
             'amount': 50,
         }

@@ -321,6 +321,8 @@ class EditProfileViewTests(TestCase):
                 'phone': '9876543210',
                 'firstname': 'UpdatedFirstName',
                 'lastname': 'UpdatedLastName',
+                'bank' : 'SCB',
+                'bankid' : '12345678',
                 'userdescription': 'Updated user description',
             }
         )
@@ -343,6 +345,8 @@ class EditProfileViewTests(TestCase):
                 'phone': '9876543210',
                 'firstname': 'UpdatedFirstName',
                 'lastname': 'UpdatedLastName',
+                'bank' : 'SCB',
+                'bankid' : '12345678',
                 'userdescription': 'Updated user description',
             },
             format="multipart"
