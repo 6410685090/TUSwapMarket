@@ -4,7 +4,7 @@ from django.urls import reverse, resolve
 from .models import Category, Item, Coins
 from .views import home, about, sell_item, sbt, item_detail, delete_item, deposit_coins
 from user.models import CustomUser
-from .forms import ItemForm
+from .forms import ItemForm, WithdrawForm
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.messages import get_messages
 from PIL import Image
@@ -541,7 +541,18 @@ class WithdrawCoinsTest(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertTrue(Coins.objects.filter(sender=self.user, receiver=self.admin_user, amount=50, is_confirmed=False).exists())
         self.assertRedirects(response, reverse('home'))
-
+    def test_withdrawal_amount_greater_than_balance(self):
+        amount = 150
+        data = {'amount': amount}
+        response = self.client.post(reverse('withdraw_coins'), data)
+        self.assertEqual(response.status_code, 200)
+        form = response.context['form']
+        self.assertIsInstance(form, WithdrawForm)
+        pending_withdraws = response.context['pending_withdraws']
+        self.assertTrue(all(withdraw.is_confirmed is False for withdraw in pending_withdraws))
+        message = response.context['message']
+        expected_message = '''You don't have enough balance'''
+        self.assertEqual(message, expected_message)
     def test_invalid_withdrawal(self):
         form_data = {
             'amount': -50,
